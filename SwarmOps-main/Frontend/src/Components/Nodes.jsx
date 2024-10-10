@@ -7,7 +7,7 @@ const Nodes = () => {
         <span className="ml-8 text-3xl font-bold text-white">Nodes</span>
       </nav>
       <div className="flex flex-row space-x-5 ">
-        <div className="w-fit bg-white: rounded-xl shadow-md p-8 mt-8 hover:shadow-lg  hover:bg-gray-100 ml-8">
+        <div className="w-auto mx-100 bg-white: rounded-xl shadow-md p-8 mt-8 hover:shadow-lg  hover:bg-gray-100 ml-8">
           <div className=" flex flex-col">
             <h2 className="text-xl font-bold">Name of the Node</h2>
             <p className="text-gray-600">

@@ -6,7 +6,7 @@ CORS(app)
 
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({"message": "hello"})
+    return jsonify({"message": "Hello World"})
 
 @app.route('/services', methods=['GET'])
 def services():
