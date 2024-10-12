@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useTheme } from '../Context/ThemeContext';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faBox } from '@fortawesome/free-solid-svg-icons'; // Import Trash and Box icons
 
 const Services = () => {
+  const { isDarkTheme } = useTheme();
   const [servicesData, setServicesData] = useState([]);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -12,49 +19,58 @@ const Services = () => {
         setServicesData(data);
       } catch (error) {
         setError(error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchServices();
   }, []);
 
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (isLoading) {
+    return <div className="text-center mt-4">Loading...</div>;
   }
 
-  if (!servicesData) {
-    return <div>Loading...</div>;
+  if (error) {
+    return <div className="text-red-500 text-center mt-4">Error: {error}</div>;
   }
 
   return (
-    <>
-      <nav className="bg-blue-400">
-        <span className="ml-8 text-3xl font-bold text-white">Services</span>
-      </nav>
-      {servicesData.map((service) => (
-        <div key={service.Id} className="flex flex-row space-x-5 ">
-          <div className="w-fit bg-white rounded-xl shadow-md p-8 mt-8 hover:shadow-lg  hover:bg-gray-100 ml-8">
-            <div className="flex flex-col">
-              <h2 className="text-xl font-bold">{service.name}</h2>
-              <p className="text-gray-600">
-                Id: <span className="text-gray-900">{service.id}</span>
-              </p>
+    <div className={`min-h-screen p-6 ${isDarkTheme ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}>
+      {/* Header Strip */}
+      <div className={`p-4 rounded-t-lg ${isDarkTheme ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'} text-lg font-bold`}>
+        SERVICES
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        {servicesData.map((service) => (
+          <div
+            key={service.id}
+            className={`flex flex-col rounded-xl shadow-md p-6 transition duration-200 
+              ${isDarkTheme ? 'bg-gray-800 text-gray-200' : 'bg-white text-black'} h-full transform hover:scale-105`} // Hover effect
+            onClick={() => navigate(`/services/${service.id}`)} // Navigate to the service details page
+          >
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-bold mb-2 truncate">{service.name}</h2>
+              <FontAwesomeIcon
+                icon={faTrash}
+                className={`cursor-pointer ${isDarkTheme ? 'text-gray-300 hover:text-red-500' : 'text-gray-700 hover:text-red-500'}`}
+                onClick={() => alert('Trash icon clicked!')} // Alert on trash icon click
+              />
             </div>
-            <br />
-            <div className="flex  flex-row space-x-2">
-              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                Inspect
-              </button>
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Update
-              </button>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                Delete
-              </button>
-            </div>
+            <p className="mb-1 flex items-center">
+              <FontAwesomeIcon
+                icon={faBox} // Using the Box icon to represent Docker service ID
+                className={`mr-1 ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`} // ID icon styling
+              />
+              <strong>ID:</strong>
+              <span className={`font-medium ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'} ml-2`}>
+                {service.id}
+              </span>
+            </p>
           </div>
-        </div>
-      ))}
-    </>
+        ))}
+      </div>
+    </div>
   );
 };
 
