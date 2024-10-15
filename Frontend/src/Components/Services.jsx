@@ -57,16 +57,16 @@ const Services = () => {
                 onClick={() => alert('Trash icon clicked!')} // Alert on trash icon click
               />
             </div>
-            <p className="mb-1 flex items-center">
+            <div className="mb-1 flex items-center">
               <FontAwesomeIcon
                 icon={faBox} // Using the Box icon to represent Docker service ID
-                className={`mr-1 ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`} // ID icon styling
+                className={` mr-1 ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`} // ID icon styling
               />
               <strong>ID:</strong>
-              <span className={`font-medium ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'} ml-2`}>
+              <p className={` truncate font-medium ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'} ml-2`}>
                 {service.id}
-              </span>
-            </p>
+              </p>
+            </div>
           </div>
         ))}
       </div>
