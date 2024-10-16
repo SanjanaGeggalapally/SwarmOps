@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Nodes from './Components/Nodes';
@@ -6,25 +7,37 @@ import Tasks from './Components/Tasks';
 import Secrets from './Components/Secrets';
 import Configs from './Components/Configs';
 import Home from './Components/Home';
-import ServiceDetails from './Components/ServiceDetails'; // Import ServiceDetails component
-import { ThemeProvider, useTheme } from './Context/ThemeContext'; 
-import { useState } from 'react'; 
+import ServiceDetails from './Components/ServiceDetails';
+import { ThemeProvider, useTheme } from './Context/ThemeContext';
+import Login from './Components/Login'; // Import your Login component
 
 const App = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Authentication state
+
+  const handleLogin = () => {
+    // Simulate a login action
+    setIsAuthenticated(true);
+  };
 
   return (
     <ThemeProvider>
       <BrowserRouter>
-        <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-        <MainContent isSidebarOpen={isSidebarOpen} />
+        {isAuthenticated ? (
+          <>
+            <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+            <MainContent isSidebarOpen={isSidebarOpen} />
+          </>
+        ) : (
+          <Login onLogin={handleLogin} /> // Pass the login handler to the Login component
+        )}
       </BrowserRouter>
     </ThemeProvider>
   );
 };
 
 const MainContent = ({ isSidebarOpen }) => {
-  const { isDarkTheme } = useTheme(); 
+  const { isDarkTheme } = useTheme();
 
   return (
     <div className={`transition-all duration-100 ${isSidebarOpen ? 'ml-64' : 'ml-16'} p-4 ${isDarkTheme ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}>
@@ -35,7 +48,7 @@ const MainContent = ({ isSidebarOpen }) => {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/secrets" element={<Secrets />} />
         <Route path="/configs" element={<Configs />} />
-        <Route path="/services/:id" element={<ServiceDetails />} /> {/* Route for service details */}
+        <Route path="/services/:id" element={<ServiceDetails />} />
       </Routes>
     </div>
   );
