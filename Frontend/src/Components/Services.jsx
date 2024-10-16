@@ -35,42 +35,109 @@ const Services = () => {
   }
 
   return (
-    <div className={`min-h-screen p-6 ${isDarkTheme ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}>
-      {/* Header Strip */}
-      <div className={`p-4 rounded-t-lg ${isDarkTheme ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'} text-lg font-bold`}>
-        SERVICES
-      </div>
+    
+<div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-        {servicesData.map((service) => (
-          <div
-            key={service.id}
-            className={`flex flex-col rounded-xl shadow-md p-6 transition duration-200 
-              ${isDarkTheme ? 'bg-gray-800 text-gray-200' : 'bg-white text-black'} h-full transform hover:scale-105`} // Hover effect
-            onClick={() => navigate(`/services/${service.id}`)} // Navigate to the service details page
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold mb-2 truncate">{service.name}</h2>
-              <FontAwesomeIcon
-                icon={faTrash}
-                className={`cursor-pointer ${isDarkTheme ? 'text-gray-300 hover:text-red-500' : 'text-gray-700 hover:text-red-500'}`}
-                onClick={() => alert('Trash icon clicked!')} // Alert on trash icon click
-              />
-            </div>
-            <div className="mb-1 flex items-center">
-              <FontAwesomeIcon
-                icon={faBox} // Using the Box icon to represent Docker service ID
-                className={` mr-1 ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`} // ID icon styling
-              />
-              <strong>ID:</strong>
-              <p className={` truncate font-medium ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'} ml-2`}>
-                {service.id}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+	<div class="shadow-md sm:rounded-lg">
+		<div class="p-4">
+			<label for="table-search" class="sr-only">Search</label>
+			<div class="relative mt-1">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+					<svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd"
+							d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+							clip-rule="evenodd"></path>
+					</svg>
+				</div>
+				<input type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items"/>
+        </div>
+			</div>
+			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+					<tr>
+						<th scope="col" class="p-4">
+							<div class="flex items-center">
+								<input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+								<label for="checkbox-all-search" class="sr-only">checkbox</label>
+							</div>
+						</th>
+						<th scope="col" class="px-6 py-3">
+							Name of the Service
+						</th>
+						<th scope="col" class="px-6 py-3">
+							ID
+						</th>
+            <th scope="col" class="px-6 py-3">
+							Creation Time
+						</th>
+            <th scope="col" class="px-6 py-3">
+							Desired State
+						</th>
+            <th scope="col" class="px-6 py-3">
+							Image Name
+						</th>
+            <th scope="col" class="px-6 py-3">
+							Labels
+						</th>
+            <th scope="col" class="px-6 py-3">
+							Port Number
+						</th>
+            <th scope="col" class="px-6 py-3">
+							Replicas
+						</th>
+            <th scope="col" class="px-6 py-3">
+							Running State
+						</th>
+            <th scope="col" class="px-6 py-3">
+							Status
+						</th>
+						<th scope="col" class="px-6 py-3">
+							<span class="sr-only">Inspect</span>
+						</th>
+            <th scope="col" class="px-6 py-3">
+              <i class="faTrash"></i>
+            </th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+            servicesData.map(s =>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key = {s.id}>
+                <td class="w-4 p-4">
+							<div class="flex items-center">
+								<input id="checkbox-table-search-2" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
+								<label for="checkbox-table-search-2" class="sr-only">checkbox</label>
+							</div>
+						</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.name}</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.id}</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.creationTime}</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.desiredState}</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.image}</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.labels.environment}</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.ports}</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.replicas}</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.runningState}</td>
+                <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{s.updateStatus}</td>
+                <td class="px-6 py-4 text-right">
+							    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+						    </td>
+                <td class=" row px-6 py-4">
+							    <button className="flex items-center justify-center hover:text-red">
+                <FontAwesomeIcon icon={faTrash} className="mr-2" />
+              </button>
+						    </td>
+              </tr>
+            )
+}
+					
+
+				</tbody>
+			</table>
+		</div>
+
+	</div>
   );
 };
 

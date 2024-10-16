@@ -10,6 +10,7 @@ import Home from './Components/Home';
 import ServiceDetails from './Components/ServiceDetails';
 import { ThemeProvider, useTheme } from './Context/ThemeContext';
 import Login from './Components/Login'; // Import your Login component
+import AddUser from './Components/AddUser';
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -40,7 +41,7 @@ const MainContent = ({ isSidebarOpen }) => {
   const { isDarkTheme } = useTheme();
 
   return (
-    <div className={`transition-all duration-100 ${isSidebarOpen ? 'ml-64' : 'ml-16'} p-4 ${isDarkTheme ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}>
+    <div className={`transition-all duration-100 ${isSidebarOpen ? 'ml-64' : 'ml-16'} p-4 ${isDarkTheme ? 'bg-black text-white ml' : 'bg-gray-100 text-black'}`}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/nodes" element={<Nodes />} />
@@ -49,6 +50,7 @@ const MainContent = ({ isSidebarOpen }) => {
         <Route path="/secrets" element={<Secrets />} />
         <Route path="/configs" element={<Configs />} />
         <Route path="/services/:id" element={<ServiceDetails />} />
+        <Route path ="/adduser" element={<AddUser/>}/>
       </Routes>
     </div>
   );
