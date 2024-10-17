@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThList, faTachometerAlt, faCube, faServer, faTasks, faLock, faCog, faSignOutAlt, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faThList, faTachometerAlt, faCube, faServer, faTasks, faLock, faCog, faSignOutAlt, faLightbulb, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useTheme } from '../Context/ThemeContext'; 
@@ -26,15 +26,16 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   return (
     <>
+    <div className='bg-black'>
       <button
         onClick={toggleSidebar}
-        className={`fixed top-4 left-4 z-50 p-3 rounded-full transition-all duration-100 
+        className={`fixed top-4 left-4 z-50 p-3 rounded-full transition-all duration-100
           ${isDarkTheme ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white text-black hover:bg-gray-200'}`}
         aria-label="Toggle Sidebar"
       >
         <FontAwesomeIcon icon={faThList} />
       </button>
-
+      </div>
       <aside
         id="default-sidebar"
         className={`fixed top-0 left-0 z-40 h-screen transition-transform duration-100
@@ -56,6 +57,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               { name: 'Secrets', icon: faLock, link: '/secrets' },
               { name: 'Configs', icon: faCog, link: '/configs' },
               { name: 'Logout', icon: faSignOutAlt, link: '/logout' },
+              { name: 'Add User', icon: faUserPlus, link: '/adduser'}
             ].map(({ name, icon, link }) => (
               <li key={name}>
                 <Link

@@ -13,7 +13,7 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     if (isLogin) {
       // Implement login logic
-      if (username === 'admin' && password === 'password') {
+      if (username === 'a' && password === 'p') {
         onLogin();
       } else {
         alert('Invalid credentials');
