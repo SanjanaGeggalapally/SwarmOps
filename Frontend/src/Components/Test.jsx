@@ -1,11 +1,15 @@
+import { useAclify } from 'react-aclify';
 
+const ProtectedComponent = () => {
+  const { isAuthorized } = useAclify();
 
-const Test = () => {
+  if (!isAuthorized(['admin', 'editor'], ['manage-posts'])) {
+    return <div>Access Denied</div>;
+  }
+
   return (
     <div>
-      
+      {/* Content that requires 'admin' or 'editor' role and 'manage-posts' permission */}
     </div>
-  )
-}
-
-export default Test
+  );
+};
