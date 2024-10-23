@@ -3,7 +3,7 @@ import { faThList, faTachometerAlt, faCube, faServer, faTasks, faLock, faCog, fa
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useTheme } from '../Context/ThemeContext'; 
-
+import { rolesPermissions } from './Login';
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const { isDarkTheme, toggleTheme } = useTheme(); 
 
@@ -57,7 +57,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               { name: 'Secrets', icon: faLock, link: '/secrets' },
               { name: 'Configs', icon: faCog, link: '/configs' },
               { name: 'Logout', icon: faSignOutAlt, link: '/logout' },
-              { name: 'Add User', icon: faUserPlus, link: '/adduser'}
+              { name: 'Add User', icon: faUserPlus, link: '/adduser' } ,
             ].map(({ name, icon, link }) => (
               <li key={name}>
                 <Link

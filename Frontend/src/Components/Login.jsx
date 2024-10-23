@@ -2,6 +2,23 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faEnvelope, faSignInAlt, faUserPlus, faUser, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
+
+
+const rolesPermissions = {
+  a: {
+    canViewDashboard: true,
+    canEditUsers: true,
+    canViewReports: true,
+    canAddUser :true 
+  },
+  user: {
+    canViewDashboard: true,
+    canEditUsers: false,
+    canViewReports: false,
+    canAddUser :false 
+  },
+};
+
 const Login = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and sign-up
   const [username, setUsername] = useState('');
@@ -12,8 +29,8 @@ const Login = ({ onLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
-      // Implement login logic
       if (username === 'a' && password === 'p') {
+        
         onLogin();
       } else {
         alert('Invalid credentials');
@@ -127,5 +144,5 @@ const Login = ({ onLogin }) => {
     </div>
   );
 };
-
+export {rolesPermissions};
 export default Login;

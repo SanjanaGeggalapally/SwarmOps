@@ -10,6 +10,11 @@ const Services = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate(); // Initialize useNavigate
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(prevState => !prevState);
+};
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -35,30 +40,28 @@ const Services = () => {
   }
 
   return (
-    <div >
-      <div  class="flex justify-between items-center">
+    <div>
+      <div class="flex justify-between items-center">
         <Link
           to="/services"
           className="text-gray-600 text-3xl font-bold hover:text-gray-900"
         >
           Services
         </Link>
-		
+
         <div class="flex flex-col mt-2 items-center mr-4">
-		<span class="text-xs xs:text-sm text-gray-900 mb-1">
-                            Showing 1 to 4 of 50 Entries
-                        </span>
-						<div className="flex mt-2 gap-1">
-                            <button
-                                class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
-                                Prev
-                            </button>
-                            <button
-                                class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
-                                Next
-                            </button>
-						</div>
-                        </div>
+          <span class="text-xs xs:text-sm text-gray-900 mb-1">
+            Showing 1 to 4 of 50 Entries
+          </span>
+          <div className="flex mt-2 gap-1">
+            <button class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
+              Prev
+            </button>
+            <button class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
+              Next
+            </button>
+          </div>
+        </div>
       </div>
       <div class="shadow-md sm:rounded-lg">
         <div class="p-4">
@@ -115,13 +118,14 @@ const Services = () => {
               <th scope="col" class="px-6 py-3 text-base">
                 Replicas
               </th>
-              <th scope="col" class="px-6 py-3 text-base">
-                State
-                <select class="border border-gray-400 rounded text-gray-700 py-1 px-2 text-sm">
-                  <option className="text-green-600">Running</option>
-                  <option className=" text-red-900">Stopped</option>
-                  <option className=" text-red-900">Terminated</option>
-                </select>
+              <th scope="col" className="px-6 py-3 text-base">
+                        <p className="ml=1">State:</p>
+                        <select aria-label="select border-none">
+                            <option class="text-sm ">None</option>
+                            <option class="text-sm text-green-800">Running</option>
+                            <option class="text-sm text-red-800">Stopped</option>
+                        </select>
+                    
               </th>
               <th scope="col" class="px-6 py-3 text-base">
                 Status
@@ -180,7 +184,7 @@ const Services = () => {
                 </td>
                 <td
                   scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap text-center"
                 >
                   {s.replicas}
                 </td>
