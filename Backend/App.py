@@ -5,106 +5,175 @@ app = Flask(__name__)
 CORS(app)
 
 services = [
-    {
-        'id': 'webapp1234',  # Updated ID without hyphen
-        'name': 'Web App',
-        'image': 'myapp:latest',
-        'replicas': 3,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['80:80'],
-        'networks': ['frontend', 'backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    },
-    {
-        'id': 'db5678',  # Updated ID without hyphen
-        'name': 'Database',
-        'image': 'mysql:5.7',
-        'replicas': 1,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['3306:3306'],
-        'networks': ['backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    },
-    {
-        'id': 'cache9101',  # Updated ID without hyphen
-        'name': 'Cache Service',
-        'image': 'redis:latest',
-        'replicas': 2,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['6379:6379'],
-        'networks': ['backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'staging'}
-    },
-    {
-        'id': 'broker1121',  # Updated ID without hyphen
-        'name': 'Message Broker',
-        'image': 'rabbitmq:3-management',
-        'replicas': 1,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['5672:5672', '15672:15672'],
-        'networks': ['backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    },
-    {
-        'id': 'storage3141',  # Updated ID without hyphen
-        'name': 'File Storage',
-        'image': 'minio/minio',
-        'replicas': 2,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['9000:9000'],
-        'networks': ['storage'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    },
-    {
-        'id': 'gateway5161',  # Updated ID without hyphen
-        'name': 'API Gateway',
-        'image': 'kong:latest',
-        'replicas': 1,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['8000:8000'],
-        'networks': ['frontend', 'backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    }
+        {
+            "CreatedAt": "2024-10-22T11:39:14.527898728Z",
+            "Endpoint": {
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 5009,
+                        "TargetPort": 5000
+                    }
+                ],
+                "Spec": {
+                    "Mode": "vip",
+                    "Ports": [
+                        {
+                            "Protocol": "tcp",
+                            "PublishMode": "ingress",
+                            "PublishedPort": 5009,
+                            "TargetPort": 5000
+                        }
+                    ]
+                },
+                "VirtualIPs": [
+                    {
+                        "Addr": "10.0.0.34/24",
+                        "NetworkID": "lt58xre1i7zb1r4vvuwia72mv"
+                    }
+                ]
+            },
+            "ID": "2gw5ib9uadw1g3pj9hrcvossl",
+            "Spec": {
+                "EndpointSpec": {
+                    "Mode": "vip",
+                    "Ports": [
+                        {
+                            "Protocol": "tcp",
+                            "PublishMode": "ingress",
+                            "PublishedPort": 5009,
+                            "TargetPort": 5000
+                        }
+                    ]
+                },
+                "Labels": {},
+                "Mode": {
+                    "Replicated": {
+                        "Replicas": 1
+                    }
+                },
+                "Name": "registry",
+                "TaskTemplate": {
+                    "ContainerSpec": {
+                        "DNSConfig": {},
+                        "Image": "registry:2@sha256:ac0192b549007e22998eb74e8d8488dcfe70f1489520c3b144a6047ac5efbe90",
+                        "Init": False,
+                        "Isolation": "default"
+                    },
+                    "ForceUpdate": 0,
+                    "Placement": {
+                        "Platforms": [
+                            {"Architecture": "amd64", "OS": "linux"},
+                            {"Architecture": "unknown", "OS": "unknown"},
+                            {"OS": "linux"},
+                            {"Architecture": "arm64", "OS": "linux"},
+                            {"Architecture": "s390x", "OS": "linux"}
+                        ]
+                    },
+                    "Resources": {
+                        "Limits": {},
+                        "Reservations": {}
+                    },
+                    "Runtime": "container"
+                }
+            },
+            "UpdatedAt": "2024-10-22T11:39:14.529226176Z",
+            "Version": {
+                "Index": 907
+            }
+        },
+        {
+            "CreatedAt": "2024-10-22T12:40:01.115712028Z",
+            "Endpoint": {
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 8000,
+                        "TargetPort": 8000
+                    }
+                ],
+                "Spec": {
+                    "Mode": "vip",
+                    "Ports": [
+                        {
+                            "Protocol": "tcp",
+                            "PublishMode": "ingress",
+                            "PublishedPort": 8000,
+                            "TargetPort": 8000
+                        }
+                    ]
+                },
+                "VirtualIPs": [
+                    {
+                        "Addr": "10.0.0.39/24",
+                        "NetworkID": "lt58xre1i7zb1r4vvuwia72mv"
+                    },
+                    {
+                        "Addr": "10.0.3.4/24",
+                        "NetworkID": "a33gruskditrg5kffyno08n77"
+                    }
+                ]
+            },
+            "ID": "3p2or3dy92bs581vvy4g98u2r",
+            "Spec": {
+                "EndpointSpec": {
+                    "Mode": "vip",
+                    "Ports": [
+                        {
+                            "Protocol": "tcp",
+                            "PublishMode": "ingress",
+                            "PublishedPort": 8000,
+                            "TargetPort": 8000
+                        }
+                    ]
+                },
+                "Labels": {
+                    "com.docker.stack.image": "127.0.0.1:5009/stackdemo",
+                    "com.docker.stack.namespace": "c"
+                },
+                "Mode": {
+                    "Replicated": {
+                        "Replicas": 1
+                    }
+                },
+                "Name": "c_web",
+                "TaskTemplate": {
+                    " ContainerSpec": {
+                        "DNSConfig": {},
+                        "Image": "127.0.0.1:5009/stackdemo:latest",
+                        "Init": False,
+                        "Isolation": "default"
+                    },
+                    "ForceUpdate": 0,
+                    "Placement": {
+                        "Platforms": [
+                            {"Architecture": "amd64", "OS": "linux"},
+                            {"Architecture": "unknown", "OS": "unknown"},
+                            {"OS": "linux"},
+                            {"Architecture": "arm64", "OS": "linux"},
+                            {"Architecture": "s390x", "OS": "linux"}
+                        ]
+                    },
+                    "Resources": {
+                        "Limits": {},
+                        "Reservations": {}
+                    },
+                    "Runtime": "container"
+                }
+            },
+            "UpdatedAt": "2024-10-22T12:40:01.117234944Z",
+            "Version": {
+                "Index": 908
+            }
+        }
+        
 ]
 
-@app.route('/', methods=['GET'])
-def home():
-    return jsonify({"message": "hello"})
-
-@app.route('/services/<service_id>', methods=['GET'])
-def get_service(service_id):
-    service = next((s for s in services if s['id'] == service_id), None)
-    if service:
-        print("GET")
-        return jsonify(service)
-    else:
-        return jsonify({'error': 'Service not found'}), 404
-
 @app.route('/services', methods=['GET'])
-def all_services():
+def get_services():
     return jsonify(services)
 
-@app.route('/services/<service_id>', methods=['DELETE'])
-def delete_service(service_id):
-    service = next((s for s in services if s['id'] == service_id), None)
-    services.remove(service)
-    print(service)
-    return services
+if __name__ == '__main__':
+    app.run(debug=True)
