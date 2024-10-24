@@ -1,110 +1,65 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template, jsonify, flash
 from flask_cors import CORS
+import docker
+import docker.errors as de
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, origins='*')
 
-services = [
-    {
-        'id': 'webapp1234',  # Updated ID without hyphen
-        'name': 'Web App',
-        'image': 'myapp:latest',
-        'replicas': 3,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['80:80'],
-        'networks': ['frontend', 'backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    },
-    {
-        'id': 'db5678',  # Updated ID without hyphen
-        'name': 'Database',
-        'image': 'mysql:5.7',
-        'replicas': 1,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['3306:3306'],
-        'networks': ['backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    },
-    {
-        'id': 'cache9101',  # Updated ID without hyphen
-        'name': 'Cache Service',
-        'image': 'redis:latest',
-        'replicas': 2,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['6379:6379'],
-        'networks': ['backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'staging'}
-    },
-    {
-        'id': 'broker1121',  # Updated ID without hyphen
-        'name': 'Message Broker',
-        'image': 'rabbitmq:3-management',
-        'replicas': 1,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['5672:5672', '15672:15672'],
-        'networks': ['backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    },
-    {
-        'id': 'storage3141',  # Updated ID without hyphen
-        'name': 'File Storage',
-        'image': 'minio/minio',
-        'replicas': 2,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['9000:9000'],
-        'networks': ['storage'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    },
-    {
-        'id': 'gateway5161',  # Updated ID without hyphen
-        'name': 'API Gateway',
-        'image': 'kong:latest',
-        'replicas': 1,
-        'desiredState': 'Running',
-        'runningState': 'Running',
-        'updateStatus': 'Up to date',
-        'ports': ['8000:8000'],
-        'networks': ['frontend', 'backend'],
-        'creationTime': '2024-10-01T12:00:00Z',
-        'labels': {'environment': 'production'}
-    }
-]
+def get_client():
+    return docker.from_env()
 
-@app.route('/', methods=['GET'])
+ 
+# Home
+@app.route('/')
 def home():
-    return jsonify({"message": "hello"})
-
-@app.route('/services/<service_id>', methods=['GET'])
-def get_service(service_id):
-    service = next((s for s in services if s['id'] == service_id), None)
-    if service:
-        print("GET")
-        return jsonify(service)
-    else:
-        return jsonify({'error': 'Service not found'}), 404
-
-@app.route('/services', methods=['GET'])
-def all_services():
-    return jsonify(services)
-
-@app.route('/services/<service_id>', methods=['DELETE'])
-def delete_service(service_id):
-    service = next((s for s in services if s['id'] == service_id), None)
-    services.remove(service)
-    print(service)
-    return services
+    client = get_client()
+    p = client.ping()
+    return jsonify({
+        "ping": p, "hello": "world"
+    })
+ 
+# Swarm Services - List
+@app.route("/services")
+def swarm_services_list():
+    try:
+        client = get_client()
+        slist = client.services.list()
+        services_data = [service.attrs for service in slist]  # Convert service objects to dictionaries
+        return jsonify({"services": services_data})
+    except de.APIError as e:
+        return jsonify({"error": str(e)}), 500  # Return a 500 error with the message
+ 
+# Swarm Services - Inspect
+@app.route("/services/inspect/<id>")
+def swarm_service_inspect(id):
+    try:
+        client = get_client()
+        response = client.services.get(id)
+        return jsonify({"service": response.attrs})  # Convert the service object to a dictionary
+    except de.NotFound as nf:
+        return jsonify({"error": str(nf)}), 404  # Return a 404 error
+    except de.APIError as ae:
+        return jsonify({"error": str(ae)}), 500
+    except de.InvalidVersion as iv:
+        return jsonify({"error": str(iv)}), 400  # Return a 400 error for invalid version
+ 
+# Swarm Services - Update
+@app.route("/services/update/<id>", methods=['POST'])
+def swarm_service_update(id):
+    # Implementation for updating a service would go here
+    pass
+ 
+# Swarm Nodes API
+@app.route("/nodes")
+def swarm_nodes_list():
+    try:
+        client = get_client()
+        nlist = client.nodes.list()
+        nodes_data = [node.attrs for node in nlist]  # Convert node objects to dictionaries
+        return jsonify({"nodes": nodes_data})
+    except de.APIError as e:
+        return jsonify({"error": str(e)}), 500  # Return a 500 error with the message
+ 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
