@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faBox } from "@fortawesome/free-solid-svg-icons"; // Import Trash and Box icons
 import { Link } from "react-router-dom";
+import axios from 'axios';
 const Services = () => {
   const { isDarkTheme } = useTheme();
   const [servicesData, setServicesData] = useState([]);
@@ -16,20 +17,20 @@ const Services = () => {
     setIsOpen(prevState => !prevState);
 };
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/services");
-        const data = await response.json();
-        setServicesData(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchServices();
-  }, []);
+useEffect(() => {
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/services");
+      setServicesData(response.data);
+    } catch (error) {
+      setError(error.response ? error.response.data : 'Error fetching services');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchServices();
+}, []);
 
   if (isLoading) {
     return <div className="text-center mt-4">Loading...</div>;
@@ -91,6 +92,7 @@ const Services = () => {
             />
           </div>
         </div>
+        <div className="overflow-x-auto overflow-y-auto">
         <table class=" min-w-full  border border-gray-300 text-sm text-left text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -135,93 +137,96 @@ const Services = () => {
             </tr>
           </thead>
           <tbody>
-            {servicesData.map((s) => (
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200"
-                key={s.id}
-              >
-                <td
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  {s.name}
-                </td>
-                <td
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  {s.id}
-                </td>
-                <td
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  {s.creationTime}
-                </td>
-                <td
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  {s.desiredState}
-                </td>
-                <td
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  {s.image}
-                </td>
-                <td
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  {s.labels.environment}
-                </td>
-                <td
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  {s.ports}
-                </td>
-                <td
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap text-center"
-                >
-                  {s.replicas}
-                </td>
-                <td
-                  scope="row"
-                  className={`px-6 py-4 font-medium ${
-                    s.runningState === "Running"
-                      ? "text-green-600"
-                      : "text-red-900"
-                  } 
-				  dark:text-white whitespace-nowrap`}
-                >
-                  {s.runningState}
-                </td>
-                <td
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  {s.updateStatus}
-                </td>
-                <td class="px-6 py-4 text-right">
-                  <a
-                    href="/edit-${s.id}"
-                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </a>
-                </td>
-                <td class="row px-6 py-4">
-                  <button className="flex items-center justify-center text-red-600 hover:text-red-800">
-                    <FontAwesomeIcon icon={faTrash} className="mr-2" />
-                  </button>
-                </td>
-              </tr>
-            ))}
+          {servicesData.map((data) => (
+  <tr
+    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-200"
+    key={data.ID}
+  >
+    <td
+      scope="row"
+      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+    >
+      {data.Spec?.Name ?? "Null"}
+    </td>
+    <td
+      scope="row"
+      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+    >
+      {data.ID ?? "Null"}
+    </td>
+    <td
+      scope="row"
+      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+    >
+      {data.CreatedAt ?? "Null"}
+    </td>
+    <td
+      scope="row"
+      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+    >
+      {(data.Endpoint?.Ports?.[0]?.PublishMode + " " + data.Endpoint?.Ports?.[0]?.Protocol) ?? "Null"}
+    </td>
+    <td
+  scope="row"
+  className="truncate px-6 py-4 font-medium text-gray-900 dark:text-white"
+>
+  {(() => {
+    const image = data.Spec?.TaskTemplate?.ContainerSpec?.Image ?? "Null";
+    const regex = /^(.*?)@/;
+    const match = image.match(regex);
+    return match ? match[1] : image; // Return the part before '@ or the original string if no '@' is found
+  })()}
+</td>
+    <td
+      scope="row"
+      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+    >
+      {data.Endpoint?.Ports?.[0]?.PublishedPort ?? "Null"}
+    </td>
+    <td
+      scope="row"
+      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+    >
+      {data.Endpoint?.Ports?.[0]?.TargetPort ?? "Null"}
+    </td>
+    <td
+      scope="row"
+      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap text-center"
+    >
+      {data.Spec?.Mode?.Replicated?.Replicas ?? "Null"}
+    </td>
+    <td
+      scope="row"
+      className={`px-6 py-4 font-medium ${
+        data.Spec?.TaskTemplate?.Runtime === "Running" ? "text-green-600" : "text-red-900"
+      } dark:text-white whitespace-nowrap`}
+    >
+      {data.Spec?.TaskTemplate?.Runtime ?? "Null"}
+    </td>
+    <td
+      scope="row"
+      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+    >
+      {data.Version?.Index ?? "Null"}
+    </td>
+    <td className="px-6 py-4 text-right">
+      <Link
+        to="/services/edit"
+        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+      >
+        Edit
+      </Link>
+    </td>
+    <td className="row px-6 py-4">
+      <button className="flex items-center justify-center text-red-600 hover:text-red-800">
+        <FontAwesomeIcon icon={faTrash} className="mr-2" />
+      </button>
+    </td>
+  </tr>
+))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
