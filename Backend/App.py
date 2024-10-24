@@ -1,179 +1,65 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template, jsonify, flash
 from flask_cors import CORS
+import docker
+import docker.errors as de
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, origins='*')
 
-services = [
-        {
-            "CreatedAt": "2024-10-22T11:39:14.527898728Z",
-            "Endpoint": {
-                "Ports": [
-                    {
-                        "Protocol": "tcp",
-                        "PublishMode": "ingress",
-                        "PublishedPort": 5009,
-                        "TargetPort": 5000
-                    }
-                ],
-                "Spec": {
-                    "Mode": "vip",
-                    "Ports": [
-                        {
-                            "Protocol": "tcp",
-                            "PublishMode": "ingress",
-                            "PublishedPort": 5009,
-                            "TargetPort": 5000
-                        }
-                    ]
-                },
-                "VirtualIPs": [
-                    {
-                        "Addr": "10.0.0.34/24",
-                        "NetworkID": "lt58xre1i7zb1r4vvuwia72mv"
-                    }
-                ]
-            },
-            "ID": "2gw5ib9uadw1g3pj9hrcvossl",
-            "Spec": {
-                "EndpointSpec": {
-                    "Mode": "vip",
-                    "Ports": [
-                        {
-                            "Protocol": "tcp",
-                            "PublishMode": "ingress",
-                            "PublishedPort": 5009,
-                            "TargetPort": 5000
-                        }
-                    ]
-                },
-                "Labels": {},
-                "Mode": {
-                    "Replicated": {
-                        "Replicas": 1
-                    }
-                },
-                "Name": "registry",
-                "TaskTemplate": {
-                    "ContainerSpec": {
-                        "DNSConfig": {},
-                        "Image": "registry:2@sha256:ac0192b549007e22998eb74e8d8488dcfe70f1489520c3b144a6047ac5efbe90",
-                        "Init": False,
-                        "Isolation": "default"
-                    },
-                    "ForceUpdate": 0,
-                    "Placement": {
-                        "Platforms": [
-                            {"Architecture": "amd64", "OS": "linux"},
-                            {"Architecture": "unknown", "OS": "unknown"},
-                            {"OS": "linux"},
-                            {"Architecture": "arm64", "OS": "linux"},
-                            {"Architecture": "s390x", "OS": "linux"}
-                        ]
-                    },
-                    "Resources": {
-                        "Limits": {},
-                        "Reservations": {}
-                    },
-                    "Runtime": "container"
-                }
-            },
-            "UpdatedAt": "2024-10-22T11:39:14.529226176Z",
-            "Version": {
-                "Index": 907
-            }
-        },
-        {
-            "CreatedAt": "2024-10-22T12:40:01.115712028Z",
-            "Endpoint": {
-                "Ports": [
-                    {
-                        "Protocol": "tcp",
-                        "PublishMode": "ingress",
-                        "PublishedPort": 8000,
-                        "TargetPort": 8000
-                    }
-                ],
-                "Spec": {
-                    "Mode": "vip",
-                    "Ports": [
-                        {
-                            "Protocol": "tcp",
-                            "PublishMode": "ingress",
-                            "PublishedPort": 8000,
-                            "TargetPort": 8000
-                        }
-                    ]
-                },
-                "VirtualIPs": [
-                    {
-                        "Addr": "10.0.0.39/24",
-                        "NetworkID": "lt58xre1i7zb1r4vvuwia72mv"
-                    },
-                    {
-                        "Addr": "10.0.3.4/24",
-                        "NetworkID": "a33gruskditrg5kffyno08n77"
-                    }
-                ]
-            },
-            "ID": "3p2or3dy92bs581vvy4g98u2r",
-            "Spec": {
-                "EndpointSpec": {
-                    "Mode": "vip",
-                    "Ports": [
-                        {
-                            "Protocol": "tcp",
-                            "PublishMode": "ingress",
-                            "PublishedPort": 8000,
-                            "TargetPort": 8000
-                        }
-                    ]
-                },
-                "Labels": {
-                    "com.docker.stack.image": "127.0.0.1:5009/stackdemo",
-                    "com.docker.stack.namespace": "c"
-                },
-                "Mode": {
-                    "Replicated": {
-                        "Replicas": 1
-                    }
-                },
-                "Name": "c_web",
-                "TaskTemplate": {
-                    " ContainerSpec": {
-                        "DNSConfig": {},
-                        "Image": "127.0.0.1:5009/stackdemo:latest",
-                        "Init": False,
-                        "Isolation": "default"
-                    },
-                    "ForceUpdate": 0,
-                    "Placement": {
-                        "Platforms": [
-                            {"Architecture": "amd64", "OS": "linux"},
-                            {"Architecture": "unknown", "OS": "unknown"},
-                            {"OS": "linux"},
-                            {"Architecture": "arm64", "OS": "linux"},
-                            {"Architecture": "s390x", "OS": "linux"}
-                        ]
-                    },
-                    "Resources": {
-                        "Limits": {},
-                        "Reservations": {}
-                    },
-                    "Runtime": "container"
-                }
-            },
-            "UpdatedAt": "2024-10-22T12:40:01.117234944Z",
-            "Version": {
-                "Index": 908
-            }
-        }
-        
-]
+def get_client():
+    return docker.from_env()
 
-@app.route('/services', methods=['GET'])
-def get_services():
-    return jsonify(services)
-
+ 
+# Home
+@app.route('/')
+def home():
+    client = get_client()
+    p = client.ping()
+    return jsonify({
+        "ping": p, "hello": "world"
+    })
+ 
+# Swarm Services - List
+@app.route("/services")
+def swarm_services_list():
+    try:
+        client = get_client()
+        slist = client.services.list()
+        services_data = [service.attrs for service in slist]  # Convert service objects to dictionaries
+        return jsonify({"services": services_data})
+    except de.APIError as e:
+        return jsonify({"error": str(e)}), 500  # Return a 500 error with the message
+ 
+# Swarm Services - Inspect
+@app.route("/services/inspect/<id>")
+def swarm_service_inspect(id):
+    try:
+        client = get_client()
+        response = client.services.get(id)
+        return jsonify({"service": response.attrs})  # Convert the service object to a dictionary
+    except de.NotFound as nf:
+        return jsonify({"error": str(nf)}), 404  # Return a 404 error
+    except de.APIError as ae:
+        return jsonify({"error": str(ae)}), 500
+    except de.InvalidVersion as iv:
+        return jsonify({"error": str(iv)}), 400  # Return a 400 error for invalid version
+ 
+# Swarm Services - Update
+@app.route("/services/update/<id>", methods=['POST'])
+def swarm_service_update(id):
+    # Implementation for updating a service would go here
+    pass
+ 
+# Swarm Nodes API
+@app.route("/nodes")
+def swarm_nodes_list():
+    try:
+        client = get_client()
+        nlist = client.nodes.list()
+        nodes_data = [node.attrs for node in nlist]  # Convert node objects to dictionaries
+        return jsonify({"nodes": nodes_data})
+    except de.APIError as e:
+        return jsonify({"error": str(e)}), 500  # Return a 500 error with the message
+ 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

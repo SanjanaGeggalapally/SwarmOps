@@ -20,7 +20,7 @@ const Services = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("http://localhost:5000/services");
+        const response = await fetch("http://backend:5000/services");
         const data = await response.json();
         setServicesData(data); // Set servicesData to the array directly
       } catch (error) {
