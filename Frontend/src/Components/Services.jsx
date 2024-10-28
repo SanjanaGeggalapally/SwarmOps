@@ -20,7 +20,7 @@ const Services = () => {
 useEffect(() => {
   const fetchServices = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/services");
+      const response = await axios.get("http://127.0.0.1:5000/servicesStatic");
       setServicesData(response.data);
     } catch (error) {
       setError(error.response ? error.response.data : 'Error fetching services');
@@ -43,7 +43,7 @@ useEffect(() => {
   const length = Object.keys(servicesData).length;
   return (
     <div>
-      <div class="flex justify-between items-center">
+      <div className="flex justify-between items-center">
         <Link
           to="/services"
           className="text-gray-600 text-3xl font-bold hover:text-gray-900"
@@ -51,29 +51,29 @@ useEffect(() => {
           Services
         </Link>
 
-        <div class="flex flex-col mt-2 items-center mr-4">
-          <span class="text-xs xs:text-sm text-gray-900 mb-1">
+        <div className="flex flex-col mt-2 items-center mr-4">
+          <span className="text-xs xs:text-sm text-gray-900 mb-1">
             Showing {length} Services
           </span>
           <div className="flex mt-2 gap-1">
-            <button class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
+            <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
               Prev
             </button>
-            <button class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
+            <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
               Next
             </button>
           </div>
         </div>
       </div>
-      <div class="shadow-md sm:rounded-lg">
-        <div class="p-4">
-          <label for="table-search" class="sr-only">
+      <div className="shadow-md sm:rounded-lg">
+        <div className="p-4">
+          <label for="table-search" className="sr-only">
             Search
           </label>
-          <div class="relative mt-1">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <div className="relative mt-1">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
-                class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                className="w-5 h-5 text-gray-500 dark:text-gray-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -88,49 +88,49 @@ useEffect(() => {
             <input
               type="text"
               id="table-search"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="What are you looking for?"
             />
           </div>
         </div>
         <div className="overflow-x-auto overflow-y-auto max-h-96">
-        <table class=" min-w-full  border border-gray-300 text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className=" min-w-full  border border-gray-300 text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" class="px-6 py-3 text-base">
+              <th scope="col" className="px-6 py-3 text-base">
                 Name of the Service
               </th>
-              <th scope="col" class="px-6 py-3 text-base">
+              <th scope="col" className="px-6 py-3 text-base">
                 ID
               </th>
               
-              <th scope="col" class="px-6 py-3 text-base">
+              <th scope="col" className="px-6 py-3 text-base">
                 Desired State
               </th>
-              <th scope="col" class="px-6 py-3 text-base">
+              <th scope="col" className="px-6 py-3 text-base">
                 Image Name
               </th>
-              <th scope="col" class="px-6 py-3 text-base">
+              <th scope="col" className="px-6 py-3 text-base">
                 Port Number
               </th>
-              <th scope="col" class="px-6 py-3 text-base">
+              <th scope="col" className="px-6 py-3 text-base">
                 Replicas
               </th>
               <th scope="col" className="px-6 py-3 text-base">
                         <p className="ml=1">State:</p>
                         <select aria-label="select border-none">
-                            <option class="text-sm ">None</option>
-                            <option class="text-sm text-green-800">Running</option>
-                            <option class="text-sm text-red-800">Stopped</option>
+                            <option className="text-sm ">None</option>
+                            <option className="text-sm text-green-800">Running</option>
+                            <option className="text-sm text-red-800">Stopped</option>
                         </select>
                     
               </th>
-              <th scope="col" class="px-6 py-3 text-base">
+              <th scope="col" className="px-6 py-3 text-base">
                 Status
               </th>
-              <th scope="col" class="px-6 py-3 text-base"></th>
-              <th scope="col" class="px-6 py-3 text-base"></th>
-              <th scope="col" class="px-6 py-3 text-base">
+              <th scope="col" className="px-6 py-3 text-base"></th>
+              <th scope="col" className="px-6 py-3 text-base"></th>
+              <th scope="col" className="px-6 py-3 text-base">
                 Creation Time
               </th>
             </tr>
