@@ -14,11 +14,12 @@ def get_client():
 # Home
 @app.route('/')
 def home():
+    return jsonify({ "hello": "world" })
+
+@app.route('/ping')
+def home():
     client = get_client()
-    p = client.ping()
-    return jsonify({
-        "ping": p, "hello": "world"
-    })
+    return jsonify({ "ping": client.ping() })
 
 # Swarm Services - Static
 @app.route("/servicesStatic")
