@@ -14,12 +14,10 @@ const ServiceDetails = () => {
   useEffect(() => {
     const fetchServiceDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/services/${id}`);
-        if (!response.ok) throw new Error('Service not found');
-        const data = await response.json();
-        setService(data);
+        const response = await axios.get(`http://localhost:5000/services/${id}`);
+        setService(response.data);
       } catch (error) {
-        setError(error.message);
+        setError(error.response ? error.response.data : 'Service not found');
       } finally {
         setIsLoading(false);
       }
