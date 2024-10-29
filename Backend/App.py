@@ -17,7 +17,7 @@ def home():
     return jsonify({ "hello": "world" })
 
 @app.route('/ping')
-def home():
+def ping():
     client = get_client()
     return jsonify({ "ping": client.ping() })
 
