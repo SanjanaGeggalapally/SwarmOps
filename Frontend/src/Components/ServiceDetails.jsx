@@ -26,6 +26,16 @@ const ServiceDetails = () => {
     fetchServiceDetails();
   }, [id]);
 
+  useEffect(() => {
+    if (isDarkTheme) {
+      document.body.classList.add('bg-black', 'text-white');
+      document.body.classList.remove('bg-gray-100', 'text-black');
+    } else {
+      document.body.classList.add('bg-gray-100', 'text-black');
+      document.body.classList.remove('bg-black', 'text-white');
+    }
+  }, [isDarkTheme]);
+
   // Loading state
   if (isLoading) {
     return (

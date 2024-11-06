@@ -13,3 +13,9 @@ body {
     color: #000;               /* Light theme text color */
   }
   
+
+.dark-theme{
+  height: 100vh;
+  background-color: black;
+  color: white;
+}

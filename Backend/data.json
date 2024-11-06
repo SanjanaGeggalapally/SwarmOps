@@ -949,5 +949,776 @@
         "Version": {
             "Index": 992
         }
+    },
+    
+    {
+        "CreatedAt": "2024-10-22T12:00:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 6001,
+                    "TargetPort": 6000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 6001,
+                        "TargetPort": 6000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10.0.0.35/24",
+                    "NetworkID": "abc123xyz456"
+                }
+            ]
+        },
+        "ID": "1a2b3c4d5e6f7g8h9i0j1k2l3m",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 6001,
+                        "TargetPort": 6000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 2
+                }
+            },
+            "Name": "service-a",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-a:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "amd64",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:00:00.000000001Z",
+        "Version": {
+            "Index": 1
+        }
+    },
+    {
+        "CreatedAt": "2024-10-22T12:01:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 7001,
+                    "TargetPort": 7000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 7001,
+                        "TargetPort": 7000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10.0.0.36/24",
+                    "NetworkID": "def456uvw789"
+                }
+            ]
+        },
+        "ID": "2b3c4d5e6f7g8h9i0j1k2l3m4n",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 7001,
+                        "TargetPort": 7000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 3
+                }
+            },
+            "Name": "service-b",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-b:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "arm64",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:01:00.000000001Z",
+        "Version": {
+            "Index": 2
+        }
+    },
+    {
+        "CreatedAt": "2024-10-22T12:02:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 8001,
+                    "TargetPort": 8000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 8001,
+                        "TargetPort": 8000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10.0.0.37/24",
+                    "NetworkID": "ghi789rst012"
+                }
+            ]
+        },
+        "ID": "3c4d5e6f7g8h9i0j1k2l3m4n5o",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 8001,
+                        "TargetPort": 8000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 1
+                }
+            },
+            "Name": "service-c",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-c:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "ppc64le",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:02:00.000000001Z",
+        "Version": {
+            "Index": 3
+        }
+    },
+    {
+        "CreatedAt": "2024-10-22T12:03:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 9001,
+                    "TargetPort": 9000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 9001,
+                        "TargetPort": 9000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10.0.0.38/24",
+                    "NetworkID": "jkl012mno345"
+                }
+            ]
+        },
+        "ID": "4d5e6f7g8h9i0j1k2l3m4n5o6p",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 9001,
+                        "TargetPort": 9000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 2
+                }
+            },
+            "Name": "service-d",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-d:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "s390x",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:03:00.000000001Z",
+        "Version": {
+            "Index": 4
+        }
+    },
+    {
+        "CreatedAt": "2024-10-22T12:04:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 10001,
+                    "TargetPort": 10000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 10001,
+                        "TargetPort": 10000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10 .0.0.39/24",
+                    "NetworkID": "mno345pqr678"
+                }
+            ]
+        },
+        "ID": "5e6f7g8h9i0j1k2l3m4n5o6p7q",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 10001,
+                        "TargetPort": 10000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 1
+                }
+            },
+            "Name": "service-e",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-e:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "amd64",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:04:00.000000001Z",
+        "Version": {
+            "Index": 5
+        }
+    },
+    {
+        "CreatedAt": "2024-10-22T12:05:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 11001,
+                    "TargetPort": 11000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 11001,
+                        "TargetPort": 11000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10.0.0.40/24",
+                    "NetworkID": "pqr678stu901"
+                }
+            ]
+        },
+        "ID": "6f7g8h9i0j1k2l3m4n5o6p7q8r",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 11001,
+                        "TargetPort": 11000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 2
+                }
+            },
+            "Name": "service-f",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-f:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "arm64",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:05:00.000000001Z",
+        "Version": {
+            "Index": 6
+        }
+    },
+    {
+        "CreatedAt": "2024-10-22T12:06:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 12001,
+                    "TargetPort": 12000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 12001,
+                        "TargetPort": 12000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10.0.0.41/24",
+                    "NetworkID": "stu901vwx234"
+                }
+            ]
+        },
+        "ID": "7g8h9i0j1k2l3m4n5o6p7q8r9s",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+ "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 12001,
+                        "TargetPort": 12000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 1
+                }
+            },
+            "Name": "service-g",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-g:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "s390x",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:06:00.000000001Z",
+        "Version": {
+            "Index": 7
+        }
+    },
+    {
+        "CreatedAt": "2024-10-22T12:07:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 13001,
+                    "TargetPort": 13000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 13001,
+                        "TargetPort": 13000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10.0.0.42/24",
+                    "NetworkID": "vwx234yza567"
+                }
+            ]
+        },
+        "ID": "8h9i0j1k2l3m4n5o6p7q8r9s0t",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 13001,
+                        "TargetPort": 13000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 2
+                }
+            },
+            "Name": "service-h",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-h:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "amd64",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:07:00.000000001Z",
+        "Version": {
+            "Index": 8
+        }
+    },
+    {
+        "CreatedAt": "2024-10-22T12:08:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 14001,
+                    "TargetPort": 14000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 14001,
+                        "TargetPort": 14000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10.0.0.43/24",
+                    "NetworkID": "yza567abc890"
+                }
+            ]
+        },
+        "ID": "9i0j1k2l3m4n5o6p7q8r9s0t1u",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 14001,
+                        "TargetPort": 14000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 1
+                }
+            },
+            "Name": "service-i",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-i:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "arm64",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:08:00.000000001Z",
+        "Version": {
+            "Index": 9
+        }
+    },
+    {
+        "CreatedAt": "2024-10-22T12:09:00.000000000Z",
+        "Endpoint": {
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "PublishMode": "ingress",
+                    "PublishedPort": 15001,
+                    "TargetPort": 15000
+                }
+            ],
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 15001,
+                        "TargetPort": 15000
+                    }
+                ]
+            },
+            "VirtualIPs": [
+                {
+                    "Addr": "10.0.0.44/24",
+                    "NetworkID": "abc890def123"
+                }
+            ]
+        },
+        "ID": "0j1k2l3m4n5o6p7q8r9s0t1u2v",
+        "Spec": {
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "PublishMode": "ingress",
+                        "PublishedPort": 15001,
+                        "TargetPort": 15000
+                    }
+                ]
+            },
+            "Labels": {},
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 2
+                }
+            },
+            "Name": "service-j",
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "DNSConfig": {},
+                    "Image": "service-j:latest",
+                    "Init": false,
+                    "Isolation": "default"
+                },
+                "ForceUpdate": 0,
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "amd64",
+                            "OS": "linux"
+                        }
+                    ]
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "Runtime": "container"
+            }
+        },
+        "UpdatedAt": "2024-10-22T12:09:00.000000001Z",
+        "Version": {
+            "Index": 10
+        }
     }
 ]

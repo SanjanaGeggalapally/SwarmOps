@@ -12,6 +12,7 @@ import { ThemeProvider, useTheme } from './Context/ThemeContext';
 import Login from './Components/Login'; // Import your Login component
 import AddUser  from './Components/AddUser.jsx';
 import EditService from './Components/EditService';
+import "./App.css";
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -40,9 +41,10 @@ const App = () => {
 
 const MainContent = ({ isSidebarOpen }) => {
   const { isDarkTheme } = useTheme();
+  console.log("Dark theme in app",isDarkTheme);
 
   return (
-    <div className={`transition-all duration-100 ${isSidebarOpen ? 'ml-64' : 'ml-16'} p-4 ${isDarkTheme ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}>
+    <div className={`transition-all duration-100 ${isSidebarOpen ? 'ml-64' : 'ml-16'} p-4 ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/nodes" element={<Nodes />} />

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons"; // Import Trash icon
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+ 
 const Services = () => {
   const { isDarkTheme } = useTheme();
   const [servicesData, setServicesData] = useState([]);
@@ -13,48 +13,44 @@ const Services = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerms, setSearchTerms] = useState([]); // Add search terms state
   const navigate = useNavigate(); // Initialize useNavigate
-
+ 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:5000/servicesStatic"
-        );
+        const response = await axios.get("http://127.0.0.1:5000/servicesStatic");
         setServicesData(response.data);
       } catch (error) {
-        setError(
-          error.response ? error.response.data : "Error fetching services"
-        );
+        setError(error.response ? error.response.data : "Error fetching services");
       } finally {
         setIsLoading(false);
       }
     };
-
+ 
     fetchServices();
   }, []);
-
+ 
   if (isLoading) {
     return <div className="text-center mt-4">Loading...</div>;
   }
-
+ 
   if (error) {
     return <div className="text-red-500 text-center mt-4">Error: {error}</div>;
   }
-
+ 
   const handleSearch = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       setSearchTerms([...searchTerms, e.target.value.trim().toLowerCase()]);
       e.target.value = "";
     }
   };
-
+ 
   const removeSearchTerm = (term) => {
     setSearchTerms(searchTerms.filter((t) => t !== term));
   };
-
+ 
   const filteredServices = servicesData.filter((service) => {
-    return searchTerms.every(
-      (term) =>
+    return searchTerms.every((term) => {
+      return (
         service.Spec?.Name?.toLowerCase().includes(term) ||
         service.ID?.toLowerCase().includes(term) ||
         (
@@ -74,21 +70,18 @@ const Services = () => {
         )
           ?.toLowerCase()
           .includes(term) ||
-        (service.Spec?.Mode?.Replicated?.Replicas ?? "")
-          .toString()
-          .includes(term) ||
-        (service.Spec?.TaskTemplate?.Runtime ?? "")
-          .toLowerCase()
-          .includes(term) ||
+        (service.Spec?.Mode?.Replicated?.Replicas ?? "").toString().includes(term) ||
+        (service.Spec?.TaskTemplate?.Runtime ?? "").toLowerCase().includes(term) ||
         (service.Version?.Index ?? "").toString().includes(term) ||
         (service.CreatedAt ?? "").toLowerCase().includes(term)
-    );
+      );
+    });
   });
-
+ 
   const length = filteredServices.length;
-
+ 
   return (
-    <div className={isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"}>
+    <div className={`${isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"} h-screen`}>
       <div className="flex justify-between items-center">
         <Link
           to="/services"
@@ -96,20 +89,20 @@ const Services = () => {
         >
           Services
         </Link>
-
+ 
         <div className="flex flex-col mt-2 items-center mr-4">
           <span className={`text-xs xs:text-sm mb-1 ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
             Showing {length} Services
           </span>
           <div className="flex mt-2 gap-1">
-            <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-l`}>
+            <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-l `}>
               Prev
             </button>
             <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-r`}>
               Next
             </button>
           </div>
- </div>
+        </div>
       </div>
       <div className={isDarkTheme ? "shadow-md sm:rounded-lg bg-black" : "shadow-md sm:rounded-lg bg-white"}>
         <div className="p-4">
@@ -156,7 +149,7 @@ const Services = () => {
             ))}
           </div>
         </div>
-        <div className="overflow-x-auto overflow-y-auto max-h-full">
+        <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-200px)]"> {/* Adjust height as needed */}
           <table className={isDarkTheme ? "min-w-full border border-gray-600 text-sm text-left text-gray-400" : "min-w-full border border-gray-300 text-sm text-left text-gray-500"}>
             <thead className={isDarkTheme ? "text-xs text-gray-300 uppercase bg-gray-800" : "text-xs text-gray-600 uppercase bg-gray-50"}>
               <tr>
@@ -194,7 +187,7 @@ const Services = () => {
             <tbody>
               {filteredServices.map((data) => (
                 <tr
- className={isDarkTheme ? "bg-gray-800 border-b border-gray-700 hover:bg-gray-700" : "bg-white border-b border-gray-300 hover:bg-gray-200"}
+                  className={isDarkTheme ? "bg-gray-800 border-b border-gray-700 hover:bg-gray-700" : "bg-white border-b border-gray-300 hover:bg-gray-200"}
                   key={data.ID}
                 >
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
@@ -225,9 +218,7 @@ const Services = () => {
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
                     {data.Spec?.Mode?.Replicated?.Replicas ?? "Null"}
                   </td>
-                  <td
-                    className={isDarkTheme ? "px-6 py-4 font-medium text-center text-gray-400" : "px-6 py-4 font-medium text-center text-gray-900"}
-                  >
+                  <td className={isDarkTheme ? "px-6 py-4 font-medium text-center text-gray-400" : "px-6 py-4 font-medium text-center text-gray-900"}>
                     {data.Spec?.TaskTemplate?.Runtime ?? "Null"}
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
@@ -241,13 +232,13 @@ const Services = () => {
                       Edit
                     </Link>
                   </td>
-                  <td className={isDarkTheme ? "px-6 py -4 text-center" : "px-6 py-4 text-center"}>
+                  <td className={isDarkTheme ? "px-6 py-4 text-center" : "px-6 py-4 text-center"}>
                     <button className={isDarkTheme ? "flex items-center justify-center text-red-600 hover:text-red-800" : "flex items-center justify-center text-red-900 hover:text-red-700"}>
                       <FontAwesomeIcon icon={faTrash} className="mr-2" />
                     </button>
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
-                    {data.CreatedAt ?? "Null"}
+                    { data.CreatedAt ?? "Null"}
                   </td>
                 </tr>
               ))}
@@ -258,5 +249,5 @@ const Services = () => {
     </div>
   );
 };
-
+ 
 export default Services;
