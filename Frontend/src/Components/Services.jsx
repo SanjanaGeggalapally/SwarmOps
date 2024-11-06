@@ -17,10 +17,21 @@ const Services = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get("http://127.0.0.1:5000/servicesStatic");
         setServicesData(response.data);
       } catch (error) {
         setError(error.response ? error.response.data : "Error fetching services");
+=======
+        const response = await axios.get(
+          "http://127.0.0.1:5000/servicesStatic"
+        );
+        setServicesData(response.data);
+      } catch (error) {
+        setError(
+          error.response ? error.response.data : "Error fetching services"
+        );
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
       } finally {
         setIsLoading(false);
       }
@@ -49,8 +60,13 @@ const Services = () => {
   };
 
   const filteredServices = servicesData.filter((service) => {
+<<<<<<< HEAD
     return searchTerms.every((term) => {
       return (
+=======
+    return searchTerms.every(
+      (term) =>
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
         service.Spec?.Name?.toLowerCase().includes(term) ||
         service.ID?.toLowerCase().includes(term) ||
         (
@@ -70,18 +86,34 @@ const Services = () => {
         )
           ?.toLowerCase()
           .includes(term) ||
+<<<<<<< HEAD
         (service.Spec?.Mode?.Replicated?.Replicas ?? "").toString().includes(term) ||
         (service.Spec?.TaskTemplate?.Runtime ?? "").toLowerCase().includes(term) ||
         (service.Version?.Index ?? "").toString().includes(term) ||
         (service.CreatedAt ?? "").toLowerCase().includes(term)
       );
     });
+=======
+        (service.Spec?.Mode?.Replicated?.Replicas ?? "")
+          .toString()
+          .includes(term) ||
+        (service.Spec?.TaskTemplate?.Runtime ?? "")
+          .toLowerCase()
+          .includes(term) ||
+        (service.Version?.Index ?? "").toString().includes(term) ||
+        (service.CreatedAt ?? "").toLowerCase().includes(term)
+    );
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
   });
 
   const length = filteredServices.length;
 
   return (
+<<<<<<< HEAD
     <div className={`${isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"} h-screen`}>
+=======
+    <div className={isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"}>
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
       <div className="flex justify-between items-center">
         <Link
           to="/services"
@@ -95,14 +127,18 @@ const Services = () => {
             Showing {length} Services
           </span>
           <div className="flex mt-2 gap-1">
+<<<<<<< HEAD
             <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-l `}>
+=======
+            <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-l`}>
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
               Prev
             </button>
             <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-r`}>
               Next
             </button>
           </div>
-        </div>
+ </div>
       </div>
       <div className={isDarkTheme ? "shadow-md sm:rounded-lg bg-black" : "shadow-md sm:rounded-lg bg-white"}>
         <div className="p-4">
@@ -149,7 +185,11 @@ const Services = () => {
             ))}
           </div>
         </div>
+<<<<<<< HEAD
         <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-200px)]"> {/* Adjust height as needed */}
+=======
+        <div className="overflow-x-auto overflow-y-auto max-h-full">
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
           <table className={isDarkTheme ? "min-w-full border border-gray-600 text-sm text-left text-gray-400" : "min-w-full border border-gray-300 text-sm text-left text-gray-500"}>
             <thead className={isDarkTheme ? "text-xs text-gray-300 uppercase bg-gray-800" : "text-xs text-gray-600 uppercase bg-gray-50"}>
               <tr>
@@ -187,7 +227,11 @@ const Services = () => {
             <tbody>
               {filteredServices.map((data) => (
                 <tr
+<<<<<<< HEAD
                   className={isDarkTheme ? "bg-gray-800 border-b border-gray-700 hover:bg-gray-700" : "bg-white border-b border-gray-300 hover:bg-gray-200"}
+=======
+ className={isDarkTheme ? "bg-gray-800 border-b border-gray-700 hover:bg-gray-700" : "bg-white border-b border-gray-300 hover:bg-gray-200"}
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
                   key={data.ID}
                 >
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
@@ -218,7 +262,13 @@ const Services = () => {
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
                     {data.Spec?.Mode?.Replicated?.Replicas ?? "Null"}
                   </td>
+<<<<<<< HEAD
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-center text-gray-400" : "px-6 py-4 font-medium text-center text-gray-900"}>
+=======
+                  <td
+                    className={isDarkTheme ? "px-6 py-4 font-medium text-center text-gray-400" : "px-6 py-4 font-medium text-center text-gray-900"}
+                  >
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
                     {data.Spec?.TaskTemplate?.Runtime ?? "Null"}
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
@@ -232,13 +282,21 @@ const Services = () => {
                       Edit
                     </Link>
                   </td>
+<<<<<<< HEAD
                   <td className={isDarkTheme ? "px-6 py-4 text-center" : "px-6 py-4 text-center"}>
+=======
+                  <td className={isDarkTheme ? "px-6 py -4 text-center" : "px-6 py-4 text-center"}>
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
                     <button className={isDarkTheme ? "flex items-center justify-center text-red-600 hover:text-red-800" : "flex items-center justify-center text-red-900 hover:text-red-700"}>
                       <FontAwesomeIcon icon={faTrash} className="mr-2" />
                     </button>
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
+<<<<<<< HEAD
                     { data.CreatedAt ?? "Null"}
+=======
+                    {data.CreatedAt ?? "Null"}
+>>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
                   </td>
                 </tr>
               ))}
