@@ -17,22 +17,13 @@ const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Authentication state
 
-  const handleLogin = () => {
-    // Simulate a login action
-    setIsAuthenticated(true);
-  };
+ 
 
   return (
     <ThemeProvider>
       <BrowserRouter>
-        {isAuthenticated ? (
-          <>
-            <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-            <MainContent isSidebarOpen={isSidebarOpen} />
-          </>
-        ) : (
-          <Login onLogin={handleLogin} /> // Pass the login handler to the Login component
-        )}
+      <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <MainContent isSidebarOpen={isSidebarOpen} />
       </BrowserRouter>
     </ThemeProvider>
   );
