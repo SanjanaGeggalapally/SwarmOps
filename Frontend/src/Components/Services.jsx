@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faBox } from "@fortawesome/free-solid-svg-icons"; // Import Trash and Box icons
 import { Link } from "react-router-dom";
 import axios from 'axios';
+
 const Services = () => {
   const { isDarkTheme } = useTheme();
   const [servicesData, setServicesData] = useState([]);
@@ -12,15 +13,16 @@ const Services = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate(); // Initialize useNavigate
   const [isOpen, setIsOpen] = useState(false);
+  const url = "/api/services";
 
   const toggleDropdown = () => {
     setIsOpen(prevState => !prevState);
-};
+  };
 
 useEffect(() => {
   const fetchServices = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/servicesStatic");
+      const response = await axios.get(url);
       setServicesData(response.data);
     } catch (error) {
       setError(error.response ? error.response.data : 'Error fetching services');
