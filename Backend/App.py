@@ -1,12 +1,12 @@
-from flask import Flask, render_template, jsonify, flash
+from flask import Flask, jsonify
 from flask_cors import CORS
 import docker
 import docker.errors as de
-import json  # Import the json module
-import os  # Import os to work with file paths
+import json
+import os
 
 app = Flask(__name__)
-cors = CORS(app, origins='*')
+CORS(app)  # Enable CORS for all routes
 
 def get_client():
     return docker.from_env()
@@ -23,32 +23,30 @@ def ping():
 
 # Swarm Services - Static
 @app.route("/servicesStatic")
-def services_static():  # Renamed the function to avoid conflict
+def services_static():
     try:
-        # Define the path to your data.json file
         json_file_path = os.path.join(os.path.dirname(__file__), 'data.json')
         
-        # Open and read the JSON file
         with open(json_file_path, 'r') as json_file:
-            data = json.load(json_file)  # Load the JSON data
+            data = json.load(json_file)
         
-        return jsonify(data)  # Return the JSON data
+        return jsonify(data)
     except FileNotFoundError:
-        return jsonify({"error": "data.json file not found"}), 404  # Return a 404 error if the file is not found
+        return jsonify({"error": "data.json file not found"}), 404
     except json.JSONDecodeError:
-        return jsonify({"error": "Error decoding JSON"}), 500  # Return a 500 error for JSON decoding errors
+        return jsonify({"error": "Error decoding JSON"}), 500
     except Exception as e:
-        return jsonify({"error": str(e)}), 500  # Return a 500 error for any other exceptions
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/services")
 def swarm_services_list():
     try:
         client = get_client()
         slist = client.services.list()
-        services_data = [service.attrs for service in slist]  # Convert service objects to dictionaries
+        services_data = [service.attrs for service in slist]
         return jsonify({"services": services_data})
     except de.APIError as e:
-        return jsonify({"error": str(e)}), 500  # Return a 500 error with the message
+        return jsonify({"error": str(e)}), 500
 
 # Swarm Services - Inspect
 @app.route("/services/inspect/<id>")
@@ -56,19 +54,13 @@ def swarm_service_inspect(id):
     try:
         client = get_client()
         response = client.services.get(id)
-        return jsonify({"service": response.attrs})  # Convert the service object to a dictionary
+        return jsonify({"service": response.attrs})
     except de.NotFound as nf:
-        return jsonify({"error": str(nf)}), 404  # Return a 404 error
+        return jsonify({"error": str(nf)}), 404
     except de.APIError as ae:
         return jsonify({"error": str(ae)}), 500
     except de.InvalidVersion as iv:
-        return jsonify({"error": str(iv)}), 400  # Return a 400 error for invalid version
-
-# Swarm Services - Update
-@app.route("/services/update/<id>", methods=['POST'])
-def swarm_service_update(id):
-    # Implementation for updating a service would go here
-    pass
+        return jsonify({"error": str(iv)}), 400
 
 # Swarm Nodes API
 @app.route("/nodes")
@@ -76,10 +68,10 @@ def swarm_nodes_list():
     try:
         client = get_client()
         nlist = client.nodes.list()
-        nodes_data = [node.attrs for node in nlist]  # Convert node objects to dictionaries
+        nodes_data = [node.attrs for node in nlist]
         return jsonify({"nodes": nodes_data})
     except de.APIError as e:
-        return jsonify({"error": str(e)}), 500  # Return a 500 error with the message
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(debug=True)
