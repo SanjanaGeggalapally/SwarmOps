@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "../Context/ThemeContext";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPen, faCheck } from "@fortawesome/free-solid-svg-icons"; // Import icons
+import { faTrash, faPen} from "@fortawesome/free-solid-svg-icons"; // Import icons
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import axios from 'axios';
@@ -13,13 +12,10 @@ const Services = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerms, setSearchTerms] = useState([]); // Add search terms state
-  const navigate = useNavigate(); // Initialize useNavigate
-  const [isOpen, setIsOpen] = useState(false);
-  const url = "/api/services";
+  const [editableService, setEditableService] = useState(null);
 
-  const toggleDropdown = () => {
-    setIsOpen(prevState => !prevState);
-  };
+  //const url = "/api/services";
+  const url="http://127.0.0.1:5000/servicesStatic"
 
 useEffect(() => {
   const fetchServices = async () => {
