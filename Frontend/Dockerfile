@@ -1,13 +1,23 @@
-FROM node:18-alpine
-
+# Use the official Node.js image as a base
+FROM node:lts AS build
+ 
+# Set the working directory
 WORKDIR /app
-
-COPY package.json .
-
+ 
+# Copy package.json and package-lock.json (if available)
+COPY package*.json ./
+ 
+# Install dependencies
 RUN npm install
-
+ 
+# Copy the rest of the application code
 COPY . .
-
-EXPOSE 8080
-
-CMD [ "npm", "run", "dev" ]
+ 
+# Build the Vite application
+RUN npm run build
+ 
+# Use a lightweight web server to serve the application
+FROM nginx:alpine
+ 
+# Copy the build output to the Nginx HTML directory
+COPY --from=build /app/dist /usr/share/nginx/html

@@ -5,29 +5,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPen, faCheck } from "@fortawesome/free-solid-svg-icons"; // Import icons
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from 'axios';
 
 const Services = () => {
   const { isDarkTheme } = useTheme();
   const [servicesData, setServicesData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerms, setSearchTerms] = useState([]);
-  const [editableService, setEditableService] = useState(null); // To track which service is being edited
-  const navigate = useNavigate();
+  const [searchTerms, setSearchTerms] = useState([]); // Add search terms state
+  const navigate = useNavigate(); // Initialize useNavigate
+  const [isOpen, setIsOpen] = useState(false);
+  const url = "/api/services";
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:5000/servicesStatic");
-        setServicesData(response.data);
-      } catch (error) {
-        setError(error.response ? error.response.data : "Error fetching services");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const toggleDropdown = () => {
+    setIsOpen(prevState => !prevState);
+  };
 
+useEffect(() => {
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get(url);
+      setServicesData(response.data);
+    } catch (error) {
+      setError(error.response ? error.response.data : 'Error fetching services');
+    } finally {
+      setIsLoading(false);
+    }
+  };
     fetchServices();
   }, []);
 
@@ -72,6 +76,7 @@ const Services = () => {
         )
           ?.toLowerCase()
           .includes(term) ||
+
         (service.Spec?.Mode?.Replicated?.Replicas ?? "").toString().includes(term) ||
         (service.Spec?.TaskTemplate?.Runtime ?? "").toLowerCase().includes(term) ||
         (service.Version?.Index ?? "").toString().includes(term) ||
@@ -105,6 +110,7 @@ const Services = () => {
   const length = filteredServices.length;
 
   return (
+
     <div className={`${isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"} h-screen`}>
       <div className="flex justify-between items-center">
         <Link
@@ -119,7 +125,7 @@ const Services = () => {
             Showing {length} Services
           </span>
           <div className="flex mt-2 gap-1">
-            <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-l `}>
+            <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-l`}>
               Prev
             </button>
             <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-r`}>
@@ -173,6 +179,7 @@ const Services = () => {
             ))}
           </div>
         </div>
+
         <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-200px)]">
           <table className={isDarkTheme ? "min-w-full border border-gray-600 text-sm text-left text-gray-400" : "min-w-full border border-gray-300 text-sm text-left text-gray-500"}>
             <thead className={isDarkTheme ? "text-xs text-gray-300 uppercase bg-gray-800" : "text-xs text-gray-600 uppercase bg-gray-50"}>
@@ -204,6 +211,7 @@ const Services = () => {
             <tbody>
               {filteredServices.map((data) => (
                 <tr
+
                   className={isDarkTheme ? "bg-gray-800 border-b border-gray-700 hover:bg-gray-700" : "bg-white border-b border-gray-300 hover:bg-gray-200"}
                   key={data.ID}
                 >
@@ -257,6 +265,7 @@ const Services = () => {
                       data.Spec?.Mode?.Replicated?.Replicas ?? "Null"
                     )}
                   </td>
+
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
                     {data .Version?.Index ?? "Null"}
                   </td>
@@ -277,6 +286,7 @@ const Services = () => {
                   </button>
                 )}
                   </td>
+
                   <td className={isDarkTheme ? "px-6 py-4 text-center" : "px-6 py-4 text-center"}>
                     <button className={isDarkTheme ? "flex items-center justify-center text-red-600 hover:text-red-800" : "flex items-center justify-center text-red-900 hover:text-red-700"}>
                       <FontAwesomeIcon icon={faTrash} className="mr-2" />

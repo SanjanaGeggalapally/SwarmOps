@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import docker
@@ -14,16 +15,15 @@ def get_client():
 # Home
 @app.route('/')
 def home():
+    return jsonify({ "hello": "world" })
+
+@app.route('/ping')
+def ping():
     client = get_client()
-    p = client.ping()
-    return jsonify({
-        "ping": p, "hello": "world"
-    })
+    return jsonify({ "ping": client.ping() })
 
-# Swarm Services - Static
-
-
-@app.route('/services/update/<service_id>', methods=['POST'])
+# Swarm services - update
+@app.route('/services/update/<id>', methods=['POST'])
 def update_service(service_id):
     try:
         # Parse JSON data from the request
@@ -93,3 +93,4 @@ def swarm_nodes_list():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
