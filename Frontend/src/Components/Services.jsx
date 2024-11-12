@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useTheme } from "../Context/ThemeContext";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons"; // Import Trash icon
+import { faTrash, faPen, faCheck } from "@fortawesome/free-solid-svg-icons"; // Import icons
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -11,27 +12,17 @@ const Services = () => {
   const [servicesData, setServicesData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerms, setSearchTerms] = useState([]); // Add search terms state
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [searchTerms, setSearchTerms] = useState([]);
+  const [editableService, setEditableService] = useState(null); // To track which service is being edited
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.get("http://127.0.0.1:5000/servicesStatic");
         setServicesData(response.data);
       } catch (error) {
         setError(error.response ? error.response.data : "Error fetching services");
-=======
-        const response = await axios.get(
-          "http://127.0.0.1:5000/servicesStatic"
-        );
-        setServicesData(response.data);
-      } catch (error) {
-        setError(
-          error.response ? error.response.data : "Error fetching services"
-        );
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
       } finally {
         setIsLoading(false);
       }
@@ -60,13 +51,8 @@ const Services = () => {
   };
 
   const filteredServices = servicesData.filter((service) => {
-<<<<<<< HEAD
     return searchTerms.every((term) => {
       return (
-=======
-    return searchTerms.every(
-      (term) =>
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
         service.Spec?.Name?.toLowerCase().includes(term) ||
         service.ID?.toLowerCase().includes(term) ||
         (
@@ -86,34 +72,40 @@ const Services = () => {
         )
           ?.toLowerCase()
           .includes(term) ||
-<<<<<<< HEAD
         (service.Spec?.Mode?.Replicated?.Replicas ?? "").toString().includes(term) ||
         (service.Spec?.TaskTemplate?.Runtime ?? "").toLowerCase().includes(term) ||
         (service.Version?.Index ?? "").toString().includes(term) ||
         (service.CreatedAt ?? "").toLowerCase().includes(term)
       );
     });
-=======
-        (service.Spec?.Mode?.Replicated?.Replicas ?? "")
-          .toString()
-          .includes(term) ||
-        (service.Spec?.TaskTemplate?.Runtime ?? "")
-          .toLowerCase()
-          .includes(term) ||
-        (service.Version?.Index ?? "").toString().includes(term) ||
-        (service.CreatedAt ?? "").toLowerCase().includes(term)
-    );
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
   });
+
+  const handleEditClick = (service) => {
+    setEditableService(service); // Set the service to be edited
+  };
+
+  const handleSaveClick = async (service) => {
+    try {
+
+      setServicesData((prevServices) =>
+        prevServices.map((s) => (s.ID === service.ID ? { ...s, ...service } : s))
+      );
+      // Send the updated service data to the new API endpoint
+      await axios.post(`http://127.0.0.1:5000/services/update/${service.ID}`, service);
+      
+      // Update the local state to reflect the changes
+      
+  
+      setEditableService(null); // Clear editable service after saving
+    } catch (error) {
+      console.error("Error saving service:", error);
+    }
+  };
 
   const length = filteredServices.length;
 
   return (
-<<<<<<< HEAD
     <div className={`${isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"} h-screen`}>
-=======
-    <div className={isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"}>
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
       <div className="flex justify-between items-center">
         <Link
           to="/services"
@@ -123,22 +115,18 @@ const Services = () => {
         </Link>
 
         <div className="flex flex-col mt-2 items-center mr-4">
-          <span className={`text-xs xs:text-sm mb-1 ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
+          <span className={`text-xs xs:text -sm mb-1 ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
             Showing {length} Services
           </span>
           <div className="flex mt-2 gap-1">
-<<<<<<< HEAD
             <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-l `}>
-=======
-            <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-l`}>
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
               Prev
             </button>
             <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-r`}>
               Next
             </button>
           </div>
- </div>
+        </div>
       </div>
       <div className={isDarkTheme ? "shadow-md sm:rounded-lg bg-black" : "shadow-md sm:rounded-lg bg-white"}>
         <div className="p-4">
@@ -185,11 +173,7 @@ const Services = () => {
             ))}
           </div>
         </div>
-<<<<<<< HEAD
-        <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-200px)]"> {/* Adjust height as needed */}
-=======
-        <div className="overflow-x-auto overflow-y-auto max-h-full">
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
+        <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-200px)]">
           <table className={isDarkTheme ? "min-w-full border border-gray-600 text-sm text-left text-gray-400" : "min-w-full border border-gray-300 text-sm text-left text-gray-500"}>
             <thead className={isDarkTheme ? "text-xs text-gray-300 uppercase bg-gray-800" : "text-xs text-gray-600 uppercase bg-gray-50"}>
               <tr>
@@ -200,103 +184,103 @@ const Services = () => {
                   ID
                 </th>
                 <th scope="col" className="px-6 py-3 text-base text-center">
-                  Publish Mode & Protocol
-                </th>
-                <th scope="col" className="px-6 py-3 text-base text-center">
                   Image Name
                 </th>
-                <th scope="col" className="px-6 py-3 text-base text-center">
-                  Published Port : Target Port
+                <th scope="col" className="px-6 py-3 text-base text-center"> Published Port : Target Port
                 </th>
                 <th scope="col" className="px-6 py-3 text-base text-center">
                   Replicas
                 </th>
                 <th scope="col" className="px-6 py-3 text-base text-center">
-                  Runtime State
+                  Version
                 </th>
-                <th scope="col" className="px-6 py-3 text-base text-center">
-                  Version Index
-                </th>
-                <th scope="col" className="px-6 py-3 text-base text-center"></th>
-                <th scope="col" className="px-6 py-3 text-base text-center"></th>
                 <th scope="col" className="px-6 py-3 text-base text-center">
                   Creation Time
                 </th>
+                <th scope="col" className="px-6 py-3 text-base text-center"></th>
+                <th scope="col" className="px-6 py-3 text-base text-center"></th>
               </tr>
             </thead>
             <tbody>
               {filteredServices.map((data) => (
                 <tr
-<<<<<<< HEAD
                   className={isDarkTheme ? "bg-gray-800 border-b border-gray-700 hover:bg-gray-700" : "bg-white border-b border-gray-300 hover:bg-gray-200"}
-=======
- className={isDarkTheme ? "bg-gray-800 border-b border-gray-700 hover:bg-gray-700" : "bg-white border-b border-gray-300 hover:bg-gray-200"}
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
                   key={data.ID}
                 >
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
-                    {data.Spec?.Name ?? "Null"}
+                    {editableService?.ID === data.ID ? (
+                      <input
+                        type="text"
+                        value={editableService.Spec?.Name}
+                        onChange={(e) => setEditableService({ ...editableService, Spec: { ...editableService.Spec, Name: e.target.value } })}
+                        className="border border-gray-300 rounded p-1 focus:outline-none focus:ring focus:ring-blue-500"
+                      />
+                    ) : (
+                      data.Spec?.Name ?? "Null"
+                    )}
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
                     {data.ID ?? "Null"}
                   </td>
-                  <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
-                    {data.Endpoint?.Ports?.[0]?.PublishMode +
-                      " " +
-                      data.Endpoint?.Ports?.[0]?.Protocol ?? "Null"}
-                  </td>
                   <td className={isDarkTheme ? "truncate px-6 py-4 font-medium text-gray-400 text-center" : "truncate px-6 py-4 font-medium text-gray-900 text-center"}>
                     {(() => {
-                      const image =
-                        data.Spec?.TaskTemplate?.ContainerSpec?.Image ?? "Null";
+                      const image = data.Spec?.TaskTemplate?.ContainerSpec?.Image ?? "Null";
                       const regex = /^(.*?)@/;
                       const match = image.match(regex);
                       return match ? match[1] : image;
                     })()}
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
-                    {data.Endpoint?.Ports?.[0]?.PublishedPort +
-                      ":" +
-                      data.Endpoint?.Ports?.[0]?.TargetPort ?? "Null"}
+                    {editableService?.ID === data.ID ? (
+                      <input
+                        type="text"
+                        value={editableService.Endpoint?.Ports?.[0]?.PublishedPort + ":" + editableService.Endpoint?.Ports?.[0]?.TargetPort}
+                        onChange={(e) => {
+                          const [publishedPort, targetPort] = e.target.value.split(":");
+                          setEditableService({ ...editableService, Endpoint: { ...editableService.Endpoint, Ports: [{ ...editableService.Endpoint.Ports[0], PublishedPort: publishedPort, TargetPort: targetPort }] } });
+                        }}
+                        className="border border-gray-300 rounded p-1 focus:outline-none focus:ring focus:ring-blue-500"
+                      />
+                    ) : (
+                      data.Endpoint?.Ports?.[0]?.PublishedPort + ":" + data.Endpoint?.Ports?.[0]?.TargetPort ?? "Null"
+                    )}
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
-                    {data.Spec?.Mode?.Replicated?.Replicas ?? "Null"}
-                  </td>
-<<<<<<< HEAD
-                  <td className={isDarkTheme ? "px-6 py-4 font-medium text-center text-gray-400" : "px-6 py-4 font-medium text-center text-gray-900"}>
-=======
-                  <td
-                    className={isDarkTheme ? "px-6 py-4 font-medium text-center text-gray-400" : "px-6 py-4 font-medium text-center text-gray-900"}
-                  >
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
-                    {data.Spec?.TaskTemplate?.Runtime ?? "Null"}
+                    {editableService?.ID === data.ID ? (
+                      <input
+                        type="number"
+                        value={editableService.Spec?.Mode?.Replicated?.Replicas ?? ""}
+                        onChange={(e) => setEditableService({ ...editableService, Spec: { ...editableService.Spec, Mode: { ...editableService.Spec.Mode, Replicated: { ...editableService.Spec.Mode.Replicated, Replicas: e.target.value } } } })}
+                        className="border border-gray-300 rounded p-1 focus:outline-none focus:ring focus:ring-blue-500"
+                      />
+                    ) : (
+                      data.Spec?.Mode?.Replicated?.Replicas ?? "Null"
+                    )}
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
-                    {data.Version?.Index ?? "Null"}
+                    {data .Version?.Index ?? "Null"}
+                  </td>
+                  <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
+                    {data.CreatedAt ?? "Null"}
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 text-right text-center" : "px-6 py-4 text-right text-center"}>
-                    <Link
-                      to="/services/edit"
-                      className={isDarkTheme ? "font-medium text-blue-500 hover:underline" : "font-medium text-blue-600 hover:underline"}
-                    >
-                      Edit
-                    </Link>
+                  {editableService?.ID === data.ID ? (
+                  <button 
+                  onClick={() => handleSaveClick(editableService)} 
+                  className="flex items-center justify-center p-2 rounded-full hover:scale-110 transition-transform duration-200"
+                >
+                  <FontAwesomeIcon icon={faCircleCheck} className="text-green-500 w-8 h-8" />
+                </button>
+                ) : (
+                  <button onClick={() => handleEditClick(data)} className="flex items-center justify-center p-2">
+                    <FontAwesomeIcon icon={faPen} className="text-black" />
+                  </button>
+                )}
                   </td>
-<<<<<<< HEAD
                   <td className={isDarkTheme ? "px-6 py-4 text-center" : "px-6 py-4 text-center"}>
-=======
-                  <td className={isDarkTheme ? "px-6 py -4 text-center" : "px-6 py-4 text-center"}>
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
                     <button className={isDarkTheme ? "flex items-center justify-center text-red-600 hover:text-red-800" : "flex items-center justify-center text-red-900 hover:text-red-700"}>
                       <FontAwesomeIcon icon={faTrash} className="mr-2" />
                     </button>
-                  </td>
-                  <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
-<<<<<<< HEAD
-                    { data.CreatedAt ?? "Null"}
-=======
-                    {data.CreatedAt ?? "Null"}
->>>>>>> cba7e4b546cf051f7c4c2261009a1f8e88bea26f
                   </td>
                 </tr>
               ))}
