@@ -1,12 +1,13 @@
-from flask import Flask, jsonify
-# from flask_cors import CORS
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import docker
 import docker.errors as de
 import json
 import os
 
 app = Flask(__name__)
-# CORS(app)  # Enable CORS for all routes
+CORS(app)
 
 def get_client():
     return docker.from_env()
@@ -21,6 +22,39 @@ def ping():
     client = get_client()
     return jsonify({ "ping": client.ping() })
 
+# Swarm services - update
+@app.route('/services/update/<id>', methods=['POST'])
+def update_service(service_id):
+    try:
+        # Parse JSON data from the request
+        service_data = request.get_json()
+
+        # Process the data (e.g., update the database)
+        # For demonstration, we'll just print it
+        print(f"Received data for service ID {service_id}: {service_data}")
+
+        # Respond with a success message
+        return jsonify({"message": "Service updated successfully"}), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Failed to update service"}), 400
+
+
+@app.route("/servicesStatic")
+def services_static():
+    try:
+        json_file_path = os.path.join(os.path.dirname(__file__), 'data.json')
+        
+        with open(json_file_path, 'r') as json_file:
+            data = json.load(json_file)
+        
+        return jsonify(data)
+    except FileNotFoundError:
+        return jsonify({"error": "data.json file not found"}), 404
+    except json.JSONDecodeError:
+        return jsonify({"error": "Error decoding JSON"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/services")
 def swarm_services_list():
@@ -46,12 +80,6 @@ def swarm_service_inspect(id):
     except de.InvalidVersion as iv:
         return jsonify({"error": str(iv)}), 400
 
-# Swarm Services - Inspect
-@app.route("/services/update/<id>", methods=['POST'])
-def swarm_service_update(id):
-    
-    pass
-
 # Swarm Nodes API
 @app.route("/nodes")
 def swarm_nodes_list():
@@ -66,20 +94,3 @@ def swarm_nodes_list():
 if __name__ == '__main__':
     app.run(debug=True)
 
-
-# Swarm Services - Static
-@app.route("/servicesStatic")
-def services_static():
-    try:
-        json_file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        
-        with open(json_file_path, 'r') as json_file:
-            data = json.load(json_file)
-        
-        return jsonify(data)
-    except FileNotFoundError:
-        return jsonify({"error": "data.json file not found"}), 404
-    except json.JSONDecodeError:
-        return jsonify({"error": "Error decoding JSON"}), 500
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500

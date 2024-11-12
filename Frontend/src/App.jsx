@@ -7,11 +7,9 @@ import Tasks from './Components/Tasks';
 import Secrets from './Components/Secrets';
 import Configs from './Components/Configs';
 import Home from './Components/Home';
-import ServiceDetails from './Components/ServiceDetails';
 import { ThemeProvider, useTheme } from './Context/ThemeContext';
 import Login from './Components/Login'; // Import your Login component
 import AddUser  from './Components/AddUser.jsx';
-import EditService from './Components/EditService';
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -38,7 +36,6 @@ const MainContent = ({ isSidebarOpen }) => {
         <Route path="/" element={<Home />} />
         <Route path="/nodes" element={<Nodes />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/services/edit" element={<EditService />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/secrets" element={<Secrets />} />
         <Route path="/configs" element={<Configs />} />
