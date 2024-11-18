@@ -14,9 +14,7 @@ const Services = () => {
   const [searchTerms, setSearchTerms] = useState([]); // Add search terms state
   const [editableService, setEditableService] = useState(null);
  
-  const url = "http://localhost:8002/services";
-  //const url="http://127.0.0.1:5000/servicesStatic"
- 
+  const url = "/api/services";
   
   const fetchServices = async () => {
     try {
@@ -30,27 +28,6 @@ const Services = () => {
   };
 
   useEffect(() => {
-    fetchServices();
-  }, []);
-  
-  // const apiClient = axios.create({
-  //   baseURL: '/api',
-  // });
-
-  // const fetchServices = async () => {
-  //   try {
-  //     console.log("services fetch func called");
-  //     const response = await apiClient.get('/services');
-  //     setServicesData(response.data);
-  //   } catch (error) {
-  //     setError(error.response ? error.response.data : 'Error fetching services');
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-  
-  useEffect(() => {
-
     fetchServices();
   }, []);
   

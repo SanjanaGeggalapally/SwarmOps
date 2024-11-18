@@ -3,17 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Nodes from './Components/Nodes';
 import Services from './Components/Services';
-import Tasks from './Components/Tasks';
-import Secrets from './Components/Secrets';
-import Configs from './Components/Configs';
 import Home from './Components/Home';
 import { ThemeProvider, useTheme } from './Context/ThemeContext';
-import Login from './Components/Login'; // Import your Login component
+
 import AddUser  from './Components/AddUser.jsx';
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Authentication state
+  //const [isAuthenticated, setIsAuthenticated] = useState(false); // Authentication state
 
  
 
@@ -36,9 +33,6 @@ const MainContent = ({ isSidebarOpen }) => {
         <Route path="/" element={<Home />} />
         <Route path="/nodes" element={<Nodes />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/secrets" element={<Secrets />} />
-        <Route path="/configs" element={<Configs />} />
         <Route path="/adduser" element={<AddUser  />} />
       </Routes>
     </div>

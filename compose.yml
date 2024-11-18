@@ -21,4 +21,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.role==manager"  # Ensures the backend runs on a manager node
+          - "node.role==manager"
+  proxy:
+    build: ./proxy
+    ports: ['8090:80']
