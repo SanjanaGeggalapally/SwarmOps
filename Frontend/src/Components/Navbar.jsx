@@ -53,9 +53,6 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               { name: 'Dashboard', icon: faTachometerAlt, link: '/dashboard' },
               { name: 'Services', icon: faCube, link: '/services' },
               { name: 'Nodes', icon: faServer, link: '/nodes' },
-              { name: 'Tasks', icon: faTasks, link: '/tasks' },
-              { name: 'Secrets', icon: faLock, link: '/secrets' },
-              { name: 'Configs', icon: faCog, link: '/configs' },
               { name: 'Logout', icon: faSignOutAlt, link: '/logout' },
               { name: 'Add User', icon: faUserPlus, link: '/adduser' } ,
             ].map(({ name, icon, link }) => (

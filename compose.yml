@@ -13,4 +13,4 @@ services:
           - "node.role==manager"
   proxy:
     build: ./proxy
-    ports: ['8000:80']
+    ports: ['8090:80']

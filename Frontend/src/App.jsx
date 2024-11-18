@@ -36,9 +36,6 @@ const MainContent = ({ isSidebarOpen }) => {
         <Route path="/" element={<Home />} />
         <Route path="/nodes" element={<Nodes />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/secrets" element={<Secrets />} />
-        <Route path="/configs" element={<Configs />} />
         <Route path="/adduser" element={<AddUser  />} />
       </Routes>
     </div>
