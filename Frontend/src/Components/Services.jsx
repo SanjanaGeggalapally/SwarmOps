@@ -5,7 +5,7 @@ import { faTrash, faPen} from "@fortawesome/free-solid-svg-icons"; // Import ico
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import axios from 'axios';
-
+ 
 const Services = () => {
   const { isDarkTheme } = useTheme();
   const [servicesData, setServicesData] = useState([]);
@@ -13,11 +13,11 @@ const Services = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerms, setSearchTerms] = useState([]); // Add search terms state
   const [editableService, setEditableService] = useState(null);
-
-  //const url = "/api/services";
-  const url="http://127.0.0.1:5000/servicesStatic"
-
-useEffect(() => {
+ 
+  const url = "http://localhost:8002/services";
+  //const url="http://127.0.0.1:5000/servicesStatic"
+ 
+  
   const fetchServices = async () => {
     try {
       const response = await axios.get(url);
@@ -28,28 +28,51 @@ useEffect(() => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
     fetchServices();
   }, []);
+  
+  // const apiClient = axios.create({
+  //   baseURL: '/api',
+  // });
 
+  // const fetchServices = async () => {
+  //   try {
+  //     console.log("services fetch func called");
+  //     const response = await apiClient.get('/services');
+  //     setServicesData(response.data);
+  //   } catch (error) {
+  //     setError(error.response ? error.response.data : 'Error fetching services');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+  
+  useEffect(() => {
+
+    fetchServices();
+  }, []);
+  
   if (isLoading) {
     return <div className="text-center mt-4">Loading...</div>;
   }
-
+ 
   if (error) {
     return <div className="text-red-500 text-center mt-4">Error: {error}</div>;
   }
-
+ 
   const handleSearch = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       setSearchTerms([...searchTerms, e.target.value.trim().toLowerCase()]);
       e.target.value = "";
     }
   };
-
+ 
   const removeSearchTerm = (term) => {
     setSearchTerms(searchTerms.filter((t) => t !== term));
   };
-
+ 
   const filteredServices = servicesData.filter((service) => {
     return searchTerms.every((term) => {
       return (
@@ -72,7 +95,7 @@ useEffect(() => {
         )
           ?.toLowerCase()
           .includes(term) ||
-
+ 
         (service.Spec?.Mode?.Replicated?.Replicas ?? "").toString().includes(term) ||
         (service.Spec?.TaskTemplate?.Runtime ?? "").toLowerCase().includes(term) ||
         (service.Version?.Index ?? "").toString().includes(term) ||
@@ -80,33 +103,38 @@ useEffect(() => {
       );
     });
   });
-
+ 
   const handleEditClick = (service) => {
     setEditableService(service); // Set the service to be edited
   };
-
+ 
   const handleSaveClick = async (service) => {
     try {
-
+      console.log(service);
+      console.log(typeof(service));
+      const payload = {
+        "Name": service.Spec.Name,
+        "Replicas": service.Spec.Mode.Replicated.Replicas,
+      };
       setServicesData((prevServices) =>
         prevServices.map((s) => (s.ID === service.ID ? { ...s, ...service } : s))
       );
       // Send the updated service data to the new API endpoint
-      await axios.post(`http://127.0.0.1:5000/services/update/${service.ID}`, service);
-      
+      await axios.post(`${url}/update/${service.ID}`, payload);
+     
       // Update the local state to reflect the changes
-      
-  
+      await fetchServices();
+ 
       setEditableService(null); // Clear editable service after saving
     } catch (error) {
       console.error("Error saving service:", error);
     }
   };
-
+ 
   const length = filteredServices.length;
-
+ 
   return (
-
+ 
     <div className={`${isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"} h-screen`}>
       <div className="flex justify-between items-center">
         <Link
@@ -115,7 +143,7 @@ useEffect(() => {
         >
           Services
         </Link>
-
+ 
         <div className="flex flex-col mt-2 items-center mr-4">
           <span className={`text-xs xs:text -sm mb-1 ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
             Showing {length} Services
@@ -175,7 +203,7 @@ useEffect(() => {
             ))}
           </div>
         </div>
-
+ 
         <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-200px)]">
           <table className={isDarkTheme ? "min-w-full border border-gray-600 text-sm text-left text-gray-400" : "min-w-full border border-gray-300 text-sm text-left text-gray-500"}>
             <thead className={isDarkTheme ? "text-xs text-gray-300 uppercase bg-gray-800" : "text-xs text-gray-600 uppercase bg-gray-50"}>
@@ -207,7 +235,7 @@ useEffect(() => {
             <tbody>
               {filteredServices.map((data) => (
                 <tr
-
+ 
                   className={isDarkTheme ? "bg-gray-800 border-b border-gray-700 hover:bg-gray-700" : "bg-white border-b border-gray-300 hover:bg-gray-200"}
                   key={data.ID}
                 >
@@ -261,7 +289,7 @@ useEffect(() => {
                       data.Spec?.Mode?.Replicated?.Replicas ?? "Null"
                     )}
                   </td>
-
+ 
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
                     {data .Version?.Index ?? "Null"}
                   </td>
@@ -270,8 +298,8 @@ useEffect(() => {
                   </td>
                   <td className={isDarkTheme ? "px-6 py-4 text-right text-center" : "px-6 py-4 text-right text-center"}>
                   {editableService?.ID === data.ID ? (
-                  <button 
-                  onClick={() => handleSaveClick(editableService)} 
+                  <button
+                  onClick={() => handleSaveClick(editableService)}
                   className="flex items-center justify-center p-2 rounded-full hover:scale-110 transition-transform duration-200"
                 >
                   <FontAwesomeIcon icon={faCircleCheck} className="text-green-500 w-8 h-8" />
@@ -282,7 +310,7 @@ useEffect(() => {
                   </button>
                 )}
                   </td>
-
+ 
                   <td className={isDarkTheme ? "px-6 py-4 text-center" : "px-6 py-4 text-center"}>
                     <button className={isDarkTheme ? "flex items-center justify-center text-red-600 hover:text-red-800" : "flex items-center justify-center text-red-900 hover:text-red-700"}>
                       <FontAwesomeIcon icon={faTrash} className="mr-2" />
@@ -297,5 +325,5 @@ useEffect(() => {
     </div>
   );
 };
-
+ 
 export default Services;
