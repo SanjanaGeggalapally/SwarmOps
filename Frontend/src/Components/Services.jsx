@@ -87,6 +87,7 @@ const Services = () => {
  
   const handleSaveClick = async (service) => {
     try {
+      setIsLoading(true); // Start loading
       console.log(service);
       console.log(typeof(service));
       const payload = {
@@ -98,13 +99,15 @@ const Services = () => {
       );
       // Send the updated service data to the new API endpoint
       await axios.post(`${url}/update/${service.ID}`, payload);
-     
+      
       // Update the local state to reflect the changes
       await fetchServices();
- 
+  
       setEditableService(null); // Clear editable service after saving
     } catch (error) {
       console.error("Error saving service:", error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
  
@@ -113,6 +116,7 @@ const Services = () => {
   return (
  
     <div className={`${isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"} h-screen`}>
+      {isLoading && <div className="spinner">Loading...</div>}
       <div className="flex justify-between items-center">
         <Link
           to="/services"
@@ -120,20 +124,6 @@ const Services = () => {
         >
           Services
         </Link>
- 
-        <div className="flex flex-col mt-2 items-center mr-4">
-          <span className={`text-xs xs:text -sm mb-1 ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
-            Showing {length} Services
-          </span>
-          <div className="flex mt-2 gap-1">
-            <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-l`}>
-              Prev
-            </button>
-            <button className={`text-sm ${isDarkTheme ? "bg-gray-700 hover:bg-gray-600 text-white" : "bg-gray-300 hover:bg-gray-400 text-gray-800"} font-semibold py-2 px-4 rounded-r`}>
-              Next
-            </button>
-          </div>
-        </div>
       </div>
       <div className={isDarkTheme ? "shadow-md sm:rounded-lg bg-black" : "shadow-md sm:rounded-lg bg-white"}>
         <div className="p-4">
