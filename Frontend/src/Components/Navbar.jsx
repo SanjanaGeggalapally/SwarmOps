@@ -50,7 +50,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           </h1>
           <ul className="space-y-2 font-medium">
             {[
-              { name: 'Dashboard', icon: faTachometerAlt, link: '/dashboard' },
+              { name: 'Home', icon: faTachometerAlt, link: '/' },
               { name: 'Services', icon: faCube, link: '/services' },
               { name: 'Nodes', icon: faServer, link: '/nodes' },
               { name: 'Logout', icon: faSignOutAlt, link: '/logout' },
