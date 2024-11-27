@@ -40,7 +40,7 @@ const Home = () => {
     }
 
     return (
-        <div><p> message: {homeData.hello}...  </p></div>
+        <div><p> The message is -- hello : {homeData.hello}...  </p></div>
     );
 };
 

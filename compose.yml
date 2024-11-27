@@ -1,4 +1,3 @@
-version: '3.8'  # Use the latest version for better features
 
 services:
   frontend:
@@ -10,6 +9,12 @@ services:
       - backend  # Ensures that the backend service starts before the frontend
     volumes:
       - ./frontend:/app  # Mounts the local frontend directory to /app in the container for live updates
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend
+          target: /app
+
 
   backend:
     build:
@@ -18,10 +23,22 @@ services:
       - '8002:5000'  # Exposes the backend on port 8002
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock  # Allows the backend to access Docker socket
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./backend
+          target: /app
     deploy:
       placement:
         constraints:
           - "node.role==manager"
+  
+  
   proxy:
     build: ./proxy
     ports: ['8090:80']
+    develop:
+      watch: 
+        - action: sync+restart
+          path: ./proxy/default.conf
+          target: /etc/nginx/conf.d
