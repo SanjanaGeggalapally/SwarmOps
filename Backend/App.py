@@ -40,7 +40,7 @@ def update_service(service_id):
 
 
 @app.route('/services')
-def swarm_services_new_list():  # Renamed function
+def swarm_services_list():  # Renamed function
     try:
         client = get_client()
         slist = client.services.list()
