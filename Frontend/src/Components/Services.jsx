@@ -106,7 +106,9 @@ const Services = () => {
 
   const handleDeleteClick = async (id) => {
     // Implement delete functionality here
-    console.log(`Delete service with ID: ${id}`);
+    const response = await axios.get(`/api/services/delete/${id}`);
+    await fetchServices();
+    console.log(response.message);
   };
 
   const handleDropdownToggle = (id) => {
@@ -248,7 +250,7 @@ const Services = () => {
                               Edit
                             </button>
                             <button
-                              onClick={() => console.log('Inspect clicked')} // Replace with inspect functionality
+                              onClick={() => window.location.href = `/services/inspect/${data.id}`} 
                               className="flex items-center block w-full text-left px-4 py-2 text-sm hover:bg-gray-200"
                             >
                               <FontAwesomeIcon icon={faEye} className="mr-2" /> 
