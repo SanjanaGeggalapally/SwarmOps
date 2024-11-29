@@ -4,8 +4,9 @@ import docker.errors as de
 import json
 import os
 import re
-from node import node_prcs 
+from utils.node import node_prcs 
 from utils.utils import error_handler, get_client
+from utils.task import task_prcs
 
 app = Flask(__name__)
 CORS(app)
@@ -55,7 +56,12 @@ def swarm_service_inspect(id):
     try:
         client = get_client()
         service = client.services.get(id)
-        return jsonify(svc_prcs(service.attrs))
+
+        return jsonify({
+            "serviceData" : svc_prcs(service.attrs),
+            "tasksData" : [task_prcs(task) for task in service.tasks()]    
+        })
+    
     except de.NotFound as nf:
         return error_handler(nf)
     except de.APIError as ae:
