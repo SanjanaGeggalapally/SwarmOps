@@ -1,51 +1,59 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faEnvelope, faSignInAlt, faUserPlus, faUser, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
-
-
+ 
 const rolesPermissions = {
   a: {
     canViewDashboard: true,
     canEditUsers: true,
     canViewReports: true,
-    canAddUser :true 
+    canAddUser: true,
   },
   user: {
     canViewDashboard: true,
     canEditUsers: false,
     canViewReports: false,
-    canAddUser :false 
+    canAddUser: false,
   },
 };
-
+ 
 const Login = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and sign-up
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState(''); // Additional state for email during sign-up
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-
-  const handleSubmit = (e) => {
+ 
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      if (username === 'a' && password === 'p') {
-        
-        onLogin();
+    const url = isLogin ? '/api/login' : '/api/signup';
+ 
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        password,
+        ...(isLogin ? {} : { email }), // Include email only during signup
+      }),
+    });
+ 
+    const result = await response.json();
+ 
+    if (response.ok) {
+      alert(result.message);
+      if (isLogin) {
+        onLogin(); // Call the onLogin function passed as a prop
       } else {
-        alert('Invalid credentials');
+        setIsLogin(true); // Switch to login after successful sign-up
       }
     } else {
-      // Implement sign-up logic
-      if (username && password && email) {
-        alert('Sign-up successful');
-        setIsLogin(true); // Switch to login after successful sign-up
-      } else {
-        alert('Please fill in all fields');
-      }
+      alert(result.message);
     }
   };
-
+ 
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-2xl">
@@ -144,5 +152,6 @@ const Login = ({ onLogin }) => {
     </div>
   );
 };
-export {rolesPermissions};
+ 
+export { rolesPermissions };
 export default Login;

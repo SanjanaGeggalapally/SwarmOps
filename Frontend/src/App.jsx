@@ -7,6 +7,7 @@ import Home from './Components/Home';
 import { ThemeProvider, useTheme } from './Context/ThemeContext';
 import AddUser  from './Components/AddUser.jsx';
 import ServiceInspect from './Components/ServiceInspect.jsx';
+import Login from './Components/Login.jsx';
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -35,6 +36,7 @@ const MainContent = ({ isSidebarOpen }) => {
         <Route path="/services" element={<Services />} />
         <Route path="/adduser" element={<AddUser  />} />
         <Route path="/services/inspect/:id" element={<ServiceInspect/>}/>
+        <Route path="/login" element={<Login  />} />
       </Routes>
     </div>
   );
