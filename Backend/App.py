@@ -3,11 +3,12 @@ from flask_cors import CORS
 import docker.errors as de
 import json
 import os
-import re
-from node import node_prcs
-from utils.utils import error_handler, get_client
 import bcrypt
- 
+import re
+from utils.node import node_prcs
+from utils.utils import error_handler, get_client
+from utils.task import task_prcs
+
 app = Flask(__name__)
 CORS(app)
 users_db = {}
@@ -56,7 +57,12 @@ def swarm_service_inspect(id):
     try:
         client = get_client()
         service = client.services.get(id)
-        return jsonify(svc_prcs(service.attrs))
+
+        return jsonify({
+            "serviceData" : svc_prcs(service.attrs),
+            "tasksData" : [task_prcs(task) for task in service.tasks()]    
+        })
+    
     except de.NotFound as nf:
         return error_handler(nf)
     except de.APIError as ae:
@@ -71,6 +77,7 @@ def swarm_service_delete(id):
         client = get_client()
         svc = client.services.get(id)
         svc.remove()
+        return jsonify({"message": "Service deleted successfully"}), 200
     except de.APIError as e:
         return error_handler(e)
  
