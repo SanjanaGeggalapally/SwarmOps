@@ -71,6 +71,8 @@ def swarm_service_delete(id):
         client = get_client()
         svc = client.services.get(id)
         svc.remove()
+        return jsonify({"message": "Service deleted successfully"}), 200
+
     except de.APIError as e:
         return error_handler(e)
  
