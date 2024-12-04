@@ -1,0 +1,12 @@
+.loading-container {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh; /* Full viewport height */
+  }
+  
+  .loading-gif {
+    width: 100px;
+    height: 100px;
+  }

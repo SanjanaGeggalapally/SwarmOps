@@ -25,4 +25,9 @@
 **/values.dev.yaml
 LICENSE
 README.md
+<<<<<<< HEAD
 test.py
+=======
+
+test.py 
+>>>>>>> fd9a44aceec63b782ba0a721e59333d705df9f32

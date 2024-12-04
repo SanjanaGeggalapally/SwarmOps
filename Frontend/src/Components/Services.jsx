@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "../Context/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import loadingGif from '../assets/loadinggif.gif';
+import './styles.css';
 import {
   faTrash,
   faPen,
@@ -53,11 +55,13 @@ const Services = () => {
   }, []);
 
   const dropdownRef = useRef();
-
   if (isLoading) {
-    return <div className="text-center mt-4">Loading...</div>;
+    return (
+      <div className="loading-container">
+        <img src={loadingGif} alt="Loading..." className="loading-gif" />
+      </div>
+    );
   }
-
   if (error) {
     return <div className="text-red-500 text-center mt-4">Error: {error}</div>;
   }

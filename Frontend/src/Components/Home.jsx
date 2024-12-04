@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "../Context/ThemeContext";
 import { useNavigate } from "react-router-dom"; 
 import axios from 'axios';
-import logo from '../assets/Logo.png';
+import logo from '../assets/logo.png';
  
 const Home = () => {
     const url = "/api/";
