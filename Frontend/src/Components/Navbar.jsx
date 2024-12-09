@@ -26,11 +26,11 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   return (
     <>
-    <div className='bg-black'>
+    <div className='bg-white'>
       <button
         onClick={toggleSidebar}
         className={`fixed top-4 left-4 z-50 p-3 rounded-full transition-all duration-100
-          ${isDarkTheme ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white text-black hover:bg-gray-200'}`}
+          ${isDarkTheme ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-delftBlue text-white hover:bg-gray-200'}`}
         aria-label="Toggle Sidebar"
       >
         <FontAwesomeIcon icon={faThList} />
@@ -44,8 +44,8 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           md:w-64 w-56`}
         aria-label="Sidebar"
       >
-        <div className={`h-full px-3 py-4 overflow-y-auto ${isDarkTheme ? 'text-white' : 'text-black'}`}>
-          <h1 className={`text-2xl font-semibold tracking-wide mt-2 ml-12 mb-6 ${isDarkTheme ? 'text-white' : 'text-black'}`}>
+        <div className={`h-full px-3 py-4 overflow-y-auto bg-delftBlue ${isDarkTheme ? 'text-white' : 'text-white'}`}>
+          <h1 className={`text-2xl font-semibold tracking-wide mt-2 ml-12 mb-6 ${isDarkTheme ? 'text-white' : 'text-white'}`}>
             SwarmOps
           </h1>
           <ul className="space-y-2 font-medium">
@@ -65,9 +65,9 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                   <FontAwesomeIcon
                     icon={icon}
                     className={`w-5 h-5 p-1 rounded transition duration-100 
-                      ${isDarkTheme ? 'text-gray-400' : 'text-gray-600'}`}
+                      ${isDarkTheme ? 'text-gray-400' : ' text-white'}`}
                   />
-                  <span className={`ms-3 ${isSidebarOpen ? 'block' : 'hidden'}`}>{name}</span>
+                  <span className={`${isDarkTheme ? 'text-gray-400' : ' text-white'} ms-3 ${isSidebarOpen ? 'block' : 'hidden'}`}>{name}</span>
                 </Link>
               </li>
             ))}

@@ -127,9 +127,11 @@ def svc_prcs(svc):
  
     res['replicas'] = svc.get("Spec").get("Mode").get("Replicated", {"Replicas": swarm_nodes_list(count=True)}).get("Replicas")
     res['version'] = svc.get("Version").get("Index")
-    res['created_at'] = svc.get("CreatedAt")
+    createdAt = svc.get("CreatedAt")
+    ca_time = createdAt.split('T')[0]
+    res['created_at'] = ca_time
     res['last_updated_at'] = svc.get("UpdatedAt")
-    res['labels'] = svc.get("Spec").get("Labels")
+    # res['labels'] = svc.get("Spec").get("Labels")
    
     return res
  

@@ -29,7 +29,7 @@ const MainContent = ({ isSidebarOpen }) => {
   const { isDarkTheme } = useTheme();
 
   return (
-    <div className={`transition-all duration-100 ${isSidebarOpen ? 'ml-64' : 'ml-16'} p-4 ${isDarkTheme ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}>
+    <div className={`transition-all duration-100 ${isSidebarOpen ? 'ml-64' : 'ml-16'} p-4 ${isDarkTheme ? 'bg-black text-white' : 'bg-white text-black'}`}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/nodes" element={<Nodes />} />

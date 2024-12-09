@@ -41,7 +41,7 @@ const ServiceInspect = () => {
       } flex justify-center`}
     >
       <div className="w-full max-w-1xl p-10">
-        <h1 className="text-3xl font-bold mb-2 text-center">Service Details</h1>
+        <h1 className="text-3xl font-bold mb-2 text-center">{serviceDetails.name} Service Details</h1>
         <div
           className={`rounded-lg shadow-lg ${
             isDarkTheme ? "bg-gray-800 text-white" : "bg-white text-black"
@@ -68,7 +68,7 @@ const ServiceInspect = () => {
         {taskDetails && taskDetails.length > 0 && (
           <div>
             <h2 className="text-2xl font-bold mt-6 mb-4 text-center">
-              Task Details
+              {serviceDetails.name} Task Details
             </h2>{" "}
             {/* Adjusted margins here */}
             <div
@@ -86,7 +86,7 @@ const ServiceInspect = () => {
                     className={
                       isDarkTheme
                         ? "text-xs text-gray-300 uppercase bg-gray-800"
-                        : "text-xs text-gray-600 uppercase bg-gray-50"
+                        : "text-xs text-white uppercase bg-delftBlue "
                     }
                   >
                     <tr>
@@ -104,15 +104,7 @@ const ServiceInspect = () => {
                     {taskDetails.map((task, index) => (
                       <tr
                         key={index}
-                        className={`${
-                          index % 2 === 0
-                            ? isDarkTheme
-                              ? "bg-gray-700"
-                              : "bg-white"
-                            : isDarkTheme
-                            ? "bg-gray-800"
-                            : "bg-gray-100"
-                        }`}
+                        className={``}
                       >
                         {Object.entries(task).map(([key, value]) => (
                           <td

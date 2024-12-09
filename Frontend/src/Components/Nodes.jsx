@@ -160,7 +160,7 @@ const Nodes = () => {
 
         <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-200px)]">
           <table className={isDarkTheme ? "min-w-full border border-gray-600 text-sm text-left text-gray-400" : "min-w-full border border-gray-300 text-sm text-left text-gray-500"}>
-            <thead className={isDarkTheme ? "text-xs text-gray-300 uppercase bg-gray-800" : "text-xs text-gray-600 uppercase bg-gray-50"}>
+            <thead className={isDarkTheme ? "text-xs text-gray-300 uppercase bg-gray-800" : "text-xs text-white uppercase bg-delftBlue"}>
               <tr>
                 <th scope="col" className="px-6 py-3 text-base text-center">Hostname</th>
                 <th scope="col" className="px-6 py-3 text-base text-center">ID</th>

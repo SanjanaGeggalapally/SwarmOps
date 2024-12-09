@@ -131,7 +131,7 @@ const Services = () => {
   return (
     <div
       className={`${
-        isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"
+        isDarkTheme ? "bg-black text-white" : "bg-white text-black"
       } h-screen`}
     >
       {isLoading && <div className="spinner">Loading...</div>}
@@ -141,75 +141,76 @@ const Services = () => {
           className={`ml-3 text-3xl font-bold ${
             isDarkTheme
               ? "text-gray-300 hover:text-gray-100"
-              : "text-gray-600 hover:text-gray-900"
+              : "text-black hover:text-gray-900"
           }`}
         >
           Services
         </Link>
       </div>
+      <div className="p-4 bg-white">
+        <label htmlFor="table-search" className="sr-only">
+          Search
+        </label>
+        <div className="relative mt-1">
+          <input
+            type="text"
+            id="table-search"
+            className={`${
+              isDarkTheme
+                ? "bg-gray-700 border border-gray-600 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 pr-10 py-2"
+                : "bg-gray-50 border border-delftBlue text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 pr-10 py-2"
+            }`}
+            placeholder="Type and press Enter to add filter"
+            onKeyDown={handleSearch}
+          />
+        </div>
+        <div className="mt-2">
+          {searchTerms.map((term, index) => (
+            <span
+              key={index}
+              className={
+                isDarkTheme
+                  ? "inline-block bg-gray-600 text-gray-400 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded"
+                  : "inline-block bg-gray-200 text-gray-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded"
+              }
+            >
+              {term}
+              <button
+                onClick={() => removeSearchTerm(term)}
+                className={
+                  isDarkTheme
+                    ? "ml-2 text-red-600 hover:text-red-800"
+                    : "ml-2 text-red-900 hover:text-red-700"
+                }
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      </div>
       <div
         className={
           isDarkTheme
             ? "shadow-md sm:rounded-lg bg-black"
-            : "shadow-md sm:rounded-lg bg-white"
+            : "shadow-all-sides sm:rounded-lg bg-white"
         }
       >
-        <div className="p-4">
-          <label htmlFor="table-search" className="sr-only">
-            Search
-          </label>
-          <div className="relative mt-1">
-            <input
-              type="text"
-              id="table-search"
-              className={`${
-                isDarkTheme
-                  ? "bg-gray-700 border border-gray-600 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 pr-10 py-2"
-                  : "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 pr-10 py-2"
-              }`}
-              placeholder="Type and press Enter to add filter"
-              onKeyDown={handleSearch}
-            />
-          </div>
-          <div className="mt-2">
-            {searchTerms.map((term, index) => (
-              <span
-                key={index}
-                className={
-                  isDarkTheme
-                    ? "inline-block bg-gray-600 text-gray-400 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded"
-                    : "inline-block bg-gray-200 text-gray-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded"
-                }
-              >
-                {term}
-                <button
-                  onClick={() => removeSearchTerm(term)}
-                  className={
-                    isDarkTheme
-                      ? "ml-2 text-red-600 hover:text-red-800"
-                      : "ml-2 text-red-900 hover:text-red-700"
-                  }
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
-        </div>
+        
 
         <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-200px)]">
           <table
             className={
               isDarkTheme
                 ? "min-w-full border border-gray-600 text-sm text-left text-gray-400"
-                : "min-w-full border border-gray-300 text-sm text-left text-gray-500"
+                : "min-w-full border  text-sm text-left text-gray-500"
             }
           >
             <thead
               className={
                 isDarkTheme
                   ? "text-xs text-gray-300 uppercase bg-gray-800"
-                  : "text-xs text-gray-600 uppercase bg-gray-50"
+                  : "text-xs text-white uppercase bg-delftBlue"
               }
             >
               <tr>
@@ -245,203 +246,131 @@ const Services = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredServices.map((data) => (
-                <tr
-                  className={
-                    isDarkTheme
-                      ? "bg-gray-800 border-b border-gray-700 hover:bg-gray-700"
-                      : "bg-white border-b border-gray-300 hover:bg-gray-200"
-                  }
-                  key={data.id}
-                >
-                  <td
-                    className={
-                      isDarkTheme
-                        ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center"
-                        : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
-                    }
-                  >
-                    {editableService?.id === data.id ? (
-                      <input
-                        type="text"
-                        value={editableService.name}
-                        onChange={(e) =>
-                          setEditableService({
-                            ...editableService,
-                            name: e.target.value,
-                          })
-                        }
-                        className="border border-gray-300 rounded p-1 focus:outline-none focus:ring focus:ring-blue-500"
-                      />
-                    ) : (
-                      data.name ?? "Null"
-                    )}
-                  </td>
-                  <td
-                    className={
-                      isDarkTheme
-                        ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center"
-                        : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
-                    }
-                  >
-                    {data.id ?? "Null"}
-                  </td>
-                  <td
-                    className={
-                      isDarkTheme
-                        ? "truncate px-6 py-4 font-medium text-gray-400 text-center"
-                        : "truncate px-6 py-4 font-medium text-gray-900 text-center"
-                    }
-                  >
-                    {data.image ?? "Null"}
-                  </td>
-                  <td
-                    className={
-                      isDarkTheme
-                        ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center"
-                        : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
-                    }
-                  >
-                    {editableService?.id === data.id ? (
-                      <input
-                        type="text"
-                        value={`${editableService.pub_port}:${editableService.tar_port}`}
-                        onChange={(e) => {
-                          const [pubPort, tarPort] = e.target.value.split(":");
-                          setEditableService({
-                            ...editableService,
-                            pub_port: pubPort,
-                            tar_port: tarPort,
-                          });
-                        }}
-                        className="border border-gray-300 rounded p-1 focus:outline-none focus:ring focus:ring-blue-500"
-                      />
-                    ) : (
-                      `${data.pub_port}:${data.tar_port}` ?? "Null"
-                    )}
-                  </td>
-                  <td
-                    className={
-                      isDarkTheme
-                        ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center"
-                        : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
-                    }
-                  >
-                    {editableService?.id === data.id ? (
-                      <input
-                        type="number"
-                        value={editableService.replicas ?? ""}
-                        onChange={(e) =>
-                          setEditableService({
-                            ...editableService,
-                            replicas: e.target.value,
-                          })
-                        }
-                        className="border border-gray-300 rounded p-1 focus:outline-none focus:ring focus:ring-blue-500"
-                      />
-                    ) : (
-                      data.replicas ?? "Null"
-                    )}
-                  </td>
-                  <td
-                    className={
-                      isDarkTheme
-                        ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center"
-                        : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
-                    }
-                  >
-                    {data.version ?? "Null"}
-                  </td>
-                  <td
-                    className={
-                      isDarkTheme
-                        ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center"
-                        : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
-                    }
-                  >
-                    {data.created_at ?? "Null"}
-                  </td>
-                  <td
-                    className={
-                      isDarkTheme
-                        ? "px-6 py-4 text-center"
-                        : "px-6 py-4 text-center"
-                    }
-                  >
-                    <div className="relative inline-block text-left">
-                      <div>
-                        <button
-                          onClick={() => handleDropdownToggle(data.id)}
-                          className="flex items-center justify-center p-2 rounded-full hover:bg-gray-200"
-                        >
-                          <FontAwesomeIcon icon={faEllipsisV} />
-                        </button>
-                      </div>
-                      {dropdownOpen === data.id && (
-                        <div
-                          ref={dropdownRef}
-                          className={`absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${
-                            isDarkTheme
-                              ? "bg-gray-800 text-white"
-                              : "bg-white text-black"
-                          }`}
-                        >
-                          <div
-                            className="py-1"
-                            role="menu"
-                            aria-orientation="vertical"
-                            aria-labelledby="options-menu"
-                          >
-                            <button
-                              onClick={() => handleEditClick(data)}
-                              className="flex items-center block w-full text-left px-4 py-2 text-sm hover:bg-gray-200"
-                            >
-                              <FontAwesomeIcon icon={faPen} className="mr-2" />
-                              Edit
-                            </button>
-                            <button
-                              onClick={() =>
-                                (window.location.href = `/services/inspect/${data.id}`)
-                              }
-                              className="flex items-center block w-full text-left px-4 py-2 text-sm hover:bg-gray-200"
-                            >
-                              <FontAwesomeIcon icon={faEye} className="mr-2" />
-                              Inspect
-                            </button>
-                            <button
-                              onClick={() => handleDeleteClick(data.id)}
-                              className="flex items-center block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100" // Optional: Add hover effect for delete
-                            >
-                              <FontAwesomeIcon
-                                icon={faTrash}
-                                className="mr-2"
-                              />
-                              Delete
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td
-                    className={
-                      isDarkTheme
-                        ? "px-6 py-4 text-center"
-                        : "px-6 py-4 text-center"
-                    }
-                  >
-                    {editableService?.id === data.id && (
+            {filteredServices.map((data) => (
+              <tr
+                className={`border-b text-center ${isDarkTheme ? "border-gray-700 hover:bg-gray-700" : "border-gray-300 hover:bg-gray-200"} `}
+                key={data.id}
+              >
+                <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-blue-600"}`}>
+                  {editableService?.id === data.id ? (
+                    <input
+                      type="text"
+                      value={editableService.name}
+                      onChange={(e) =>
+                        setEditableService({
+                          ...editableService,
+                          name: e.target.value,
+                        })
+                      }
+                      className="border border-gray-300 rounded p-1 focus:outline-none focus:ring focus:ring-blue-500"
+                    />
+                  ) : (
+                    data.name ?? "Null"
+                  )}
+                </td>
+                <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
+                  {data.id ?? "Null"}
+                </td>
+                <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-blue-600 underline"}`}>
+                  {data.image ?? "Null"}
+                </td>
+                <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
+                  {editableService?.id === data.id ? (
+                    <input
+                      type="text"
+                      value={`${editableService.pub_port}:${editableService.tar_port}`}
+                      onChange={(e) => {
+                        const [pubPort, tarPort] = e.target.value.split(":");
+                        setEditableService({
+                          ...editableService,
+                          pub_port: pubPort,
+                          tar_port: tarPort,
+                        });
+                      }}
+                      className="border border-gray-300 rounded p-1 focus:outline-none focus:ring focus:ring-blue-500"
+                    />
+                  ) : (
+                    `${data.pub_port}:${data.tar_port}` ?? "Null"
+                  )}
+                </td>
+                <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
+                  {editableService?.id === data.id ? (
+                    <input
+                      type="number"
+                      value={editableService.replicas ?? ""}
+                      onChange={(e) =>
+                        setEditableService({
+                          ...editableService,
+                          replicas: e.target.value,
+                        })
+                      }
+                      className="border border-gray-300 rounded p-1 focus:outline-none focus:ring focus:ring-blue-500"
+                    />
+                  ) : (
+                    data.replicas ?? "Null"
+                  )}
+                </td>
+ <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
+                  {data.version ?? "Null"}
+                </td>
+                <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
+                  {data.created_at ?? "Null"}
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <div className="relative inline-block text-left">
+                    <div>
                       <button
-                        onClick={() => handleSaveClick(editableService)}
-                        className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
+                        onClick={() => handleDropdownToggle(data.id)}
+                        className="flex items-center justify-center p-2 rounded-full hover:bg-gray-200"
                       >
-                        <FontAwesomeIcon icon={faCircleCheck} />
+                        <FontAwesomeIcon icon={faEllipsisV} />
                       </button>
+                    </div>
+                    {dropdownOpen === data.id && (
+                      <div
+                        ref={dropdownRef}
+                        className={`absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg ${isDarkTheme ? "bg-gray-800 text-white" : "bg-white text-black"}`}
+                      >
+                        <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                          <button
+                            onClick={() => handleEditClick(data)}
+                            className="flex items-center block w-full text-left px-4 py-2 text-sm hover:bg-gray-200"
+                          >
+                            <FontAwesomeIcon icon={faPen} className="mr-2" />
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => (window.location.href = `/services/inspect/${data.id}`)}
+                            className="flex items-center block w-full text-left px-4 py-2 text-sm hover:bg-gray-200"
+                          >
+                            <FontAwesomeIcon icon={faEye} className="mr-2" />
+                            Inspect
+                          </button>
+                          <button
+                            onClick={() => handleDeleteClick(data.id)}
+                            className="flex items-center block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100"
+                          >
+                            <FontAwesomeIcon icon={faTrash} className="mr-2" />
+                            Delete
+                          </button>
+                        </div>
+                      </div>
                     )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-center">
+                  {editableService?.id === data.id && (
+                    <button
+                      onClick={() => handleSaveClick(editableService)}
+                      className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
+                    >
+                      <FontAwesomeIcon icon={faCircleCheck} />
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
           </table>
         </div>
       </div>
