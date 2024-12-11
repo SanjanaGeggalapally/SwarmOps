@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useTheme } from '../Context/ThemeContext'; 
 import { rolesPermissions } from './Login';
+import logo from '../assets/RealPage_logo.png'; // Adjust the path as necessary
+
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const { isDarkTheme, toggleTheme } = useTheme(); 
 
@@ -26,15 +28,15 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   return (
     <>
-    <div className='bg-white'>
-      <button
-        onClick={toggleSidebar}
-        className={`fixed top-4 left-4 z-50 p-3 rounded-full transition-all duration-100
-          ${isDarkTheme ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-delftBlue text-white hover:bg-gray-200'}`}
-        aria-label="Toggle Sidebar"
-      >
-        <FontAwesomeIcon icon={faThList} />
-      </button>
+      <div className='bg-white'>
+        <button
+          onClick={toggleSidebar}
+          className={`fixed top-4 left-4 z-50 p-3 rounded-full transition-all duration-100
+            ${isDarkTheme ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-delftBlue text-white hover:bg-gray-200'}`}
+          aria-label="Toggle Sidebar"
+        >
+          <FontAwesomeIcon icon={faThList} />
+        </button>
       </div>
       <aside
         id="default-sidebar"
@@ -48,6 +50,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
           <h1 className={`text-2xl font-semibold tracking-wide mt-2 ml-12 mb-6 ${isDarkTheme ? 'text-white' : 'text-white'}`}>
             SwarmOps
           </h1>
+          
           <ul className="space-y-2 font-medium">
             {[
               { name: 'Home', icon: faTachometerAlt, link: '/' },
@@ -73,15 +76,21 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             ))}
           </ul>
         </div>
-        <div className="absolute bottom-4 left-3">
+        {/* <div className="absolute bottom-4 left-3">
           <button
             onClick={toggleTheme}
-            className={`p-3 rounded-full transition-colors duration-100 
+            className={` p-3 rounded-full transition-colors duration-100 
               ${isDarkTheme ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
           >
             <FontAwesomeIcon icon={faLightbulb} className="w-5 h-5" />
           </button>
+        </div> */}
+        <div className="absolute bottom-2 ">
+          <div className="flex items-center justify-center ">
+            <img src={logo} alt="RealPage Logo" className="tracking-wide mt-2  ml-5 mb-6 h-6 w-full" />
+          </div>
         </div>
+        
       </aside>
     </>
   );
