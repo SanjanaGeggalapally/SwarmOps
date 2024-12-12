@@ -42,3 +42,14 @@ services:
         - action: sync+restart
           path: ./proxy/default.conf
           target: /etc/nginx/conf.d
+
+  db:
+    image: mongo:latest    
+    ports:      
+      - "27017:27017"    
+    container_name: db    
+    stop_signal: SIGTERM    
+    volumes:       
+      - database:/data/db  
+volumes:  
+  database: 

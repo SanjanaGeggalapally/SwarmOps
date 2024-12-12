@@ -8,11 +8,16 @@ import re
 from utils.node import node_prcs
 from utils.utils import error_handler, get_client
 from utils.task import task_prcs
+from pymongo import MongoClient
+ 
 
 app = Flask(__name__)
 CORS(app)
 users_db = {}
 # Home
+def mongo_client():
+    return MongoClient("db:27017")
+
 @app.route('/')
 def home():
     return jsonify({ "hello": "world" })
@@ -159,6 +164,8 @@ def signup():
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
+    mongo= mongo_client()
+    print(data)
     username = data.get('username')
     password = data.get('password')
  
