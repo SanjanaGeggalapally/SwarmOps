@@ -10,11 +10,12 @@ import {
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Services = () => {
-  const { isDarkTheme } = useTheme();
+  const { isDarkTheme, userRole, isLoggedIn } = useTheme(); // Assuming userRole and isLoggedIn are provided by your context
+  const navigate = useNavigate();
   const [servicesData, setServicesData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -94,6 +95,16 @@ const Services = () => {
   });
 
   const handleEditClick = (service) => {
+    if (!isLoggedIn) {
+      // Redirect to login if not logged in
+      navigate("/login");
+      return;
+    }
+    if (userRole !== "admin" && userRole !== "superadmin") {
+      // Optionally, you can show an alert or a message here
+      alert("You do not have permission to edit this service.");
+      return;
+    }
     setEditableService(service);
     setDropdownOpen(null);
   };
@@ -118,7 +129,6 @@ const Services = () => {
   };
 
   const handleDeleteClick = async (id) => {
-    // Implement delete functionality here
     const response = await axios.get(`/api/services/delete/${id}`);
     await fetchServices();
     console.log(response.message);
@@ -129,11 +139,9 @@ const Services = () => {
   };
 
   return (
-    <div
-      className={`${
-        isDarkTheme ? "bg-black text-white" : "bg-white text-black"
-      } h-screen`}
-    >
+    <div className={`${
+      isDarkTheme ? "bg-black text-white" : "bg-white text-black"
+    } h-screen`}>
       {isLoading && <div className="spinner">Loading...</div>}
       <div className="flex justify-between items-center">
         <Link
@@ -148,9 +156,7 @@ const Services = () => {
         </Link>
       </div>
       <div className="p-4 bg-white">
-        <label htmlFor="table-search" className="sr-only">
-          Search
-        </label>
+        <label htmlFor="table-search" className="sr-only">Search</label>
         <div className="relative mt-1">
           <input
             type="text"
@@ -189,68 +195,25 @@ const Services = () => {
           ))}
         </div>
       </div>
-      <div
-        className={
-          isDarkTheme
-            ? "shadow-md sm:rounded-lg bg-black"
-            : "shadow-all-sides sm:rounded-lg bg-white"
-        }
-      >
-        
-
+      <div className={isDarkTheme ? "shadow-md sm:rounded-lg bg-black" : "shadow-all-sides sm:rounded-lg bg-white"}>
         <div className="overflow-x-auto overflow-y-auto h-[calc(100vh-200px)]">
-          <table
-            className={
-              isDarkTheme
-                ? "min-w-full border border-gray-600 text-sm text-left text-gray-400"
-                : "min-w-full border  text-sm text-left text-gray-500"
-            }
-          >
-            <thead
-              className={
-                isDarkTheme
-                  ? "text-xs text-gray-300 uppercase bg-gray-800"
-                  : "text-xs text-white uppercase bg-delftBlue"
-              }
-            >
+          <table className={isDarkTheme ? "min-w-full border border-gray-600 text-sm text-left text-gray-400" : "min-w-full border text-sm text-left text-gray-500"}>
+            <thead className={isDarkTheme ? "text-xs text-gray-300 uppercase bg-gray-800" : "text-xs text-white uppercase bg-delftBlue"}>
               <tr>
-                <th scope="col" className="px-6 py-3 text-base text-center">
-                  Name of the Service
-                </th>
-                <th scope="col" className="px-6 py-3 text-base text-center">
-                  ID
-                </th>
-                <th scope="col" className="px-6 py-3 text-base text-center">
-                  Image Name
-                </th>
-                <th scope="col" className="px-6 py-3 text-base text-center">
-                  Published Port : Target Port
-                </th>
-                <th scope="col" className="px-6 py-3 text-base text-center">
-                  Replicas
-                </th>
-                <th scope="col" className="px-6 py-3 text-base text-center">
-                  Version
-                </th>
-                <th scope="col" className="px-6 py-3 text-base text-center">
-                  Creation Time
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-base text-center"
-                ></th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-base text-center"
-                ></th>
+                <th scope="col" className="px-6 py-3 text-base text-center">Name of the Service</th>
+                <th scope="col" className="px-6 py-3 text-base text-center">ID</th>
+                <th scope="col" className="px-6 py-3 text-base text-center">Image Name</th>
+                <th scope="col" className="px-6 py-3 text-base text-center">Published Port : Target Port</th>
+                <th scope="col" className="px-6 py-3 text-base text-center">Replicas</th>
+                <th scope="col" className="px-6 py-3 text-base text-center">Version</th>
+                <th scope="col" className="px-6 py-3 text-base text-center">Creation Time</th>
+                <th scope="col" className="px-6 py-3 text-base text-center"></th>
+                <th scope="col" className="px-6 py-3 text-base text-center"></th>
               </tr>
             </thead>
             <tbody>
             {filteredServices.map((data) => (
-              <tr
-                className={`border-b text-center ${isDarkTheme ? "border-gray-700 hover:bg-gray-700" : "border-gray-300 hover:bg-gray-200"} `}
-                key={data.id}
-              >
+              <tr className={`border-b text-center ${isDarkTheme ? "border-gray-700 hover:bg-gray-700" : "border-gray-300 hover:bg-gray-200"} `} key={data.id}>
                 <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-blue-600"}`}>
                   {editableService?.id === data.id ? (
                     <input
@@ -310,7 +273,7 @@ const Services = () => {
                     data.replicas ?? "Null"
                   )}
                 </td>
- <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>
+                <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text -gray-400" : "text-gray-900"}`}>
                   {data.version ?? "Null"}
                 </td>
                 <td className={`px-6 py-4 font-medium ${isDarkTheme ? "text-gray-400" : "text-gray-900"}`}>

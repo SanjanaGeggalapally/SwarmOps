@@ -7,6 +7,9 @@ from utils.node import node_prcs
 from utils.utils import error_handler, get_client
 from utils.task import task_prcs
 from pymongo import MongoClient
+import jwt
+import datetime
+SECRET_KEY = 'your_secret_key'
 
 app = Flask(__name__)
 CORS(app)
@@ -142,33 +145,6 @@ def svc_prcs(svc):
 
     return res
 
-# User management routes
-@app.route('/signup', methods=['POST'])
-def signup():
-    data = request.json
-    username = data.get('username')
-    password = data.get('password')
-    email = data.get('email')
-
-    client = mongo_client()
-    db = client['usersDB']  # Use your actual database name
-    users_collection = db['users']      # Collection for user data
-
-    if users_collection.find_one({'username': username}):
-        return jsonify({'message': 'User already exists'}), 400
-
-    # Hash the password
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-    # Store user information
-    user_data = {
-        'username': username,
-        'password': hashed_password,
-        'email': email
-    }
-    users_collection.insert_one(user_data)
-
-    return jsonify({'message': 'Sign-up successful'}), 201
 
 
 
@@ -208,8 +184,13 @@ def login():
     user = users_collection.find_one({'username': username})
 
     if user and bcrypt.checkpw(password.encode('utf-8'), user['password']):
-        print("Users in DB:", list(users_collection.find()))  # Print users in the DB
-        return jsonify({'message': 'Login successful'}), 200
+        # Create a JWT token
+        token = jwt.encode({
+            'username': username,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)  # Token expires in 1 hour
+        }, SECRET_KEY, algorithm='HS256')
+
+        return jsonify({'message': 'Login successful', 'token': token}), 200
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
 

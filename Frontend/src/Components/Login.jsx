@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faEnvelope, faSignInAlt, faUserPlus, faUser, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
  
@@ -27,32 +27,34 @@ const Login = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = isLogin ? '/api/login' : '/api/signup';
- 
+
     const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        password,
-        ...(isLogin ? {} : { email }), // Include email only during signup
-      }),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username,
+            password,
+            ...(isLogin ? {} : { email }), // Include email only during signup
+        }),
     });
- 
+
     const result = await response.json();
- 
+
     if (response.ok) {
-      alert(result.message);
-      if (isLogin) {
-        onLogin(); // Call the onLogin function passed as a prop
-      } else {
-        setIsLogin(true); // Switch to login after successful sign-up
-      }
+        alert(result.message);
+        if (isLogin) {
+            // Store the JWT token in local storage
+            localStorage.setItem('token', result.token);
+            onLogin(); // Call the onLogin function passed as a prop
+        } else {
+            setIsLogin(true); // Switch to login after successful sign-up
+        }
     } else {
-      alert(result.message);
+        alert(result.message);
     }
-  };
+};
  
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
