@@ -10,29 +10,31 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState(null); // Store user role
+  const [userRole, setUserRole] = useState(null); 
+  
 
   useEffect(() => {
-    // Check for user preference and apply the correct theme class to the body
+    
+   
     const userPreference = localStorage.getItem('theme') === 'dark';
     setIsDarkTheme(userPreference);
     document.body.classList.toggle('dark', userPreference);
 
-    // Check if user is logged in and fetch user role
-    const token = localStorage.getItem('token'); // Assuming you store JWT in localStorage
+    
+    const token = localStorage.getItem('token');
     if (token) {
-      // Optionally, you can verify the token or fetch user data
+      setIsLoggedIn(true);
       axios.get('/api/user', {
         headers: {
-          'Authorization': `Bearer ${token}`, // Include the token in the request
+          'Authorization': `Bearer ${token}`, 
         },
       })
       .then(response => {
-        setIsLoggedIn(true);
-        setUserRole(response.data.role); // Assuming the response contains the user's role
+        setUserRole(response.data.role); 
       })
       .catch(error => {
         console.error("Error fetching user data:", error);
+        console.log("error is here");
         setIsLoggedIn(false);
         setUserRole(null);
       });
@@ -46,10 +48,6 @@ export const ThemeProvider = ({ children }) => {
     document.body.classList.toggle('dark', newTheme);
   };
 
-  const login = (role) => {
-    setIsLoggedIn(true);
-    setUserRole(role);
-  };
 
   const logout = () => {
     setIsLoggedIn(false);
@@ -58,7 +56,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn, userRole, login, logout }}>
+    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn, userRole, logout, setUserRole}}>
       {children}
     </ThemeContext.Provider>
   );

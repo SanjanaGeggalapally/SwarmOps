@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThList, faTachometerAlt, faCube, faServer, faTasks, faLock, faCog, faSignOutAlt, faLightbulb, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faThList, faTachometerAlt, faCube, faServer, faUserPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useTheme } from '../Context/ThemeContext'; 
 import logo from '../assets/RealPage_logo.png'; // Adjust the path as necessary
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
-  const { isDarkTheme, toggleTheme, logout } = useTheme(); // Destructure logout from useTheme
+  const { isDarkTheme, toggleTheme, logout, isLoggedIn, userRole } = useTheme(); // Destructure isLoggedIn and userRole
 
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
@@ -55,7 +55,8 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               { name: 'Home', icon: faTachometerAlt, link: '/' },
               { name: 'Services', icon: faCube, link: '/services' },
               { name: 'Nodes', icon: faServer, link: '/nodes' },
-              { name: 'Add User', icon: faUserPlus, link: '/adduser' },
+              // Conditionally render the "Add User" link
+              ...(userRole === 'superadmin' ? [{ name: 'Add User', icon: faUserPlus, link: '/adduser' }] : []),
             ].map(({ name, icon, link }) => (
               <li key={name}>
                 <Link
@@ -72,21 +73,23 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 </Link>
               </li>
             ))}
-            {/* Logout Button */}
-            <li>
-              <button
-                onClick={logout}
-                className={`flex items-center p-2 rounded-lg transition-colors duration-100 
-                  ${isDarkTheme ? 'hover:bg-gray-700 hover:text-white' : 'hover:bg-gray-200 hover:text-black'}`}
-              >
-                <FontAwesomeIcon
-                  icon={faSignOutAlt}
-                  className={`w-5 h-5 p-1 rounded transition duration-100 
-                    ${isDarkTheme ? ' text-gray-400' : 'text-white'}`}
-                />
-                <span className={`${isDarkTheme ? 'text-gray-400' : 'text-white'} ms-3 ${isSidebarOpen ? 'block' : 'hidden'}`}>Logout</span>
-              </button>
-            </li>
+            {/* Conditionally render the Logout Button */}
+            {isLoggedIn && (
+              <li>
+                <button
+                  onClick={logout}
+                  className={`flex items-center p-2 rounded-lg transition-colors duration-100 
+                    ${isDarkTheme ? 'hover:bg-gray-700 hover:text-white' : 'hover:bg-gray-200 hover:text-black'}`}
+                >
+                  <FontAwesomeIcon
+                    icon={faSignOutAlt}
+                    className={`w-5 h-5 p-1 rounded transition duration-100 
+                      ${isDarkTheme ? ' text-gray-400' : 'text-white'}`}
+                  />
+                  <span className={`${isDarkTheme ? 'text-gray-400' : 'text-white'} ms-3 ${isSidebarOpen ? 'block' : 'hidden'}`}>Logout</span>
+                </button>
+              </li>
+            )}
           </ul>
         </div>
         <div className="absolute bottom-2 ">

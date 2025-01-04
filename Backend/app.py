@@ -10,6 +10,7 @@ from pymongo import MongoClient
 import jwt
 import datetime
 from functools import wraps
+from datetime import timezone
 
 
 
@@ -188,10 +189,10 @@ def get_users():
     users = list(users_collection.find({}, {'_id': 0, 'password': 0}))  # Exclude password field
     return jsonify(users), 200
 
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
-    mongo = mongo_client()
     
     username = data.get('username')
     password = data.get('password')
@@ -202,11 +203,11 @@ def login():
 
     user = users_collection.find_one({'username': username})
 
-    if user and bcrypt.checkpw(password.encode('utf-8'), user['password']):
-        # Create a JWT token
+    if bcrypt.checkpw(password.encode('utf-8'), user['password']):
+        # Create a JWT token with an aware datetime object
         token = jwt.encode({
             'username': username,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)  # Token expires in 1 hour
+            'exp': datetime.datetime.now(timezone.utc) + datetime.timedelta(hours=1)  # Token expires in 1 hour
         }, SECRET_KEY, algorithm='HS256')
 
         return jsonify({'message': 'Login successful', 'token': token ,'role':user['role']}), 200
@@ -255,7 +256,7 @@ def addUser(username):
 
 
 # User route to get user data
-@app.route('/api/user', methods=['GET'])
+@app.route('/user', methods=['GET'])
 @token_required
 def get_user(username):
     client = mongo_client()

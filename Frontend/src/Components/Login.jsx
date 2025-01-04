@@ -13,32 +13,35 @@ const Login = () => {
     e.preventDefault();
     const url = '/api/login'; // Only login endpoint
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username,
+                password,
+            }),
+        });
 
-    const result = await response.json();
+        const result = await response.json();
+        console.log("API Response:", result); // Log the entire response
 
-    if (response.ok) {
-      // alert(result.message);
-      // Store the JWT token in local storage
-      console.log("1. the user is .....");
-      setIsLoggedIn(true);
-      console.log("2. the user is .....");
-      console.log(isLoggedIn);
-      setUserRole(response.role);
-      localStorage.setItem('token', result.token);
-    } else {
-      alert(result.message);
+        if (response.ok) {
+            console.log("Response is OK");
+            console.log("Token:", result.token);
+            console.log("Role:", result.role);
+            setIsLoggedIn(true);
+            setUserRole(result.role); // Ensure this is correct
+            localStorage.setItem('token', result.token);
+        } else {
+            console.log("Error:", result.message);
+        }
+    } catch (error) {
+        console.error("Error during login:", error);
     }
-  };
+};
 
   // If the user is already logged in, you might want to redirect or show a message
   if (isLoggedIn) {

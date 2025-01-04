@@ -95,13 +95,13 @@ const Services = () => {
   });
 
   const handleEditClick = (service) => {
+    console.log(isLoggedIn)
+    console.log(userRole);
     if (!isLoggedIn) {
-      // Redirect to login if not logged in
       navigate("/login");
       return;
     }
     if (userRole !== "admin" && userRole !== "superadmin") {
-      // Optionally, you can show an alert or a message here
       alert("You do not have permission to edit this service.");
       return;
     }
