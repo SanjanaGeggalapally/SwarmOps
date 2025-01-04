@@ -58,7 +58,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme, isLoggedIn, userRole, login, logout }}>
+    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn, userRole, login, logout }}>
       {children}
     </ThemeContext.Provider>
   );

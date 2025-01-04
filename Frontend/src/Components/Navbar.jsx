@@ -3,11 +3,10 @@ import { faThList, faTachometerAlt, faCube, faServer, faTasks, faLock, faCog, fa
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useTheme } from '../Context/ThemeContext'; 
-import { rolesPermissions } from './Login';
 import logo from '../assets/RealPage_logo.png'; // Adjust the path as necessary
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
-  const { isDarkTheme, toggleTheme } = useTheme(); 
+  const { isDarkTheme, toggleTheme, logout } = useTheme(); // Destructure logout from useTheme
 
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
@@ -56,8 +55,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               { name: 'Home', icon: faTachometerAlt, link: '/' },
               { name: 'Services', icon: faCube, link: '/services' },
               { name: 'Nodes', icon: faServer, link: '/nodes' },
-              { name: 'Logout', icon: faSignOutAlt, link: '/logout' },
-              { name: 'Add User', icon: faUserPlus, link: '/adduser' } ,
+              { name: 'Add User', icon: faUserPlus, link: '/adduser' },
             ].map(({ name, icon, link }) => (
               <li key={name}>
                 <Link
@@ -74,23 +72,28 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 </Link>
               </li>
             ))}
+            {/* Logout Button */}
+            <li>
+              <button
+                onClick={logout}
+                className={`flex items-center p-2 rounded-lg transition-colors duration-100 
+                  ${isDarkTheme ? 'hover:bg-gray-700 hover:text-white' : 'hover:bg-gray-200 hover:text-black'}`}
+              >
+                <FontAwesomeIcon
+                  icon={faSignOutAlt}
+                  className={`w-5 h-5 p-1 rounded transition duration-100 
+                    ${isDarkTheme ? ' text-gray-400' : 'text-white'}`}
+                />
+                <span className={`${isDarkTheme ? 'text-gray-400' : 'text-white'} ms-3 ${isSidebarOpen ? 'block' : 'hidden'}`}>Logout</span>
+              </button>
+            </li>
           </ul>
         </div>
-        {/* <div className="absolute bottom-4 left-3">
-          <button
-            onClick={toggleTheme}
-            className={` p-3 rounded-full transition-colors duration-100 
-              ${isDarkTheme ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-black hover:bg-gray-300'}`}
-          >
-            <FontAwesomeIcon icon={faLightbulb} className="w-5 h-5" />
-          </button>
-        </div> */}
         <div className="absolute bottom-2 ">
           <div className="flex items-center justify-center ">
             <img src={logo} alt="RealPage Logo" className="tracking-wide mt-2  ml-5 mb-6 h-6 w-full" />
           </div>
         </div>
-        
       </aside>
     </>
   );

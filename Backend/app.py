@@ -9,7 +9,26 @@ from utils.task import task_prcs
 from pymongo import MongoClient
 import jwt
 import datetime
+from functools import wraps
+
+
+
 SECRET_KEY = 'your_secret_key'
+
+# JWT verification decorator
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({'message': 'Token is missing!'}), 401
+        try:
+            token = token.split(" ")[1]  # Get the token part
+            data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        except Exception as e:
+            return jsonify({'message': 'Token is invalid!'}), 403
+        return f(data['username'], *args, **kwargs)
+    return decorated
 
 app = Flask(__name__)
 CORS(app)
@@ -190,39 +209,65 @@ def login():
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)  # Token expires in 1 hour
         }, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({'message': 'Login successful', 'token': token}), 200
+        return jsonify({'message': 'Login successful', 'token': token ,'role':user['role']}), 200
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
 
 
 @app.route('/addUser', methods=['POST'])
-def addUser():
-    data = request.json
-    username = data.get('username')
-    password ='Realpage@123'
-    email = data.get('email')
-    role=data.get('role')
+@token_required
+def addUser(username):
+    
+
     client = mongo_client()
     db = client['usersDB']  # Use your actual database name
     users_collection = db['users']      # Collection for user data
+    
+    user = users_collection.find_one({'username': username}, {'_id': 0, 'password': 0})  # Exclude password field
 
-    if users_collection.find_one({'username': username}):
+    if user['role'] != "superadmin":
+        return jsonify({"message": "Unauthorized User"})
+    
+    data = request.json
+    created_username = data.get('username')
+    created_password ='Realpage@123'
+    created_email = data.get('email')
+    created_role=data.get('role')
+
+    if users_collection.find_one({'username': created_username}):
         return jsonify({'message': 'User already exists'}), 400
 
     # Hash the password
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    hashed_password = bcrypt.hashpw(created_password.encode('utf-8'), bcrypt.gensalt())
 
     # Store user information
     user_data = {
-        'username': username,
+        'username': created_username,
         'password': hashed_password,
-        'email': email,
-        'role':role
+        'email': created_email,
+        'role':created_role
     }
     users_collection.insert_one(user_data)
     print("Users in DB:", list(users_collection.find()))
 
     return jsonify({'message': 'User Added Successfully'}), 201
+
+
+
+# User route to get user data
+@app.route('/api/user', methods=['GET'])
+@token_required
+def get_user(username):
+    client = mongo_client()
+    db = client['usersDB']
+    users_collection = db['users']
+    
+    user = users_collection.find_one({'username': username}, {'_id': 0, 'password': 0})  # Exclude password field
+    if user:
+        return jsonify(user), 200
+    else:
+        return jsonify({'message': 'User  not found'}), 404
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True,use_reloder=True)
