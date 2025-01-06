@@ -1,54 +1,58 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faEnvelope, faSignInAlt, faUser , faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { useTheme } from '../Context/ThemeContext'; 
+import { faLock, faSignInAlt, faUser, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '../Context/ThemeContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-  const { isLoggedIn , setIsLoggedIn ,setUserRole} = useTheme(); // Destructure isLoggedIn from useTheme
+  const [showPassword, setShowPassword] = useState(false);
+  const { isLoggedIn, setIsLoggedIn, setUserRole } = useTheme();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = '/api/login'; // Only login endpoint
+    const url = '/api/login';
 
     try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username,
-                password,
-            }),
-        });
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
-        const result = await response.json();
-        console.log("API Response:", result); // Log the entire response
-
-        if (response.ok) {
-            console.log("Response is OK");
-            console.log("Token:", result.token);
-            console.log("Role:", result.role);
-            setIsLoggedIn(true);
-            setUserRole(result.role); // Ensure this is correct
-            localStorage.setItem('token', result.token);
-        } else {
-            console.log("Error:", result.message);
-        }
+      const result = await response.json();
+      console.log("API Response:", result);
+      if (response.ok) {
+        toast.success('Login successful!');
+        setIsLoggedIn(true);
+        setUserRole(result.role);
+        localStorage.setItem('token', result.token);
+      } else {
+        console.log("Error:", result.message);
+        toast.error(`Error: ${result.message}`);
+      }
     } catch (error) {
-        console.error("Error during login:", error);
+      console.error("Error during login:", error);
+      toast.error('An error occurred during login.');
     }
-};
+  };
 
-  // If the user is already logged in, you might want to redirect or show a message
   if (isLoggedIn) {
-    return <div>You are already logged in.</div>; // Or redirect to another page
+    return (<>
+            <div>You are already logged in.</div>
+            </>)
+          ;
   }
 
   return (
+    <>
     <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-2xl">
         <h2 className="text-3xl font-bold text-center text-gray-800">Login</h2>
@@ -59,7 +63,7 @@ const Login = () => {
             </label>
             <div className="flex items-center border rounded-lg shadow-sm">
               <span className="px-3 text-gray-500">
-                <FontAwesomeIcon icon={faUser } />
+                <FontAwesomeIcon icon={faUser} />
               </span>
               <input
                 type="text"
@@ -102,9 +106,12 @@ const Login = () => {
               <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
               Login
             </span>
-          </button ></form>
+          </button>
+        </form>
       </div>
     </div>
+   
+    </>
   );
 };
 

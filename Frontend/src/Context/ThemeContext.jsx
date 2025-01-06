@@ -14,8 +14,6 @@ export const ThemeProvider = ({ children }) => {
   
 
   useEffect(() => {
-    
-   
     const userPreference = localStorage.getItem('theme') === 'dark';
     setIsDarkTheme(userPreference);
     document.body.classList.toggle('dark', userPreference);

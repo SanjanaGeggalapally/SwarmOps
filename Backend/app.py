@@ -61,11 +61,9 @@ def update_service(service_id):
         Name = service_data['name']
         Replicas = service_data['replicas']
         Replicas_int = int(Replicas)
-
         client = get_client()
         svc = client.services.get(service_id)
         svc.update(name=Name, mode={'Replicated': {'Replicas': Replicas_int}})
-
         return jsonify({"message": "Service updated successfully"}), 200
     except Exception as e:
         return error_handler(e)
@@ -103,8 +101,9 @@ def swarm_service_inspect(id):
 
 # Swarm Services - Delete
 @app.route("/services/delete/<id>")
+
 def swarm_service_delete(id):
-    try:
+    try: 
         client = get_client()
         svc = client.services.get(id)
         svc.remove()
@@ -180,15 +179,6 @@ def clear_users():
     
 
 
-@app.route('/users', methods=['GET'])
-def get_users():
-    client = mongo_client()
-    db = client['usersDB']
-    users_collection = db['users']
-    
-    users = list(users_collection.find({}, {'_id': 0, 'password': 0}))  # Exclude password field
-    return jsonify(users), 200
-
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -213,13 +203,32 @@ def login():
         return jsonify({'message': 'Login successful', 'token': token ,'role':user['role']}), 200
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
+    
 
+@app.route('/users', methods=['GET'])
+@token_required
+def get_users(username):
+    client = mongo_client()
+    db = client['usersDB']
+    users_collection = db['users']
+    # Get the current user's info to check their role
+    current_user = users_collection.find_one({'username': username}, {'_id': 0, 'password': 0})
+
+    if not current_user:
+        return jsonify({'message': 'Current user not found'}), 404
+
+    # Check if the current user is a superadmin
+    if current_user['role'] != 'superadmin':
+        return jsonify({'message': 'Unauthorized action'}), 403
+
+    # Fetch all users excluding the password field
+    users = list(users_collection.find({}, {'_id': 0, 'password': 0}))
+    
+    return jsonify(users), 200 
 
 @app.route('/addUser', methods=['POST'])
 @token_required
 def addUser(username):
-    
-
     client = mongo_client()
     db = client['usersDB']  # Use your actual database name
     users_collection = db['users']      # Collection for user data
@@ -227,7 +236,7 @@ def addUser(username):
     user = users_collection.find_one({'username': username}, {'_id': 0, 'password': 0})  # Exclude password field
 
     if user['role'] != "superadmin":
-        return jsonify({"message": "Unauthorized User"})
+        return jsonify({"message": "Unauthorized User"}), 401
     
     data = request.json
     created_username = data.get('username')
@@ -254,6 +263,48 @@ def addUser(username):
     return jsonify({'message': 'User Added Successfully'}), 201
 
 
+@app.route('/editUser/<target_username>', methods=['PUT'])
+@token_required
+def edit_user(username, target_username):  # Accept both target and requesting usernames
+    client = mongo_client()
+    db = client['usersDB']
+    users_collection = db['users']
+    
+    current_user = users_collection.find_one({'username': username}, {'_id': 0, 'password': 0})
+    if not current_user:
+        return jsonify({'message': 'Current user not found'}), 404
+    if current_user['role'] != 'superadmin':
+        return jsonify({'message': 'Unauthorized action'}), 403
+    
+    user_to_edit = users_collection.find_one({'username': target_username})
+    if not user_to_edit:
+        return jsonify({'message': 'User not found'}), 404
+    
+    data = request.json
+    new_role = data.get('role')
+    users_collection.update_one({'username': target_username}, {'$set': {'role': new_role}})
+    return jsonify({'message': 'User role updated successfully'}), 200
+
+@app.route('/deleteUser/<target_username>', methods=['DELETE'])
+@token_required
+def delete_user(username, target_username):  # Accept both target and requesting usernames
+    client = mongo_client()
+    db = client['usersDB']
+    users_collection = db['users']
+    
+    current_user = users_collection.find_one({'username': username}, {'_id': 0, 'password': 0})
+    if not current_user:
+        return jsonify({'message': 'Current user not found'}), 404
+    if current_user['role'] != 'superadmin':
+        return jsonify({'message': 'Unauthorized action'}), 403
+    
+    user_to_delete = users_collection.find_one({'username': target_username})
+    if not user_to_delete:
+        return jsonify({'message': 'User not found'}), 404
+    
+    users_collection.delete_one({'username': target_username})
+    return jsonify({'message': 'User deleted successfully'}), 200
+
 
 # User route to get user data
 @app.route('/user', methods=['GET'])
@@ -268,6 +319,7 @@ def get_user(username):
         return jsonify(user), 200
     else:
         return jsonify({'message': 'User  not found'}), 404
+    
 
 
 if __name__ == '__main__':

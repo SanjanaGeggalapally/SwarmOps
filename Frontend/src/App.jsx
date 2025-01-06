@@ -10,6 +10,10 @@ import ServiceInspect from './Components/ServiceInspect.jsx';
 import Login from './Components/Login.jsx';
 import ProtectedRoute from './Components/ProtectedRoute.jsx';
 import Unauthorized from './Components/Unauthorized.jsx';
+import SuperAdmin from './Components/SuperAdmin.jsx';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -32,6 +36,7 @@ const MainContent = ({ isSidebarOpen }) => {
   const {isLoggedIn, userRole } = useTheme();
 
   return (
+    <>
     <div className={`transition-all duration-100 ${isSidebarOpen ? 'ml-64' : 'ml-16'} p-4 ${isDarkTheme ? 'bg-black text-white' : 'bg-white text-black'}`}>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -45,11 +50,21 @@ const MainContent = ({ isSidebarOpen }) => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/superadmin"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn} userRole={userRole}>
+              <SuperAdmin />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/services/inspect/:id" element={<ServiceInspect/>}/>
         <Route path="/login" element={<Login  />} />
         <Route path="/unauthorized" element={<Unauthorized/>}/>
       </Routes>
     </div>
+    <ToastContainer />
+    </>
   );
 };
 

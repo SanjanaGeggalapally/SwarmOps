@@ -12,6 +12,9 @@ import {
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Services = () => {
   const { isDarkTheme, userRole, isLoggedIn } = useTheme(); // Assuming userRole and isLoggedIn are provided by your context
@@ -98,11 +101,12 @@ const Services = () => {
     console.log(isLoggedIn)
     console.log(userRole);
     if (!isLoggedIn) {
+      toast.warn("Login Required")
       navigate("/login");
       return;
     }
     if (userRole !== "admin" && userRole !== "superadmin") {
-      alert("You do not have permission to edit this service.");
+      toast.warn("You do not have permission to edit this service.");
       return;
     }
     setEditableService(service);
@@ -119,19 +123,36 @@ const Services = () => {
         tar_port: service.tar_port,
       };
       await axios.post(`${url}/update/${service.id}`, payload);
+      toast.success("Service Updated Successfully")
       await fetchServices();
       setEditableService(null);
     } catch (error) {
       console.error("Error saving service:", error);
+      toast.error("Error Occured "+error.message)
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleDeleteClick = async (id) => {
-    const response = await axios.get(`/api/services/delete/${id}`);
-    await fetchServices();
-    console.log(response.message);
+    if (!isLoggedIn) {
+      toast.warn("Login Required");
+      navigate("/login");
+      return;
+    }
+    if (userRole !== "superadmin") {
+      toast.warn("You do not have permission to delete this service.");
+      return;
+    }
+    try {
+      const response = await axios.delete(`/api/services/delete/${id}`);
+      toast.success("Service deleted successfully!");
+      await fetchServices();
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Error deleting service:", error);
+      toast.error("An error occurred while deleting the service.");
+    }
   };
 
   const handleDropdownToggle = (id) => {
@@ -139,6 +160,7 @@ const Services = () => {
   };
 
   return (
+    <>
     <div className={`${
       isDarkTheme ? "bg-black text-white" : "bg-white text-black"
     } h-screen`}>
@@ -338,6 +360,7 @@ const Services = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
