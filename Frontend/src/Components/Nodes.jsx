@@ -14,7 +14,7 @@ const Nodes = () => {
   const [searchTerms, setSearchTerms] = useState([]); // Search terms state
   const [editableNode, setEditableNode] = useState(null);
 
-  const url = "/api/nodes/new";
+  const url = "/api/nodes";
 
   const fetchNodes = async () => {
     try {

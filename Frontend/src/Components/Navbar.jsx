@@ -76,7 +76,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               { name: 'Services', icon: faCube, link: '/services' },
               { name: 'Nodes', icon: faServer, link: '/nodes' },
               
-              ...(userRole === 'superadmin' ? [{ name: 'SuperAdmin', icon: faUserPlus, link: '/superadmin' }] : []),
+              ...(userRole === 'superadmin' ? [{ name: 'Users', icon: faUserPlus, link: '/users' }] : []),
             ].map(({ name, icon, link }) => (
               <li key={name}>
                 <Link

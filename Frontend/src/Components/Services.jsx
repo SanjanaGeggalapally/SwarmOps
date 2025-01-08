@@ -98,8 +98,8 @@ const Services = () => {
   });
 
   const handleEditClick = (service) => {
-    console.log(isLoggedIn)
-    console.log(userRole);
+    console.log("is logged in:", isLoggedIn)
+    console.log("user role:",userRole);
     if (!isLoggedIn) {
       toast.warn("Login Required")
       navigate("/login");

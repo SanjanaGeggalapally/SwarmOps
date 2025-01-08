@@ -28,6 +28,8 @@ export const ThemeProvider = ({ children }) => {
         },
       })
       .then(response => {
+        console.log("res", response)
+        console.log("res data", response.data)
         setUserRole(response.data.role); 
       })
       .catch(error => {

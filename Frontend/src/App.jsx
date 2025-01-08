@@ -10,7 +10,7 @@ import ServiceInspect from './Components/ServiceInspect.jsx';
 import Login from './Components/Login.jsx';
 import ProtectedRoute from './Components/ProtectedRoute.jsx';
 import Unauthorized from './Components/Unauthorized.jsx';
-import SuperAdmin from './Components/SuperAdmin.jsx';
+import Users from './Components/Users.jsx';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -51,10 +51,10 @@ const MainContent = ({ isSidebarOpen }) => {
           }
         />
         <Route
-          path="/superadmin"
+          path="/users"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn} userRole={userRole}>
-              <SuperAdmin />
+              <Users />
             </ProtectedRoute>
           }
         />
