@@ -46,7 +46,7 @@ const Home = () => {
  
             <div className="flex flex-col items-center justify-center flex-grow text-center px-4">
                 <h1 className={`text-4xl sm:text-5xl md:text-7xl font-extrabold ${isDarkTheme ? 'text-white' : 'text-blue-600'} mb-4`}>
-                    Simplify Service Management
+                    Simplify Swarm Management
                 </h1>
                 <p className={`text-lg sm:text-xl md:text-2xl ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'} mb-4`}>
                     Your services, one click away.

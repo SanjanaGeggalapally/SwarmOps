@@ -10,31 +10,42 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState(null); // Store user role
+  const [userRole, setUserRole] = useState(null); 
+  // const [userName, setUserName] = useState(null);
 
   useEffect(() => {
-    // Check for user preference and apply the correct theme class to the body
+
+    // console.log("dark theme ", isDarkTheme)
+    // console.log("is logged in  ", isLoggedIn)
+    // console.log("user role ", userRole)
+
     const userPreference = localStorage.getItem('theme') === 'dark';
     setIsDarkTheme(userPreference);
     document.body.classList.toggle('dark', userPreference);
 
-    // Check if user is logged in and fetch user role
-    const token = localStorage.getItem('token'); // Assuming you store JWT in localStorage
+    
+    const token = localStorage.getItem('token');
     if (token) {
-      // Optionally, you can verify the token or fetch user data
+      setIsLoggedIn(true);
       axios.get('/api/user', {
         headers: {
-          'Authorization': `Bearer ${token}`, // Include the token in the request
+          'Authorization': `Bearer ${token}`, 
         },
       })
       .then(response => {
-        setIsLoggedIn(true);
-        setUserRole(response.data.role); // Assuming the response contains the user's role
+        console.log("res", response)
+        console.log("res data", response.data)
+        // setUserName(response.data.username);
+        setUserRole(response.data.role); 
+        // setIsLoggedIn(true);
+        
       })
       .catch(error => {
         console.error("Error fetching user data:", error);
+        console.log("error is here");
         setIsLoggedIn(false);
         setUserRole(null);
+        // setUserName(null);
       });
     }
   }, []);
@@ -46,19 +57,22 @@ export const ThemeProvider = ({ children }) => {
     document.body.classList.toggle('dark', newTheme);
   };
 
-  const login = (role) => {
-    setIsLoggedIn(true);
-    setUserRole(role);
-  };
+  useEffect(() => {
+    console.log("dark theme ", isDarkTheme)
+    console.log("is logged in  ", isLoggedIn)
+    console.log("user role ", userRole)
+  }, [isLoggedIn, userRole])
 
   const logout = () => {
     setIsLoggedIn(false);
+    // setUserName(null);
     setUserRole(null);
     localStorage.removeItem('token'); // Clear token on logout
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme, isLoggedIn, userRole, login, logout }}>
+    // userName, setUserName, 
+    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn, userRole, setUserRole, logout}}>
       {children}
     </ThemeContext.Provider>
   );

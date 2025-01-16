@@ -1,87 +1,62 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faEnvelope, faSignInAlt, faUserPlus, faUser, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
- 
-const rolesPermissions = {
-  a: {
-    canViewDashboard: true,
-    canEditUsers: true,
-    canViewReports: true,
-    canAddUser: true,
-  },
-  user: {
-    canViewDashboard: true,
-    canEditUsers: false,
-    canViewReports: false,
-    canAddUser: false,
-  },
-};
- 
-const Login = ({ onLogin }) => {
-  const [isLogin, setIsLogin] = useState(true); // State to toggle between login and sign-up
+import { faLock, faSignInAlt, faUser, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '../Context/ThemeContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState(''); // Additional state for email during sign-up
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
- 
+  const [showPassword, setShowPassword] = useState(false);
+  const { isLoggedIn, setIsLoggedIn, setUserRole } = useTheme();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = isLogin ? '/api/login' : '/api/signup';
+    const url = '/api/login';
 
-    const response = await fetch(url, {
+    try {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            username,
-            password,
-            ...(isLogin ? {} : { email }), // Include email only during signup
+          username,
+          password,
         }),
-    });
+      });
 
-    const result = await response.json();
-
-    if (response.ok) {
-        alert(result.message);
-        if (isLogin) {
-            // Store the JWT token in local storage
-            localStorage.setItem('token', result.token);
-            onLogin(); // Call the onLogin function passed as a prop
-        } else {
-            setIsLogin(true); // Switch to login after successful sign-up
-        }
-    } else {
-        alert(result.message);
+      const result = await response.json();
+      console.log("API Response:", result);
+      if (response.ok) {
+        toast.success('Login successful!');
+        setIsLoggedIn(true);
+        setUserRole(result.role);
+        localStorage.setItem('token', result.token);
+      } else {
+        console.log("Error:", result.message);
+        toast.error(`Error: ${result.message}`);
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      toast.error('An error occurred during login.');
     }
-};
- 
+  };
+
+  if (isLoggedIn) {
+    return (<>
+            <div>You are already logged in.</div>
+            </>)
+          ;
+  }
+
   return (
+    <>
     <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-2xl">
-        <h2 className="text-3xl font-bold text-center text-gray-800">{isLogin ? 'Login' : 'Sign Up'}</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800">Login</h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {!isLogin && (
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <div className="flex items-center border rounded-lg shadow-sm">
-                <span className="px-3 text-gray-500">
-                  <FontAwesomeIcon icon={faEnvelope} />
-                </span>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 mt-1 border-none rounded-r-lg focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
-            </div>
-          )}
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
               Username
@@ -127,33 +102,17 @@ const Login = ({ onLogin }) => {
             type="submit"
             className="w-full px-4 py-2 font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            {isLogin ? (
-              <span className="flex items-center justify-center">
-                <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
-                Login
-              </span>
-            ) : (
-              <span className="flex items-center justify-center">
-                <FontAwesomeIcon icon={faUserPlus} className="mr-2" />
-                Sign Up
-              </span>
-            )}
+            <span className="flex items-center justify-center">
+              <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
+              Login
+            </span>
           </button>
         </form>
-        <p className="text-center text-gray-600">
-          {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-          <button
-            type="button"
-            className="font-medium text-blue-600 hover:text-blue-500"
-            onClick={() => setIsLogin(!isLogin)}
-          >
-            {isLogin ? 'Sign Up' : 'Login'}
-          </button>
-        </p>
       </div>
     </div>
+   
+    </>
   );
 };
- 
-export { rolesPermissions };
+
 export default Login;
