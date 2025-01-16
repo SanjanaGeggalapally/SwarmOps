@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  name: default
+  name: devtfs_rpAgile
 
 steps:
 - script: echo Hello, world!
