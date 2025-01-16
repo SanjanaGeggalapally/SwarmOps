@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  name: 0 DevTFS Pool
+  name: $(pool)
 
 steps:
 - script: echo Hello, world!
@@ -16,4 +16,10 @@ steps:
 - script: ls $(System.DefaultWorkingDirectory)
   displayName: 'Run a one-line Work Dir script'
 
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerComposeFile: '**/compose.yml'
+    action: 'Build services'
+    additionalImageTags: '$(Build.BuildNumber)'
 
