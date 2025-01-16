@@ -16,7 +16,7 @@ steps:
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Container Registry'
-    dockerComposeFile: '**/compose.yml'
+    dockerComposeFile: '**/build-compose.yml'
     action: 'Build services'
     additionalImageTags: '$(Build.BuildNumber)'
 
