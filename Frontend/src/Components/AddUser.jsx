@@ -61,7 +61,7 @@ const AddUser = () => {
               className="shadow-sm appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="name"
               type="text"
-              placeholder="Name"
+              placeholder="John Doe"
               value={username}
               onChange={(e) => setuserName(e.target.value)}
               required
@@ -76,7 +76,7 @@ const AddUser = () => {
               className="shadow-sm appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="email"
               type="email"
-              placeholder="Email"
+              placeholder="johndoe@realpage.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

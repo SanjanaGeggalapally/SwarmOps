@@ -215,17 +215,20 @@ def login():
 
     user = users_collection.find_one({'username': username})
 
-    if bcrypt.checkpw(password.encode('utf-8'), user['password']):
-        # Create a JWT token with an aware datetime object
-        token = jwt.encode({
-            'username': username,
-            'role' : user['role'],
-            'exp': datetime.datetime.now(timezone.utc) + datetime.timedelta(hours=1)  # Token expires in 1 hour
-        }, SECRET_KEY, algorithm='HS256')
+    if user:
+        if bcrypt.checkpw(password.encode('utf-8'), user['password']):
+            # Create a JWT token with an aware datetime object
+            token = jwt.encode({
+                'username': username,
+                'role' : user['role'],
+                'exp': datetime.datetime.now(timezone.utc) + datetime.timedelta(hours=1)  # Token expires in 1 hour
+            }, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({'message': 'Login successful', 'token': token ,'role':user['role']}), 200
+            return jsonify({'message': 'Login successful', 'token': token ,'role':user['role']}), 200
+        else:
+            return jsonify({'message': 'Invalid credentials'}), 401
     else:
-        return jsonify({'message': 'Invalid credentials'}), 401
+        return jsonify({'message': 'User does not exist'}), 401
     
 
 @app.route('/users', methods=['GET'])

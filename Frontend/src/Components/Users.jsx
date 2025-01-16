@@ -5,13 +5,14 @@ import { faPen, faTrash, faCircleCheck, faUserPlus } from '@fortawesome/free-sol
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useTheme } from '../Context/ThemeContext'
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editUser, setEditUser] = useState(null);
   const [newRole, setNewRole] = useState('');
   const navigate = useNavigate();
+  // const { userName } = useTheme();
 
   useEffect(() => {
     fetchUsers();
@@ -133,9 +134,11 @@ const Users = () => {
                   )}
                 </td>
                 <td className="py-3 px-6 text-center">
+                  
                   <button onClick={() => handleDelete(user.username)} className="text-red-600">
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
+                  
                 </td>
               </tr>
             ))}

@@ -11,9 +11,14 @@ export const ThemeProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(null); 
-  
+  // const [userName, setUserName] = useState(null);
 
   useEffect(() => {
+
+    // console.log("dark theme ", isDarkTheme)
+    // console.log("is logged in  ", isLoggedIn)
+    // console.log("user role ", userRole)
+
     const userPreference = localStorage.getItem('theme') === 'dark';
     setIsDarkTheme(userPreference);
     document.body.classList.toggle('dark', userPreference);
@@ -30,13 +35,17 @@ export const ThemeProvider = ({ children }) => {
       .then(response => {
         console.log("res", response)
         console.log("res data", response.data)
+        // setUserName(response.data.username);
         setUserRole(response.data.role); 
+        // setIsLoggedIn(true);
+        
       })
       .catch(error => {
         console.error("Error fetching user data:", error);
         console.log("error is here");
         setIsLoggedIn(false);
         setUserRole(null);
+        // setUserName(null);
       });
     }
   }, []);
@@ -48,15 +57,22 @@ export const ThemeProvider = ({ children }) => {
     document.body.classList.toggle('dark', newTheme);
   };
 
+  useEffect(() => {
+    console.log("dark theme ", isDarkTheme)
+    console.log("is logged in  ", isLoggedIn)
+    console.log("user role ", userRole)
+  }, [isLoggedIn, userRole])
 
   const logout = () => {
     setIsLoggedIn(false);
+    // setUserName(null);
     setUserRole(null);
     localStorage.removeItem('token'); // Clear token on logout
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn, userRole, logout, setUserRole}}>
+    // userName, setUserName, 
+    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn, userRole, setUserRole, logout}}>
       {children}
     </ThemeContext.Provider>
   );
