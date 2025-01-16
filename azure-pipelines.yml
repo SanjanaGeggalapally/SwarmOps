@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  name: devtfs
+  name: 0 DevTFS Pool
 
 steps:
 - script: echo Hello, world!
