@@ -13,9 +13,6 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: ls $(System.DefaultWorkingDirectory)
-  displayName: 'Run a one-line Work Dir script'
-
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Container Registry'
