@@ -165,9 +165,7 @@ def svc_prcs(svc):
     res['name'] = svc.get("Spec").get("Name")
     res['id'] = svc.get("ID")
     img = svc.get("Spec").get("TaskTemplate").get("ContainerSpec").get("Image")
-    pattern = r"^(?P<img_name>.*?)@"
-    match = re.search(pattern, img)
-    res['image'] = match.group('img_name')
+    res['image'] = img.split("@")[0]
    
     ports_list = svc.get("Endpoint").get("Ports")
     if ports_list is not None:
