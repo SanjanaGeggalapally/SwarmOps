@@ -13,7 +13,7 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: echo $(Build.SourcesDirectory)
-  displayName: 'Run a one-line Source Dir script'
+- script: echo $(System.DefaultWorkingDirectory)
+  displayName: 'Run a one-line Work Dir script'
 
 
