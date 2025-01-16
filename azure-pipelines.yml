@@ -13,7 +13,7 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: echo $(System.DefaultWorkingDirectory)
+- script: ls $(System.DefaultWorkingDirectory)
   displayName: 'Run a one-line Work Dir script'
 
 
