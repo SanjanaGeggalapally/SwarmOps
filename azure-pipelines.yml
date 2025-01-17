@@ -13,13 +13,13 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- task: DockerCompose@0
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerComposeFile: '**/build-compose.yml'
-    qualifyImageNames: false
-    action: 'Build services'
-    includeLatestTag: true
+# - task: DockerCompose@0
+#   inputs:
+#     containerregistrytype: 'Container Registry'
+#     dockerComposeFile: '**/build-compose.yml'
+#     qualifyImageNames: false
+#     action: 'Build services'
+#     includeLatestTag: true
     
 # - task: ArtifactoryDocker@1
 #   inputs:
@@ -28,3 +28,8 @@ steps:
 #     targetRepo: 'docker-virtual'
 #     imageName: 'a'
 
+- task: Docker@2
+  inputs:
+    command: 'build'
+    Dockerfile: '**/proxy/Dockerfile'
+    tags: $(Build.BuildId)
