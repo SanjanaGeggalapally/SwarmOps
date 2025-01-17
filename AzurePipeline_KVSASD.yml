@@ -9,12 +9,13 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    sudo yum install -y yum-utils
-    sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    sudo yum install -y docker-ce docker-ce-cli containerd.io
-    sudo systemctl start docker
-    sudo systemctl enable docker
-  displayName: 'Install Docker on Rocky Linux'
+    if [ "$(uname)" == "Linux" ]; then
+      curl -fsSL https://get.docker.com -o get-docker.sh
+      sh get-docker.sh
+    else
+      echo "Docker installation skipped on non-Linux agent."
+    fi
+  displayName: 'Install Docker'
 
 - task: ArtifactoryToolsInstaller@1
   inputs:
