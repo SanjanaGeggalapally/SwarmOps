@@ -19,4 +19,12 @@ steps:
     dockerComposeFile: '**/build-compose.yml'
     qualifyImageNames: false
     action: 'Build services'
+    includeLatestTag: true
+    
+# - task: ArtifactoryDocker@1
+#   inputs:
+#     command: 'push'
+#     artifactoryService: 'artifactory'
+#     targetRepo: 'docker-virtual'
+#     imageName: 'a'
 
