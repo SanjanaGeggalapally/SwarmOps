@@ -13,12 +13,18 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Container Registry'
     dockerComposeFile: '**/build-compose.yml'
+    qualifyImageNames: false
     action: 'Build services'
+
+
+# - task: JFrogArtifactory@1
+# inputs:
+#   artifactoryService: 'YourJFrogServiceConnection'  # Replace with your JFrog service connection name
+#   command: 'push'
+#   sourcePath: '$(Build.ArtifactStagingDirectory)/*'  # Path to your built images
+#   targetPath: 'docker-repo-name/'  # Replace with your JFrog Docker repository name
+#   failOnError: true
