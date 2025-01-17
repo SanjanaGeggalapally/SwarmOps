@@ -7,16 +7,12 @@ trigger:
 - main
 
 pool:
-  name: default
+  name: $(docker)
 
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Azure Container Registry'
