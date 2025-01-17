@@ -9,13 +9,10 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    if [ "$(uname)" == "Linux" ]; then
-      curl -fsSL https://get.docker.com -o get-docker.sh
-      sh get-docker.sh
-    else
-      echo "Docker installation skipped on non-Linux agent."
-    fi
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
   displayName: 'Install Docker'
+  condition: eq(variables['Agent.OS'], 'Linux')
 
 - task: ArtifactoryToolsInstaller@1
   inputs:
