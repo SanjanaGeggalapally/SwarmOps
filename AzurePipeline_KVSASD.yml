@@ -13,6 +13,11 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
+- task: ArtifactoryToolsInstaller@1
+  inputs:
+    artifactoryService: 'artifactory'
+    cliInstallationRepo: 'docker-virtual'
+
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Container Registry'
