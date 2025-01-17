@@ -9,9 +9,12 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    curl -fsSL https://get.docker.com -o get-docker.sh
-    sh get-docker.sh
-  displayName: 'Install Docker'
+    sudo yum install -y yum-utils
+    sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    sudo yum install -y docker-ce docker-ce-cli containerd.io
+    sudo systemctl start docker
+    sudo systemctl enable docker
+  displayName: 'Install Docker on Rocky Linux'
 
 - task: ArtifactoryToolsInstaller@1
   inputs:
