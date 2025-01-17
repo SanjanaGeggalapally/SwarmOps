@@ -17,6 +17,6 @@ steps:
   inputs:
     containerregistrytype: 'Container Registry'
     dockerComposeFile: '**/build-compose.yml'
+    qualifyImageNames: false
     action: 'Build services'
-    additionalImageTags: '$(Build.BuildNumber)'
 
