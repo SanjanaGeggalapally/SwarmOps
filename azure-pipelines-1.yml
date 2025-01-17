@@ -16,6 +16,6 @@ steps:
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Azure Container Registry'
-    dockerComposeFile: '**/docker-compose.yml'
+    dockerComposeFile: '**/build-compose.yml'
     action: 'Build services'
     
