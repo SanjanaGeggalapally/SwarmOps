@@ -16,7 +16,7 @@ steps:
 - task: ArtifactoryToolsInstaller@1
   inputs:
     artifactoryService: 'artifactory'
-    cliInstallationRepo: 'docker-virtual'
+    cliInstallationRepo: jfrog-cli
 
 - task: DockerCompose@0
   inputs:
