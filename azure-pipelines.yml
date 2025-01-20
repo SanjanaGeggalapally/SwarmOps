@@ -13,6 +13,10 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
+- task: ArtifactoryToolsInstaller@1
+  inputs:
+    artifactoryService: 'artifactory'
+    cliInstallationRepo: 'jfrog-cli-v2'
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Container Registry'
@@ -20,9 +24,12 @@ steps:
     qualifyImageNames: false
     action: 'Build services'
     
-# - task: ArtifactoryDocker@1
-#   inputs:
-#     command: 'push'
-#     artifactoryService: 'artifactory'
-#     targetRepo: 'docker-virtual'
-#     imageName: 'a'
+- task: ArtifactoryDocker@1
+  inputs:
+    command: 'push'
+    artifactoryService: 'artifactory'
+    targetRepo: 'rp-docker-local'
+    imageName: 'swarmops_*'
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
