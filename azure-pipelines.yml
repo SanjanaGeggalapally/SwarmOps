@@ -24,12 +24,12 @@ steps:
     qualifyImageNames: false
     action: 'Build services'
     
-- task: ArtifactoryDocker@1
-  inputs:
-    command: 'push'
-    artifactoryService: 'artifactory'
-    targetRepo: 'rp-docker-local'
-    imageName: 'swarmops_*'
-    collectBuildInfo: true
-    buildName: '$(Build.DefinitionName)'
-    buildNumber: '$(Build.BuildNumber)'
+# - task: ArtifactoryDocker@1
+#   inputs:
+#     command: 'push'
+#     artifactoryService: 'artifactory'
+#     targetRepo: 'rp-docker-local'
+#     imageName: 'swarmops_*'
+#     collectBuildInfo: true
+#     buildName: '$(Build.DefinitionName)'
+#     buildNumber: '$(Build.BuildNumber)'
