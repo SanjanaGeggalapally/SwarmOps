@@ -2,22 +2,22 @@
 services:
   frontend:
     build: 
-      context: ./frontend  # Specify the build context
+      context: ./frontend 
     ports:
-      - '8001:80'  # Exposes the frontend on port 8001
+      - '8001:80'  
     depends_on:
-      - backend  # Ensures that the backend service starts before the frontend
+      - backend  
     volumes:
-      - ./frontend:/app  # Mounts the local frontend directory to /app in the container for live updates
+      - ./frontend:/app  
 
 
   backend:
     build:
-      context: ./backend  # Specify the build context
+      context: ./backend 
     ports:
-      - '8002:5000'  # Exposes the backend on port 8002
+      - '8002:5000' 
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock  # Allows the backend to access Docker socket
+      - /var/run/docker.sock:/var/run/docker.sock  
     depends_on:
       - proxy
       - db
@@ -34,8 +34,7 @@ services:
   db:
     image: mongo:latest    
     ports:      
-      - "27017:27017"    
-    container_name: db    
+      - "27017:27017"     
     stop_signal: SIGTERM    
     volumes:       
       - database:/data/db  
