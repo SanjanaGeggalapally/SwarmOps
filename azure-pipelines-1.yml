@@ -7,14 +7,47 @@ trigger:
 - main
 
 pool:
-  name: $(docker)
+  name: $(pool)
+  demands: 
+  - Agent.Name -equals $(agent-name)
+
+variables:
+  tag: $(Build.BuildId)
+  artifactoryDomain: 'aganji.jfrog.io/aganji-docker'
+  imageNamePrefix: 'swarmops'
 
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
-- task: DockerCompose@0
+
+- task: Docker@2
   inputs:
-    containerregistrytype: 'Container Registry'
-    dockerComposeFile: '**/build-compose.yml'
-    action: 'Build services'
-    
+    command: 'build'
+    Dockerfile: '**/proxy/Dockerfile'
+    buildContext: '$(Build.SourcesDirectory)/proxy'
+    repository: '$(imageNamePrefix)-proxy'
+    tags: $(tag)
+  displayName: 'Build Docker Image'
+ 
+- task: ArtifactoryToolsInstaller@1
+  inputs:
+    artifactoryService: 'artifactory'
+    cliInstallationRepo: 'jfrog-cli'
+    installCustomVersion: true
+    cliVersion: '$(jfrogCliVersion)'
+ 
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      cd $(Build.SourcesDirectory)/proxy
+      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag) .
+- task: ArtifactoryDocker@1
+  inputs:
+    command: 'push'
+    artifactoryService: 'artifactory'
+    targetRepo: 'rp-docker-local'
+    imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag)'
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
