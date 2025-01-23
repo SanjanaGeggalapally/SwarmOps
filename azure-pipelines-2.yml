@@ -17,3 +17,4 @@ steps:
     containerregistrytype: 'Container Registry'
     dockerComposeFile: '**/build-compose.yml'
     action: 'Run services'
+    buildImages: false
