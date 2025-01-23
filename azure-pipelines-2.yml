@@ -9,9 +9,13 @@ pool:
   - Agent.Name -equals $(agent-name)
 
 steps:
-- task: DockerCompose@0
+- task: Bash@3
   inputs:
-    containerregistrytype: 'Container Registry'
-    dockerComposeFile: '**/build-compose.yml'
-    action: 'Run services'
-    buildImages: false
+    targetType: 'inline'
+    script: 'docker images'
+# - task: DockerCompose@0
+#   inputs:
+#     containerregistrytype: 'Container Registry'
+#     dockerComposeFile: '**/build-compose.yml'
+#     action: 'Run services'
+#     buildImages: false
