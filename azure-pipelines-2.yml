@@ -7,7 +7,9 @@ trigger:
 - anurag/build
 
 pool:
-  name: default
+  name: $(pool)
+  demands:
+  - Agent.Name -equals $(agent-name)
 
 steps:
 - task: DockerCompose@0
