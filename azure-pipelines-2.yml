@@ -9,17 +9,21 @@ pool:
   - Agent.Name -equals $(agent-name)
 
 steps:
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: 'docker images'
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: 'docker rmi -f swarmops_backend swarmops_frontend swarmops_proxy'
+# - task: Bash@3
+#   inputs:
+#     targetType: 'inline'
+#     script: 'docker images'
+# - task: Bash@3
+#   inputs:
+#     targetType: 'inline'
+#     script: 'docker rmi -f swarmops_backend swarmops_frontend swarmops_proxy'
 - task: Bash@3
   inputs:
     targetType: 'inline'
     script: 'ls'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'cat build-compose.yml'
 
 
