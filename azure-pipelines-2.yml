@@ -13,9 +13,13 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'docker images'
-# - task: DockerCompose@0
-#   inputs:
-#     containerregistrytype: 'Container Registry'
-#     dockerComposeFile: '**/build-compose.yml'
-#     action: 'Run services'
-#     buildImages: false
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'docker rmi -f swarmops_backend swarmops_frontend swarmops_proxy'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'ls'
+
+
