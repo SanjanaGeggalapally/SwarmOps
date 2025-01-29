@@ -23,6 +23,7 @@ steps:
       docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag) .
       cd $(Build.SourcesDirectory)/Backend
       docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) .
+      docker images
  
 - task: ArtifactoryDocker@1
   inputs:
