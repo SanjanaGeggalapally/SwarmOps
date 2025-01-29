@@ -29,7 +29,7 @@ steps:
     command: 'push'
     artifactoryService: 'artifactory'
     targetRepo: 'rp-docker-local'
-    imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy'
+    imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag)'
     collectBuildInfo: true
     buildName: '$(Build.DefinitionName)'
     buildNumber: '$(Build.BuildNumber)'
