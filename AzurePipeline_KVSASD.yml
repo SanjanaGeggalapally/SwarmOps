@@ -17,13 +17,20 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      docker system prune -af
       cd $(Build.SourcesDirectory)/proxy
+      pwd
       docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag) .
+      docker images | grep $(tag)
       cd $(Build.SourcesDirectory)/Frontend
+      pwd
       docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag) .
+      docker images | grep $(tag)
       cd $(Build.SourcesDirectory)/Backend
+      pwd
       docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) .
-      docker images
+      docker images | grep $(tag)
+      
  
 - task: ArtifactoryDocker@1
   inputs:
