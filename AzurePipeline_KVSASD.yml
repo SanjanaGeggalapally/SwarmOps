@@ -20,12 +20,15 @@ steps:
       docker system prune -af
 
       # build Proxy
+      cd $(Build.SourcesDirectory)/proxy
       docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag) -f $(Build.SourcesDirectory)/proxy/Dockerfile .
 
       # build Frontend
+      cd $(Build.SourcesDirectory)/frontend
       docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag) -f $(Build.SourcesDirectory)/frontend/Dockerfile .
 
       # build Backend
+      cd $(Build.SourcesDirectory)/backend
       docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) -f $(Build.SourcesDirectory)/backend/Dockerfile .
       docker images | grep $(tag)
       
