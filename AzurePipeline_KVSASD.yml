@@ -18,17 +18,15 @@ steps:
     targetType: 'inline'
     script: |
       docker system prune -af
-      cd $(Build.SourcesDirectory)/proxy
-      pwd
-      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag) .
-      docker images | grep $(tag)
-      cd $(Build.SourcesDirectory)/Frontend
-      pwd
-      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag) .
-      docker images | grep $(tag)
-      cd $(Build.SourcesDirectory)/Backend
-      pwd
-      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) .
+
+      # build Proxy
+      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag) -f $(Build.SourcesDirectory)/proxy/Dockerfile .
+
+      # build Frontend
+      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag) -f $(Build.SourcesDirectory)/frontend/Dockerfile .
+
+      # build Backend
+      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) -f $(Build.SourcesDirectory)/backend/Dockerfile .
       docker images | grep $(tag)
       
  
