@@ -24,6 +24,8 @@ stages:
               script: | 
                 docker images
 
+                docker image prune -f 
+                docker container prune -f 
                 # docker rmi -f swarmops_frontend swarmops_backend swarmops_proxy
 
                 docker rmi -f $(docker images | grep swarmops)
@@ -113,6 +115,9 @@ stages:
             targetType: 'inline'
             script: |
               docker compose -f build-compose.yml down
+              
+              docker ps -a 
+
               echo "Compose Down Task ran"
 
       
