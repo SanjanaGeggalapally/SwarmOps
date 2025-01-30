@@ -11,7 +11,7 @@ pool:
 variables:
   tag: $(Build.BuildNumber)
   imageNamePrefix: 'swarmops'
-  buildAndPush: false
+  buildAndPush: true
 
 stages:
   - stage: dockerps
@@ -23,12 +23,12 @@ stages:
               targetType: 'inline'
               script: | 
                 # docker rmi -f swarmops_frontend swarmops_backend swarmops_proxy
-                # docker rmi -f $(docker images | grep swarmops)
+                docker rmi -f $(docker images | grep swarmops)
                 docker ps 
-                docker stop 4f1c 19d4 e86b
-                docker ps 
-                docker images
-                docker rmi -f f08e39122805 1891224f54e3 7de16dd97504
+                # docker stop 4f1c 19d4 e86b
+                # docker ps 
+                # docker images
+                # docker rmi -f f08e39122805 1891224f54e3 7de16dd97504
                 docker images
 
   - stage: BuildAndPush
