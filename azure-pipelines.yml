@@ -30,7 +30,7 @@ stages:
 
                 docker rmi -f $(docker images | grep swarmops)
 
-                docker ps -a 
+                docker ps 
 
 
   - stage: BuildAndPush
@@ -116,7 +116,7 @@ stages:
             script: |
               docker compose -f build-compose.yml down
               
-              docker ps -a 
+              docker ps
 
               echo "Compose Down Task ran"
 
