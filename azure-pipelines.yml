@@ -11,7 +11,7 @@ pool:
 variables:
   tag: $(Build.BuildNumber)
   imageNamePrefix: 'swarmops'
-  buildAndPush: false
+  buildAndPush: true
 
 stages:
   - stage: Checking 
