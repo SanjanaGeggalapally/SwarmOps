@@ -11,19 +11,19 @@ pool:
 variables:
   tag: $(Build.BuildNumber)
   imageNamePrefix: 'swarmops'
-  job1: true
+  buildAndPush: true
 
 stages:
-  - stage: Stage1
+  - stage: BuildAndPush
+    condition: eq(variables['buildAndPush'], true)
     jobs:
-      - job: Job1
-        condition: eq(variables['job1'], true)
+      - job: BuildAndPush
         steps:
         - task: Bash@3
           inputs:
             targetType: 'inline'
             script: |
-              # docker system prune -af
+              # # docker system prune -af
 
               # # build Proxy
               # cd $(Build.SourcesDirectory)/proxy
@@ -37,45 +37,65 @@ stages:
               # cd $(Build.SourcesDirectory)/backend
               # docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) -f $(Build.SourcesDirectory)/backend/Dockerfile .
               # docker images | grep $(tag)
-              echo "Job 1 ran."
-      
-      - job: Job2
-        condition: eq(variables['job1'], false)
+              echo "Build and Push Job 1 ran"
+   
+        # - task: ArtifactoryDocker@1
+        #   inputs:
+        #     command: 'push'
+        #     artifactoryService: 'artifactory'
+        #     targetRepo: 'rp-docker-local'
+        #     imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag)'
+        #     collectBuildInfo: true
+        #     buildName: '$(Build.DefinitionName)'
+        #     buildNumber: '$(Build.BuildNumber)'
+
+
+        # - task: ArtifactoryDocker@1
+        #   inputs:
+        #     command: 'push'
+        #     artifactoryService: 'artifactory'
+        #     targetRepo: 'rp-docker-local'
+        #     imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag)'
+        #     collectBuildInfo: true
+        #     buildName: '$(Build.DefinitionName)'
+        #     buildNumber: '$(Build.BuildNumber)'
+
+        # - task: ArtifactoryDocker@1
+        #   inputs:
+        #     command: 'push'
+        #     artifactoryService: 'artifactory'
+        #     targetRepo: 'rp-docker-local'
+        #     imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag)'
+        #     collectBuildInfo: true
+        #     buildName: '$(Build.DefinitionName)'
+        #     buildNumber: '$(Build.BuildNumber)'
+  
+  - stage: ComposeUp
+    dependsOn: BuildAndPush
+    condition: succeeded('BuildAndPush')  
+    jobs:
+      - job: ComposeUp
         steps:
         - task: Bash@3
           inputs:
             targetType: 'inline'
             script: |
-              echo "Job 2 ran."
+              # export IMAGE_TAG=
+              # docker compose -f build-compose.yml up
+              echo "Compose Up Task ran"
+
+  
+  - stage: ComposeDown
+    condition: eq(variables['buildAndPush'], false)
+    jobs:
+      - job: ComposeDown
+        steps:
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: |
+              # docker compose down
+              echo "Compose Down Task ran"
+
       
  
-# - task: ArtifactoryDocker@1
-#   inputs:
-#     command: 'push'
-#     artifactoryService: 'artifactory'
-#     targetRepo: 'rp-docker-local'
-#     imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag)'
-#     collectBuildInfo: true
-#     buildName: '$(Build.DefinitionName)'
-#     buildNumber: '$(Build.BuildNumber)'
-
-
-# - task: ArtifactoryDocker@1
-#   inputs:
-#     command: 'push'
-#     artifactoryService: 'artifactory'
-#     targetRepo: 'rp-docker-local'
-#     imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag)'
-#     collectBuildInfo: true
-#     buildName: '$(Build.DefinitionName)'
-#     buildNumber: '$(Build.BuildNumber)'
-
-# - task: ArtifactoryDocker@1
-#   inputs:
-#     command: 'push'
-#     artifactoryService: 'artifactory'
-#     targetRepo: 'rp-docker-local'
-#     imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag)'
-#     collectBuildInfo: true
-#     buildName: '$(Build.DefinitionName)'
-#     buildNumber: '$(Build.BuildNumber)'
