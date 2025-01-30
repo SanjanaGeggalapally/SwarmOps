@@ -11,14 +11,35 @@ pool:
 variables:
   tag: $(Build.BuildNumber)
   imageNamePrefix: 'swarmops'
-  buildAndPush: true
+  buildAndPush: false
 
 stages:
+  - stage: Checking 
+    condition: eq(variables['buildAndPush'], false)
+    jobs:
+      - job: Checking
+        steps:
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: |
+              docker images 
+              docker ps -a
+              docker system prune -af
+              
   - stage: BuildAndPush
     condition: eq(variables['buildAndPush'], true)
     jobs:
       - job: BuildAndPush
         steps:
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: |
+              docker images 
+              docker ps -a
+              docker system prune -af
+
         - task: Bash@3
           inputs:
             targetType: 'inline'
