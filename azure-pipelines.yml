@@ -1,36 +1,65 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
-
+ branches:
+   include:
+   - deploy-services
+ 
 pool:
-  vmImage: 'ubuntu-latest'
   name: $(pool)
-
+  demands: 
+  - Agent.Name -equals $(agent-name)
+ 
+variables:
+  tag: $(Build.BuildNumber)
+  imageNamePrefix: 'swarmops'
+ 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      docker system prune -af
 
-- task: ArtifactoryToolsInstaller@1
+      # build Proxy
+      cd $(Build.SourcesDirectory)/proxy
+      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag) -f $(Build.SourcesDirectory)/proxy/Dockerfile .
+
+      # build Frontend
+      cd $(Build.SourcesDirectory)/frontend
+      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag) -f $(Build.SourcesDirectory)/frontend/Dockerfile .
+
+      # build Backend
+      cd $(Build.SourcesDirectory)/backend
+      docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) -f $(Build.SourcesDirectory)/backend/Dockerfile .
+      docker images | grep $(tag)
+      
+ 
+- task: ArtifactoryDocker@1
   inputs:
+    command: 'push'
     artifactoryService: 'artifactory'
-    cliInstallationRepo: 'jfrog-cli-v2'
-- task: DockerCompose@0
+    targetRepo: 'rp-docker-local'
+    imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag)'
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+
+
+- task: ArtifactoryDocker@1
   inputs:
-    containerregistrytype: 'Container Registry'
-    dockerComposeFile: '**/build-compose.yml'
-    qualifyImageNames: false
-    action: 'Build services'
-    
-# - task: ArtifactoryDocker@1
-#   inputs:
-#     command: 'push'
-#     artifactoryService: 'artifactory'
-#     targetRepo: 'rp-docker-local'
-#     imageName: 'swarmops_*'
-#     collectBuildInfo: true
-#     buildName: '$(Build.DefinitionName)'
-#     buildNumber: '$(Build.BuildNumber)'
+    command: 'push'
+    artifactoryService: 'artifactory'
+    targetRepo: 'rp-docker-local'
+    imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag)'
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+
+- task: ArtifactoryDocker@1
+  inputs:
+    command: 'push'
+    artifactoryService: 'artifactory'
+    targetRepo: 'rp-docker-local'
+    imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag)'
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
