@@ -22,11 +22,14 @@ stages:
             inputs:
               targetType: 'inline'
               script: | 
+                docker images
+
+                # docker rmi -f swarmops_frontend swarmops_backend swarmops_proxy
+
+                docker rmi -f $(docker images | grep swarmops)
+
                 docker ps -a 
 
-                docker compose ps 
-
-                docker images
 
   - stage: BuildAndPush
     condition: eq(variables['buildAndPush'], true)
