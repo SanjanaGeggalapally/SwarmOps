@@ -28,9 +28,11 @@ stages:
                 # docker ps 
                 # docker rmi -f f08e39122805 1891224f54e3 7de16dd97504
                 docker images
-          - task: InlinePowershell@1
-            inputs:
-              Script: 'Set-Content $(Build.SourcesDirectory)/.env "LATEST_IMAGE_TAG=$(Build.BuildNumber)"'
+
+                echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/sample.txt
+          # - task: InlinePowershell@1
+          #   inputs:
+          #     Script: 'Set-Content $(Build.SourcesDirectory)/.env "LATEST_IMAGE_TAG=$(Build.BuildNumber)"'
 
   - stage: BuildAndPush
     condition: eq(variables['buildAndPush'], true)
