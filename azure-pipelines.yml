@@ -28,7 +28,7 @@ stages:
                 # docker images
                 # docker rmi -f f08e39122805 1891224f54e3 7de16dd97504
                 docker images
-                echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/.env
+                Set-Content $(Build.SourcesDirectory)/.env "LATEST_IMAGE_TAG=$(Build.BuildNumber)"
 
   - stage: BuildAndPush
     condition: eq(variables['buildAndPush'], true)
