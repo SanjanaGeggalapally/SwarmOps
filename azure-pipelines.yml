@@ -120,8 +120,8 @@ stages:
               docker compose -f build-compose.yml down
               
               docker ps
-              
-              echo $LATEST_IMAGE_TAG
+
+              echo $(LATEST_IMAGE_TAG)
               echo "Compose Down Task ran"
 
       
