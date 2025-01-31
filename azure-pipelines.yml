@@ -39,7 +39,7 @@ stages:
                 git config --global user.name "Abhishek Ganji"
                 git add sample.txt
                 git commit -m "Updated build ID in sample.txt"
-                git push origin deploy-services
+                git push origin HEAD:refs/heads/deploy-services
                 # echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/.env
                 # export LATEST_IMAGE_TAG=$(Build.BuildNumber)
 
