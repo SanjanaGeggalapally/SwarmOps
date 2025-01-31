@@ -30,6 +30,7 @@ stages:
                 docker images
 
                 echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/sample.txt
+                echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/.env
           # - task: InlinePowershell@1
           #   inputs:
           #     Script: 'Set-Content $(Build.SourcesDirectory)/.env "LATEST_IMAGE_TAG=$(Build.BuildNumber)"'
