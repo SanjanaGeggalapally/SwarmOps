@@ -21,14 +21,16 @@ stages:
               targetType: 'inline'
               script: | 
                 # docker rmi -f swarmops_frontend swarmops_backend swarmops_proxy
+                docker images
                 docker rmi -f $(docker images | grep swarmops)
                 docker ps 
                 # docker stop 4f1c 19d4 e86b
                 # docker ps 
-                # docker images
                 # docker rmi -f f08e39122805 1891224f54e3 7de16dd97504
                 docker images
-                Set-Content $(Build.SourcesDirectory)/.env "LATEST_IMAGE_TAG=$(Build.BuildNumber)"
+          - task: InlinePowershell@1
+            inputs:
+              Script: 'Set-Content $(Build.SourcesDirectory)/.env "LATEST_IMAGE_TAG=$(Build.BuildNumber)"'
 
   - stage: BuildAndPush
     condition: eq(variables['buildAndPush'], true)
@@ -111,9 +113,11 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
+              docker ps
+              
               docker compose -f build-compose.yml down
               
-              # docker ps
+              docker ps
 
               echo "Compose Down Task ran"
 
