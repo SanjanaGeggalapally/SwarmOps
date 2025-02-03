@@ -130,7 +130,7 @@ stages:
               
               docker ps
 
-              echo $(LATEST_IMAGE_TAG)
+              cat sample.txt
               echo "Compose Down Task ran"
 
       
