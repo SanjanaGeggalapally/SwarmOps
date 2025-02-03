@@ -30,9 +30,9 @@ stages:
               docker ps 
               docker images
 
-              LATEST_IMAGE_TAG=$(Build.BuildNumber)
-              export LATEST_IMAGE_TAG
-              echo "$LATEST_IMAGE_TAG"
+              # LATEST_IMAGE_TAG=$(Build.BuildNumber)
+              # export LATEST_IMAGE_TAG
+              # echo "$LATEST_IMAGE_TAG"
 
               # build Proxy
               cd $(Build.SourcesDirectory)/proxy
@@ -89,7 +89,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              docker compose -f build-compose.yml up -d
+              LATEST_IMAGE_TAG=$(Build.BuildNumber) docker compose -f build-compose.yml up -d
               echo "Compose Up Task ran"
 
   
