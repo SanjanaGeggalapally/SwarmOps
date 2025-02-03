@@ -9,42 +9,9 @@ pool:
 variables:
   tag: $(Build.BuildNumber)
   imageNamePrefix: 'swarmops'
-  buildAndPush: false
+  buildAndPush: true
 
 stages:
-  - stage: dockerps
-    jobs:
-      - job: dockerps
-        steps:
-          - checkout: self
-            persistCredentials: true
-            clean: true
-
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: | 
-                # docker rmi -f swarmops_frontend swarmops_backend swarmops_proxy
-                # docker stop 4f1c 19d4 e86b
-                # docker ps 
-                # docker rmi -f f08e39122805 1891224f54e3 7de16dd97504
-                
-                docker images
-                docker rmi -f $(docker images | grep swarmops)
-                docker ps 
-                docker images
-
-                # echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/sample.txt
-                # git config --global user.email "abhishek.ganji@realpage.com"
-                # git config --global user.name "Abhishek Ganji"
-                # git add sample.txt
-                # git commit -m "Updated build ID in sample.txt"
-                # git push origin HEAD:refs/heads/deploy-services
-                # echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/.env
-                LATEST_IMAGE_TAG=$(Build.BuildNumber)
-                export LATEST_IMAGE_TAG
-                echo "$LATEST_IMAGE_TAG"
-
 
   - stage: BuildAndPush
     condition: eq(variables['buildAndPush'], true)
@@ -57,6 +24,15 @@ stages:
             script: |
 
               # docker system prune -af
+
+              docker images
+              docker rmi -f $(docker images | grep swarmops)
+              docker ps 
+              docker images
+
+              LATEST_IMAGE_TAG=$(Build.BuildNumber)
+              export LATEST_IMAGE_TAG
+              echo "$LATEST_IMAGE_TAG"
 
               # build Proxy
               cd $(Build.SourcesDirectory)/proxy
@@ -113,8 +89,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              # export IMAGE_TAG=
-              docker compose -f build-compose.yml up
+              docker compose -f build-compose.yml up -d
               echo "Compose Up Task ran"
 
   
@@ -129,14 +104,11 @@ stages:
             script: |
               docker ps
               
+              echo $LATEST_IMAGE_TAG
               docker compose -f build-compose.yml down
               
               docker ps
 
-              echo $(LATEST_IMAGE_TAG)
-
-
-              # cat sample.txt
               echo "Compose Down Task ran"
 
       
