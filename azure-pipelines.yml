@@ -34,14 +34,16 @@ stages:
                 docker ps 
                 docker images
 
-                echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/sample.txt
-                git config --global user.email "abhishek.ganji@realpage.com"
-                git config --global user.name "Abhishek Ganji"
-                git add sample.txt
-                git commit -m "Updated build ID in sample.txt"
-                git push origin HEAD:refs/heads/deploy-services
+                # echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/sample.txt
+                # git config --global user.email "abhishek.ganji@realpage.com"
+                # git config --global user.name "Abhishek Ganji"
+                # git add sample.txt
+                # git commit -m "Updated build ID in sample.txt"
+                # git push origin HEAD:refs/heads/deploy-services
                 # echo "LATEST_IMAGE_TAG=$(Build.BuildNumber)" > $(Build.SourcesDirectory)/.env
-                # export LATEST_IMAGE_TAG=$(Build.BuildNumber)
+                export LATEST_IMAGE_TAG=$(Build.BuildNumber)
+                echo $(LATEST_IMAGE_TAG)
+
 
   - stage: BuildAndPush
     condition: eq(variables['buildAndPush'], true)
@@ -129,8 +131,11 @@ stages:
               docker compose -f build-compose.yml down
               
               docker ps
+              
+              echo $(LATEST_IMAGE_TAG)
 
-              cat sample.txt
+
+              # cat sample.txt
               echo "Compose Down Task ran"
 
       
