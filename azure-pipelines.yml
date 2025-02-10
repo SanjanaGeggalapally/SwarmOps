@@ -89,7 +89,15 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
+              
               LATEST_IMAGE_TAG=$(Build.BuildNumber) docker compose -f build-compose.yml up -d
+              
+              git config --global user.email "abhishek.ganji@realpage.com"
+              git config --global user.name "Abhishek Ganji"
+              git add .env
+              git commit -m "Updated build ID in .env"
+              git push origin HEAD:refs/heads/deploy-services
+              
               echo "Compose Up Task ran"
 
   
@@ -104,7 +112,8 @@ stages:
             script: |
               docker ps
               
-              echo $LATEST_IMAGE_TAG
+              cat .env
+              
               docker compose -f build-compose.yml down
               
               docker ps
