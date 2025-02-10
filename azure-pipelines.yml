@@ -9,7 +9,7 @@ pool:
 variables:
   tag: $(Build.BuildNumber)
   imageNamePrefix: 'swarmops'
-  buildAndPush: false
+  buildAndPush: true
 
 stages:
 
@@ -30,9 +30,9 @@ stages:
               docker ps 
               docker images
 
-              # LATEST_IMAGE_TAG=$(Build.BuildNumber)
-              # export LATEST_IMAGE_TAG
-              # echo "$LATEST_IMAGE_TAG"
+              LATEST_IMAGE_TAG=$(Build.BuildNumber)
+              export LATEST_IMAGE_TAG
+              echo "$LATEST_IMAGE_TAG"
 
               # build Proxy
               cd $(Build.SourcesDirectory)/proxy
@@ -90,7 +90,7 @@ stages:
             targetType: 'inline'
             script: |
               
-              LATEST_IMAGE_TAG=$(Build.BuildNumber) docker compose -f build-compose.yml up -d
+              docker compose -f build-compose.yml up -d
               
               git config --global user.email "abhishek.ganji@realpage.com"
               git config --global user.name "Abhishek Ganji"
