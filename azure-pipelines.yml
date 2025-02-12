@@ -9,7 +9,7 @@ pool:
 variables:
   tag: $(Build.BuildNumber)
   imageNamePrefix: 'swarmops'
-  buildAndPush: true
+  buildAndPush: false
 
 stages:
 
@@ -111,6 +111,8 @@ stages:
             targetType: 'inline'
             script: |
               docker ps
+              
+              docker ps -a
               
               cat .env
               
