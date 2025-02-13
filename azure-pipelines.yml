@@ -24,15 +24,17 @@ stages:
             script: |
 
               # docker system prune -af
+              
+              # Stop older image services
+              docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+              PREV_IMAGE_TAG=$(docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops- | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
+              IMAGE_TAG=$PREV_IMAGE_TAG docker compose -f build-compose.yml down 
+              docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
 
-              docker images
-              docker rmi -f $(docker images | grep swarmops)
-              docker ps 
-              docker images
-
-              LATEST_IMAGE_TAG=$(Build.BuildNumber)
-              export LATEST_IMAGE_TAG
-              echo "$LATEST_IMAGE_TAG"
+              # Remove older images
+              docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+              docker rmi -f $(docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-)
+              docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
 
               # build Proxy
               cd $(Build.SourcesDirectory)/proxy
@@ -90,13 +92,7 @@ stages:
             targetType: 'inline'
             script: |
               
-              docker compose -f build-compose.yml up -d
-              
-              git config --global user.email "abhishek.ganji@realpage.com"
-              git config --global user.name "Abhishek Ganji"
-              git add .env
-              git commit -m "Updated build ID in .env"
-              git push origin HEAD:refs/heads/deploy-services
+              IMAGE_TAG=$(tag) docker compose -f build-compose.yml up -d
               
               echo "Compose Up Task ran"
 
@@ -109,16 +105,18 @@ stages:
         - task: Bash@3
           inputs:
             targetType: 'inline'
-            script: |
-              docker ps
-              
-              docker ps -a
-              
-              cat .env
-              
-              docker compose -f build-compose.yml down
-              
-              docker ps
+            script: | 
+
+              # Stop older image services
+              docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+              PREV_IMAGE_TAG=$(docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops- | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
+              IMAGE_TAG=$PREV_IMAGE_TAG docker compose -f build-compose.yml down 
+              docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+
+              # Remove older images
+              docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+              docker rmi -f $(docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-)
+              docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
 
               echo "Compose Down Task ran"
 
