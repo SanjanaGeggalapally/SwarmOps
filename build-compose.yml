@@ -3,6 +3,8 @@ services:
   frontend:
     
     image: artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-frontend:$IMAGE_TAG
+    container_name: swarmops_frontend    
+
     ports:
       - '8001:80'  # Exposes the frontend on port 8001
     depends_on:
@@ -14,6 +16,8 @@ services:
   backend:
   
     image: artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-backend:$IMAGE_TAG
+    container_name: swarmops_backend    
+
     ports:
       - '8002:5000'  # Exposes the backend on port 8002
     volumes:
@@ -30,13 +34,15 @@ services:
   proxy:
   
     image: artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-proxy:$IMAGE_TAG
+    container_name: swarmops_proxy    
+
     ports: ['8090:80']
     
   db:
     image: mongo:latest    
     ports:      
       - "27017:27017"    
-    container_name: db    
+    container_name: swarmops_db    
     stop_signal: SIGTERM    
     volumes:       
       - database:/data/db  

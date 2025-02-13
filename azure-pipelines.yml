@@ -9,7 +9,7 @@ pool:
 variables:
   tag: $(Build.BuildNumber)
   imageNamePrefix: 'swarmops'
-  buildAndPush: false
+  # buildAndPush: false
 
 stages:
 
@@ -26,11 +26,11 @@ stages:
               # docker system prune -af
               
               # Stop older image services
-              docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
-              PREV_IMAGE_TAG=$(docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops- | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
+              docker ps | grep swarmops
+              PREV_IMAGE_TAG=$(docker ps | grep swarmops | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
               IMAGE_TAG=$PREV_IMAGE_TAG docker compose -f build-compose.yml down 
-              docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
-
+              docker ps | grep swarmops
+              
               # Remove older images
               docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
               docker rmi -f $(docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-)
@@ -92,7 +92,11 @@ stages:
             targetType: 'inline'
             script: |
               
+              docker ps | grep swarmops
+
               IMAGE_TAG=$(tag) docker compose -f build-compose.yml up -d
+
+              docker ps | grep swarmops
               
               echo "Compose Up Task ran"
 
@@ -108,10 +112,10 @@ stages:
             script: | 
 
               # Stop older image services
-              docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
-              PREV_IMAGE_TAG=$(docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops- | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
+              docker ps | grep swarmops
+              PREV_IMAGE_TAG=$(docker ps | grep swarmops | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
               IMAGE_TAG=$PREV_IMAGE_TAG docker compose -f build-compose.yml down 
-              docker ps | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+              docker ps | grep swarmops
 
               # Remove older images
               docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
