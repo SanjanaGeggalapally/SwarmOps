@@ -47,7 +47,7 @@ stages:
               # build Backend
               cd $(Build.SourcesDirectory)/backend
               docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) -f $(Build.SourcesDirectory)/backend/Dockerfile .
-              docker images | grep $(tag)
+              docker images | grep swarmops
               # echo "Build and Push Job 1 ran"
    
         - task: ArtifactoryDocker@1
@@ -92,11 +92,11 @@ stages:
             targetType: 'inline'
             script: |
               
-              docker ps | grep swarmops
+              docker ps -a | grep swarmops
 
               IMAGE_TAG=$(tag) docker compose -f build-compose.yml up -d
 
-              docker ps | grep swarmops
+              docker ps -a | grep swarmops
               
               echo "Compose Up Task ran"
 
