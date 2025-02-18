@@ -11,7 +11,7 @@ def docker_client():
 # MongoDB connection function
 def mongo_client():
     try:
-        client = MongoClient("db:27017")  # Connect to the MongoDB service
+        client = MongoClient("swarmops_db:27017")  # Connect to the MongoDB service
         print("MongoDB connection established successfully.")
         return client
     except Exception as e:
