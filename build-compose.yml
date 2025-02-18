@@ -7,8 +7,6 @@ services:
 
     ports:
       - '8001:80'  # Exposes the frontend on port 8001
-    depends_on:
-      - backend  # Ensures that the backend service starts before the frontend
     volumes:
       - ./frontend:/app  # Mounts the local frontend directory to /app in the container for live updates
 
@@ -23,7 +21,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock  # Allows the backend to access Docker socket
     depends_on:
-      - proxy
       - db
     deploy:
       placement:
@@ -37,6 +34,9 @@ services:
     container_name: swarmops_proxy    
 
     ports: ['8090:80']
+    depends_on:
+      - frontend
+      - backend
     
   db:
     image: mongo:latest    
@@ -46,8 +46,6 @@ services:
     stop_signal: SIGTERM    
     volumes:       
       - database:/data/db  
-    depends_on:
-      - proxy
 
 volumes:  
   database: 
