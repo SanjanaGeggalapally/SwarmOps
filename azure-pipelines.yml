@@ -26,14 +26,18 @@ stages:
               # docker system prune -af
               
               # Stop older image services
+              echo "-- docker ps --"
               docker ps | grep swarmops
               PREV_IMAGE_TAG=$(docker ps | grep swarmops | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
               IMAGE_TAG=$PREV_IMAGE_TAG docker compose -f build-compose.yml down 
+              echo "-- docker ps --"
               docker ps | grep swarmops
               
               # Remove older images
+              echo "-- docker images --"
               docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
               docker rmi -f $(docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-)
+              echo "-- docker images --"
               docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
 
               # build Proxy
@@ -47,6 +51,7 @@ stages:
               # build Backend
               cd $(Build.SourcesDirectory)/backend
               docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) -f $(Build.SourcesDirectory)/backend/Dockerfile .
+              echo "-- docker images --"
               docker images | grep swarmops
               # echo "Build and Push Job 1 ran"
    
@@ -91,11 +96,13 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
+              echo "-- docker ps -a --"
               
               docker ps -a | grep swarmops
 
               IMAGE_TAG=$(tag) docker compose -f build-compose.yml up -d
 
+              echo "-- docker ps -a --"
               docker ps -a | grep swarmops
               
               echo "Proxy logs"
