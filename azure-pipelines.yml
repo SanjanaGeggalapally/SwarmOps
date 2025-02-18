@@ -98,6 +98,15 @@ stages:
 
               docker ps -a | grep swarmops
               
+              echo "Proxy logs"
+              docker logs swarmops_proxy
+              echo "Frontend logs"
+              docker logs swarmops_frontend
+              echo "Backend logs"
+              docker logs swarmops_backend
+              echo "DB logs"
+              docker logs swarmops_db
+
               echo "Compose Up Task ran"
 
   
