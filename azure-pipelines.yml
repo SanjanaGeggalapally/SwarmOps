@@ -29,6 +29,7 @@ stages:
               echo "-- docker ps --"
               docker ps | grep swarmops
               PREV_IMAGE_TAG=$(docker ps | grep swarmops | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
+              echo "-- docker compose down --"
               IMAGE_TAG=$PREV_IMAGE_TAG docker compose -f build-compose.yml down 
               echo "-- docker ps --"
               docker ps | grep swarmops
@@ -36,21 +37,26 @@ stages:
               # Remove older images
               echo "-- docker images --"
               docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+              echo "-- docker rmi --"
               docker rmi -f $(docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-)
               echo "-- docker images --"
               docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
 
               # build Proxy
+              echo "-- docker build proxy --"
               cd $(Build.SourcesDirectory)/proxy
               docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag) -f $(Build.SourcesDirectory)/proxy/Dockerfile .
 
               # build Frontend
+              echo "-- docker build frontend --"
               cd $(Build.SourcesDirectory)/frontend
               docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag) -f $(Build.SourcesDirectory)/frontend/Dockerfile .
 
               # build Backend
+              echo "-- docker build backend --"
               cd $(Build.SourcesDirectory)/backend
               docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) -f $(Build.SourcesDirectory)/backend/Dockerfile .
+              
               echo "-- docker images --"
               docker images | grep swarmops
               # echo "Build and Push Job 1 ran"
@@ -100,6 +106,7 @@ stages:
               
               docker ps -a | grep swarmops
 
+              echo "-- docker compose up --"
               IMAGE_TAG=$(tag) docker compose -f build-compose.yml up -d
 
               echo "-- docker ps -a --"
@@ -127,15 +134,21 @@ stages:
             targetType: 'inline'
             script: | 
 
-              # Stop older image services
+             # Stop older image services
+              echo "-- docker ps --"
               docker ps | grep swarmops
               PREV_IMAGE_TAG=$(docker ps | grep swarmops | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
+              echo "-- docker compose down --"
               IMAGE_TAG=$PREV_IMAGE_TAG docker compose -f build-compose.yml down 
+              echo "-- docker ps --"
               docker ps | grep swarmops
-
+              
               # Remove older images
+              echo "-- docker images --"
               docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+              echo "-- docker rmi --"
               docker rmi -f $(docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-)
+              echo "-- docker images --"
               docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
 
               echo "Compose Down Task ran"
