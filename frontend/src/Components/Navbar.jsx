@@ -12,7 +12,6 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const { isDarkTheme, logout, isLoggedIn, userRole } = useTheme(); // Destructure isLoggedIn and userRole
   const navigate = useNavigate(); // Define navigate using useNavigate hook
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
   };
