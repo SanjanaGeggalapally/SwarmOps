@@ -1,54 +1,38 @@
-FROM python:3.12
-EXPOSE 5000
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
+# Stage 1: Build stage
+FROM python:3.9-slim as builder
 
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
-
+# Set the working directory
 WORKDIR /app
 
+# Copy the requirements file
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the application code
+COPY . .
+
+# Stage 2: Production stage
+FROM python:3.9-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the dependencies from the builder stage
+COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+# Copy the application code
+COPY --from=builder /app /app
+
+# Expose the port the app runs on
+EXPOSE 5000
+
+# Set environment variables
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
-COPY requirements.txt requirements.txt
-
-RUN pip install -r requirements.txt
-
-COPY . .
-
+# Command to run the application
 CMD ["flask", "run"]
-
-# # STAGE 1
-
-# FROM python:3.12 AS build
-
-# # Keeps Python from generating .pyc files in the container
-# ENV PYTHONDONTWRITEBYTECODE=1
-
-# # Turns off buffering for easier container logging
-# ENV PYTHONUNBUFFERED=1
-
-# WORKDIR /app
-
-# ENV FLASK_APP=app.py
-# ENV FLASK_RUN_HOST=0.0.0.0
-
-# COPY . .
-
-# RUN pip install -r requirements.txt
-
-# # STAGE 2
-# FROM python:3.12-slim
-
-# WORKDIR /app
-
-# COPY --from=build /app .
-
-
-# EXPOSE 5000
-
-# ENTRYPOINT ["python3.5"]
-
-# CMD ["flask", "run"]

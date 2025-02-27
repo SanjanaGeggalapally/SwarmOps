@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
+// import HorNav from './Components/HorNav';
 import Nodes from './Components/Nodes';
 import Services from './Components/Services';
 import Home from './Components/Home';
@@ -18,7 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   //const [isAuthenticated, setIsAuthenticated] = useState(false); // Authentication state
-  
+  // <HorNav/>
  
 
   return (

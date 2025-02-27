@@ -1,36 +1,157 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+  none
 
 pool:
-  vmImage: 'ubuntu-latest'
   name: $(pool)
+  demands: 
+  - Agent.Name -equals $(agent-name)
+ 
+variables:
+  tag: $(Build.BuildNumber)
+  imageNamePrefix: 'swarmops'
+  # buildAndPush: false
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
 
-- task: ArtifactoryToolsInstaller@1
-  inputs:
-    artifactoryService: 'artifactory'
-    cliInstallationRepo: 'jfrog-cli-v2'
-- task: DockerCompose@0
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerComposeFile: '**/build-compose.yml'
-    qualifyImageNames: false
-    action: 'Build services'
-    
-# - task: ArtifactoryDocker@1
-#   inputs:
-#     command: 'push'
-#     artifactoryService: 'artifactory'
-#     targetRepo: 'rp-docker-local'
-#     imageName: 'swarmops_*'
-#     collectBuildInfo: true
-#     buildName: '$(Build.DefinitionName)'
-#     buildNumber: '$(Build.BuildNumber)'
+  - stage: BuildAndPush
+    condition: eq(variables['buildAndPush'], true)
+    jobs:
+      - job: BuildAndPush
+        steps:
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: |
+
+              # docker system prune -af
+              
+              # Stop older image services
+              echo "-- docker ps --"
+              docker ps | grep swarmops
+              PREV_IMAGE_TAG=$(docker ps | grep swarmops | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
+              echo "-- docker compose down --"
+              IMAGE_TAG=$PREV_IMAGE_TAG docker compose -f build-compose.yml down 
+              echo "-- docker ps --"
+              docker ps | grep swarmops
+              
+              # Remove older images
+              echo "-- docker images --"
+              docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+              echo "-- docker rmi --"
+              docker rmi -f $(docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-)
+              echo "-- docker images --"
+              docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+
+              # build Proxy
+              echo "-- docker build proxy --"
+              cd $(Build.SourcesDirectory)/proxy
+              docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag) -f $(Build.SourcesDirectory)/proxy/Dockerfile .
+
+              # build Frontend
+              echo "-- docker build frontend --"
+              cd $(Build.SourcesDirectory)/frontend
+              docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag) -f $(Build.SourcesDirectory)/frontend/Dockerfile .
+
+              # build Backend
+              echo "-- docker build backend --"
+              cd $(Build.SourcesDirectory)/backend
+              docker build -t artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag) -f $(Build.SourcesDirectory)/backend/Dockerfile .
+              
+              echo "-- docker images --"
+              docker images | grep swarmops
+              # echo "Build and Push Job 1 ran"
+   
+        - task: ArtifactoryDocker@1
+          inputs:
+            command: 'push'
+            artifactoryService: 'artifactory'
+            targetRepo: 'rp-docker-local'
+            imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-proxy:$(tag)'
+            collectBuildInfo: true
+            buildName: '$(Build.DefinitionName)'
+            buildNumber: '$(Build.BuildNumber)'
+
+
+        - task: ArtifactoryDocker@1
+          inputs:
+            command: 'push'
+            artifactoryService: 'artifactory'
+            targetRepo: 'rp-docker-local'
+            imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-frontend:$(tag)'
+            collectBuildInfo: true
+            buildName: '$(Build.DefinitionName)'
+            buildNumber: '$(Build.BuildNumber)'
+
+        - task: ArtifactoryDocker@1
+          inputs:
+            command: 'push'
+            artifactoryService: 'artifactory'
+            targetRepo: 'rp-docker-local'
+            imageName: 'artifacts.realpage.com/rp-docker-local/dvo/swarm/$(imageNamePrefix)-backend:$(tag)'
+            collectBuildInfo: true
+            buildName: '$(Build.DefinitionName)'
+            buildNumber: '$(Build.BuildNumber)'
+  
+  - stage: ComposeUp
+    dependsOn: BuildAndPush
+    condition: succeeded('BuildAndPush')  
+    jobs:
+      - job: ComposeUp
+        steps:
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: |
+              echo "-- docker ps -a --"
+              
+              docker ps -a | grep swarmops
+
+              echo "-- docker compose up --"
+              IMAGE_TAG=$(tag) docker compose -f build-compose.yml up -d
+
+              echo "-- docker ps -a --"
+              docker ps -a | grep swarmops
+              
+              echo "Proxy logs"
+              docker logs swarmops_proxy
+              echo "Frontend logs"
+              docker logs swarmops_frontend
+              echo "Backend logs"
+              docker logs swarmops_backend
+              echo "DB logs"
+              docker logs swarmops_db
+
+              echo "Compose Up Task ran"
+
+  
+  - stage: ComposeDown
+    condition: eq(variables['buildAndPush'], false)
+    jobs:
+      - job: ComposeDown
+        steps:
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: | 
+
+             # Stop older image services
+              echo "-- docker ps --"
+              docker ps | grep swarmops
+              PREV_IMAGE_TAG=$(docker ps | grep swarmops | sed -n 's/.*:\([0-9]*\.[0-9]*\) .*/\1/p' | head -n 1)
+              echo "-- docker compose down --"
+              IMAGE_TAG=$PREV_IMAGE_TAG docker compose -f build-compose.yml down 
+              echo "-- docker ps --"
+              docker ps | grep swarmops
+              
+              # Remove older images
+              echo "-- docker images --"
+              docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+              echo "-- docker rmi --"
+              docker rmi -f $(docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-)
+              echo "-- docker images --"
+              docker images | grep artifacts.realpage.com/rp-docker-local/dvo/swarm/swarmops-
+
+              echo "Compose Down Task ran"
+
+      
+ 
