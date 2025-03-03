@@ -10,3 +10,11 @@
     width: 100px;
     height: 100px;
   }
+  
+  .bg-light-navy {
+    background-color: #2563EB;
+  }
+
+  .hover-light-navy:hover {
+    background-color: #3B82F6;
+  }

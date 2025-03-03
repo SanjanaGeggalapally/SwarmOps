@@ -170,8 +170,8 @@ const Services = () => {
           to="/services"
           className={`ml-3 text-3xl font-bold ${
             isDarkTheme
-              ? "text-gray-300 hover:text-gray-100"
-              : "text-black hover:text-gray-900"
+              ? "text-gray-300 hover:text-white"
+              : "text-gray-700 hover:text-black"
           }`}
         >
           Services

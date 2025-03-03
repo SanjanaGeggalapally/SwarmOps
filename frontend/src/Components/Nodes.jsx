@@ -98,12 +98,12 @@ const Nodes = () => {
   };
 
   return (
-    <div className={`${isDarkTheme ? "bg-black text-white" : "bg-gray-100 text-black"} h-screen`}>
+    <div className={`${isDarkTheme ? "bg-black text-white" : "text-black"} h-screen`}>
       {isLoading && <div className="spinner">Loading...</div>}
       <div className="flex justify-between items-center">
         <Link
           to="/nodes"
-          className={`ml-3 text-3xl font-bold ${isDarkTheme ? "text-gray-300 hover:text-gray-100" : "text-gray-600 hover:text-gray-900"}`}
+          className={`ml-3 text-3xl font-bold ${isDarkTheme ? "text-gray-300 hover:text-white" : "text-gray-700 hover:text-black"}`}
         >
           Nodes
         </Link>
