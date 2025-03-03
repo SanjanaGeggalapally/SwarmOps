@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThList, faTachometerAlt, faCube, faServer, faUserPlus, faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext'; 
 import logo from '../assets/RealPage_logo.png'; // Adjust the path as necessary
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,6 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const { isDarkTheme, logout, isLoggedIn, userRole } = useTheme(); // Destructure isLoggedIn and userRole
   const navigate = useNavigate(); // Define navigate using useNavigate hook
+  const location = useLocation(); // Get the current location
+  const isLoginPage = location.pathname === '/login'; // Check if the current path is the login page
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
@@ -49,7 +51,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         <button
           onClick={toggleSidebar}
           className={`fixed top-4 left-4 z-50 p-3 rounded-full transition-all duration-100
-            ${isDarkTheme ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-delftBlue text-white hover:bg-gray-200'}`}
+            ${isDarkTheme ? 'bg-gray-700 text-white hover-light-navy' : 'bg-delftBlue text-white hover-light-navy'}`}
           aria-label="Toggle Sidebar"
         >
           <FontAwesomeIcon icon={faThList} />
@@ -81,7 +83,8 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 <Link
                   to={link}
                   className={`flex items-center p-2 rounded-lg transition-colors duration-100 
-                    ${isDarkTheme ? 'hover:bg-gray-700 hover:text-white' : 'hover:bg-gray-200 hover:text-black'}`}
+                    ${location.pathname === link ? 'bg-light-navy' : ''}
+                    ${isDarkTheme ? 'hover-light-navy hover:text-white' : 'hover-light-navy hover:text-black'}`}
                 >
                   <FontAwesomeIcon
                     icon={icon}
@@ -98,8 +101,8 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               <li>
                 <button
                   onClick={handleLogout}
-                  className={`flex items-center p-2 rounded-lg transition-colors duration-100 
-                    ${isDarkTheme ? 'hover:bg-gray-700 hover:text-white' : 'hover:bg-gray-200 hover:text-black'}`}
+                  className={`flex items-center w-full p-2 rounded-lg transition-colors duration-100 
+                    ${isDarkTheme ? 'hover-light-navy hover:text-white' : 'hover-light-navy hover:text-black'}`}
                 >
                   <FontAwesomeIcon
                     icon={faSignOutAlt}
@@ -115,8 +118,9 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               <li>
                 <button
                   onClick={() => { navigate("/login") }}
-                  className={`flex items-center p-2 rounded-lg transition-colors duration-100 
-                    ${isDarkTheme ? 'hover:bg-gray-700 hover:text-white' : 'hover:bg-gray-200 hover:text-black'}`}
+                  className={`flex items-center w-full p-2 rounded-lg transition-colors duration-100 
+                    ${isLoginPage ? 'bg-light-navy' : ''}
+                    ${isDarkTheme ? 'hover-light-navy hover:text-white' : 'hover-light-navy hover:text-black'}`}
                 >
                   <FontAwesomeIcon
                     icon={faSignInAlt}
