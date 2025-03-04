@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 // import HorNav from './Components/HorNav';
@@ -21,6 +21,15 @@ const App = () => {
   //const [isAuthenticated, setIsAuthenticated] = useState(false); // Authentication state
   // <HorNav/>
  
+  // Effect to lock scrolling
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+  
+    // Cleanup function to reset overflow when component unmounts
+    return () => {
+      document.body.style.overflow = ''; // Allow scrolling by removing the useEffect Feature
+    };
+  }, []);
 
   return (
     <ThemeProvider>
