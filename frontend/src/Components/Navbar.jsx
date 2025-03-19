@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThList, faTachometerAlt, faCube, faServer, faUserPlus, faSignOutAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext'; 
 import logo from '../assets/RealPage_logo.png'; // Adjust the path as necessary
 import { ToastContainer, toast } from 'react-toastify';
@@ -80,10 +80,10 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               ...(userRole === 'superadmin' ? [{ name: 'Users', icon: faUserPlus, link: '/users' }] : []),
             ].map(({ name, icon, link }) => (
               <li key={name}>
-                <Link
+                <NavLink
                   to={link}
-                  className={`flex items-center p-2 rounded-lg transition-colors duration-100 
-                    ${location.pathname === link ? 'bg-light-navy' : ''}
+                  className={({ isActive }) => `flex items-center p-2 rounded-lg transition-colors duration-100 
+                    ${isActive ? 'bg-light-navy' : ''}
                     ${isDarkTheme ? 'hover-light-navy hover:text-white' : 'hover-light-navy hover:text-black'}`}
                 >
                   <FontAwesomeIcon
@@ -92,7 +92,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                       ${isDarkTheme ? 'text-gray-400' : ' text-white'}`}
                   />
                   <span className={`${isDarkTheme ? 'text-gray-400' : ' text-white'} ms-3 ${isSidebarOpen ? 'block' : 'hidden'}`}>{name}</span>
-                </Link>
+                </NavLink>
               </li>
             ))}
             {/* Conditionally render the Logout Button */}
