@@ -16,7 +16,7 @@ The backend API supports the frontend application by providing endpoints for man
 
 ### Utility Functions
 
-For more information on the utility functions used in the backend, please refer to the [Utilities Documentation](utils/README.md).
+For more information on the utility functions used in the backend, please refer to the [Utilities Documentation](../utils.md).
 
 ## API Endpoints
 
@@ -108,4 +108,4 @@ For more information on the utility functions used in the backend, please refer 
 For further information, you can refer to the following resources:
 
 - [Return to Project Overview](../README.md): Navigate back to the main documentation for an overview of the entire project.
-- [Frontend Documentation](../frontend/README.md): Detailed information about the frontend application.
+- [Frontend Documentation](../frontend.md): Detailed information about the frontend application.

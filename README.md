@@ -54,8 +54,8 @@ SwarmOps makes building and running the application effortless with automation p
 
 For further information, you can refer to the following documentation:
 
-- [Frontend Documentation](../frontend/README.md): Detailed information about the React + Vite frontend application.
-- [Backend Documentation](../backend/README.md): Comprehensive details about the backend API and its functionalities.
+- [Frontend Documentation](../documentation/README.md): Detailed information about the React + Vite frontend application.
+- [Backend Documentation](../documentation/README.md): Comprehensive details about the backend API and its functionalities.
 
 # Contribution
 

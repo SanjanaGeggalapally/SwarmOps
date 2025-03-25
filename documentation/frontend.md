@@ -18,4 +18,4 @@ Two official plugins are available for integrating React with Vite:
 For further information, you can refer to the following resources:
 
 - [Return to Project Overview](../README.md): Navigate back to the main documentation for an overview of the entire project.
-- [Backend Documentation](../backend/README.md): Detailed information about the backend API and its functionalities.
+- [Backend Documentation](../backend.md): Detailed information about the backend API and its functionalities.

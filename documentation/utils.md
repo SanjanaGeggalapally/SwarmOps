@@ -56,7 +56,7 @@ This file contains general utility functions that are used throughout the backen
 
 ## Usage
 
-These utility functions are imported and used in the main application (`app.py`) to streamline operations related to Docker and MongoDB, as well as to handle errors gracefully. For more information on the backend API, please refer to the [Backend API Documentation](../README.md).
+These utility functions are imported and used in the main application (`app.py`) to streamline operations related to Docker and MongoDB, as well as to handle errors gracefully. For more information on the backend API, please refer to the [Backend API Documentation](../backend.md).
 
 ## Contribution
 
