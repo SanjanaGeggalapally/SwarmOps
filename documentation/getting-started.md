@@ -37,4 +37,4 @@ SwarmOps makes building and running the application effortless with automation p
 
 ---
 
-**[← Go Back to Previous Section](../README.md)**
+**[← Go Back to Previous Section](../user-guide.md)**
