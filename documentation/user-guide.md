@@ -10,3 +10,7 @@ Welcome to the User Guide for SwarmOps! This document will help you understand h
 - **[Tracking Tasks](user/service-inspect.md)**: Inspect services to view details about tasks running on them.
 - **[Managing Users](user/users.md)**: Only **SuperAdmins** can access the user management page and manage all users within the application.
 - **[Login and Logout](user/login-logout.md)**: Learn how to log in and out of the SwarmOps application.
+
+---
+
+**[← Back to Previous Section](../README.md)**
