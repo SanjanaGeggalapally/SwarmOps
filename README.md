@@ -4,7 +4,9 @@
 
 # Getting Started
 
-To begin using SwarmOps, please select your role:
+Before diving into SwarmOps, ensure your setup is ready. Here's how you can get started:
 
-- **[User Guide](documentation\user-guide.md)**: Explore the features and functionalities available to users.
-- **[Administrator Guide](documentation\administrator-guide.md)**: Learn about the application’s architecture and setup for administrators.
+- **[Installation & Setup Guide](documentation/getting-started.md)**: Learn about installation dependencies, building, and running the application.
+---
+- **[User Guide](documentation/user-guide.md)**: Explore the features and functionalities available to users.
+- **[Administrator Guide](documentation/administrator-guide.md)**: Explore a detailed breakdown of the architecture, feature functionality tailored for administrators.
