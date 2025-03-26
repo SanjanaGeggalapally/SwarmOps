@@ -26,4 +26,4 @@ _This image depicts the layout and detailed structure of the Services Page._
 
 ---
 
-**[← Back to the user-guide](../user-guide.md)**
+**[← Go Back to the User Guide](../user-guide.md)**

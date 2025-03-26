@@ -21,5 +21,4 @@ _The image above illustrates the task details provided during service inspection
 
 ---
 
-**[← Back to the user-guide](../user-guide.md)**
-
+**[← Go Back to the User Guide](../user-guide.md)**

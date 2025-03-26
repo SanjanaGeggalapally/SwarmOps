@@ -18,4 +18,4 @@ _The image above illustrates the layout and functionality of the Users Section._
 
 ---
 
-**[← Back to the user-guide](../user-guide.md)**
+**[← Go Back to the User Guide](../user-guide.md)**

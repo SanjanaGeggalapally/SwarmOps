@@ -44,6 +44,7 @@ The logout system ensures secure termination of user sessions. This is essential
 ## Visual Reference
 
 ![Logout Visual Representation](images/logout.png)
+
 ---
 
-**[← Back to the user-guide](../user-guide.md)**
+**[← Go Back to the User Guide](../user-guide.md)**

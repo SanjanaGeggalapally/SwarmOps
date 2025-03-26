@@ -15,4 +15,4 @@ _The image above provides a detailed visual representation of the Home Page layo
 
 ---
 
-**[← Back to the user-guide](../user-guide.md)**
+**[← Go Back to the User Guide](../user-guide.md)**

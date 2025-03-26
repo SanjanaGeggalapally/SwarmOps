@@ -26,4 +26,4 @@ _This image illustrates the layout and detailed structure of the Nodes section._
 
 ---
 
-**[← Back to the user-guide](../user-guide.md)**
+**[← Go Back to the User Guide](../user-guide.md)**
