@@ -6,5 +6,5 @@
 
 To begin using SwarmOps, please select your role:
 
-- **[User  Guide](../documentation/user-guide.md)**: Explore the features and functionalities available to users.
-- **[Administrator Guide](../documentation/administrator-guide.md)**: Learn about the application’s architecture and setup for administrators.
+- **[User Guide](documentation\user-guide.md)**: Explore the features and functionalities available to users.
+- **[Administrator Guide](documentation\administrator-guide.md)**: Learn about the application’s architecture and setup for administrators.
