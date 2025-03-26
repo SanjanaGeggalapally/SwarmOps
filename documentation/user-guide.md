@@ -13,4 +13,8 @@ Welcome to the User Guide for SwarmOps! This document will help you understand h
 
 ---
 
-**[<===== Back to Previous Section](../README.md)**
+
+
+<div align="right">
+<a href="../README.md"><b>← Back to Previous Section</b></a>
+</div>
