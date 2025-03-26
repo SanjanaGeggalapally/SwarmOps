@@ -14,5 +14,5 @@ Welcome to the User Guide for SwarmOps! This document will help you understand h
 ---
 
 <div align="right">
-<a href="../swarmops/README.md"><b>← Back to Previous Section</b></a>
+<a href="/swarmops/README.md"><b>← Back to Previous Section</b></a>
 </div>
