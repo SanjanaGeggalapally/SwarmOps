@@ -213,7 +213,7 @@ const Nodes = () => {
                   <td className={isDarkTheme ? "px-6 py-4 font-medium text-gray-400 whitespace-nowrap text-center" : "px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"}>
                     {data.updated_at ?? "Null"}
                   </td>
-                  <td className={isDarkTheme ? "px-6 py-4 text-right text-center" : "px-6 py-4 text-right text-center"}>
+                  <td className={isDarkTheme ? "px-6 py-4 text-center" : "px-6 py-4 text-center"}>
                     {editableNode?.id === data.id ? (
                       <button
                         onClick={() => handleSaveClick(editableNode)}
