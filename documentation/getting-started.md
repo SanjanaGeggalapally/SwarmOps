@@ -7,7 +7,7 @@ To install the project, clone the repository to your local machine. Open your te
 
     git clone https://devtfs.realpage.com/tfs/Realpage/DevOpsInterns2024/_git/swarmops
 
-## Software dependencies
+## System Prerequisites
 Before running the project, ensure you have the following software installed on your system:
 1. **Docker** Installation: [Download Docker](https://www.docker.com/get-started) (for Containerization)
 2. **Node.js** Installation: [Download Node.js](https://nodejs.org) (for Frontend Development)
@@ -16,7 +16,7 @@ Before running the project, ensure you have the following software installed on 
 
 The project uses Dockerfiles to automatically install the dependencies specified in requirements.txt for the backend and the necessary packages for the frontend.
 
-## API references
+## API References
 ### Frontend Application
 **Base URL:** [http://swarmops_frontend:80/]()  
 **Description:** This serves the React frontend application. All requests to the root URL will be handled by the frontend service.
