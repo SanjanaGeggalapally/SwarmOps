@@ -6,10 +6,10 @@ This document explains the implementation and functionality of node management i
 
 ## Overview
 
-Node Management in SwarmOps allows administrators to:
-- Retrieve detailed information about nodes in the Docker Swarm cluster.
-- Edit the hostname of a node in the Docker Swarm cluster.
-- Delete a node from the Docker Swarm cluster.
+Node Management in SwarmOps enables administrators to:  
+- View and retrieve comprehensive details about nodes, including hostname, role, and status, in the Docker Swarm cluster.  
+- Modify node configurations, such as updating hostnames or removing nodes no longer required in the cluster.  
+- Search for nodes efficiently using attributes like hostname, role, or status, simplifying overall management.
 
 Other node-related actions, such as draining, updating roles, or rejoining nodes, must be performed manually using command-line tools or scripts.
 

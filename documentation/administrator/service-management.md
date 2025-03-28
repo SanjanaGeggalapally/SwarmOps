@@ -6,10 +6,10 @@ This document explains the implementation of service management features in Swar
 
 ## Overview
 
-The Service Management module in SwarmOps allows administrators to:
-- Monitor service status and performance.
-- Scale services to meet dynamic application demands.
-- Deploy rolling updates to services.
+The Service Management module in SwarmOps allows administrators to:  
+- Monitor service status and performance.  
+- Scale services to meet dynamic application demands.  
+- Search for services using predefined attributes for efficient management.
 
 ---
 

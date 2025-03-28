@@ -6,14 +6,14 @@ This document explains the implementation of Role-Based Access Control (RBAC) in
 
 ## Overview
 
-RBAC in SwarmOps empowers administrators to control access to sensitive resources and operations within the Docker Swarm cluster. By utilizing roles such as **Admin** and **Superadmin**, it ensures that permissions are tailored to user responsibilities, fostering security and preventing unauthorized actions.
+RBAC in SwarmOps empowers administrators to control access to sensitive resources and operations within the Docker Swarm cluster. By utilizing roles such as **User**, **Admin**, and **Superadmin**, it ensures that permissions are tailored to user responsibilities, fostering security and preventing unauthorized actions.
 
 ---
 
 ## Key Features
 
 1. **Role Definition**:
-   - Roles such as **Admin** and **Superadmin** determine the scope of permissions within the application.
+   - Roles such as **User**, **Admin**, and **Superadmin** determine the scope of permissions within the application.
 
 2. **Granular Access Control**:
    - Permissions are assigned based on roles, ensuring users can only perform actions relevant to their responsibilities.
@@ -27,8 +27,9 @@ RBAC in SwarmOps empowers administrators to control access to sensitive resource
 
 | **Role**        | **Description**                                           | **Permissions**                                 |
 |------------------|-----------------------------------------------------------|------------------------------------------------|
-| **Superadmin**   | Has access to all features, including user management.    | Can manage users (add, edit, delete), services, and nodes. |
-| **Admin**        | Can view and manage everything except user management.    | Full access to services and nodes but restricted from managing users. |
+| **Superadmin**   | Oversees everything with full control over the system.    | Can manage users (add, edit, delete), services, and nodes. |
+| **Admin**        | Operates and maintains services and nodes.                | Has full access to services and nodes but restricted from managing users. |
+| **User**         | Views the system passively with no operational controls.  | Can only view details of nodes and services but cannot edit or modify anything. |
 
 ---
 
@@ -52,7 +53,7 @@ RBAC in SwarmOps is seamlessly integrated into the backend:
 
 - **User Management**:
   - Endpoints such as `POST /addUser`, `PUT /editUser/<username>`, and `DELETE /deleteUser/<username>` allow Superadmins to manage users and assign roles.
-  - Admins are restricted from accessing these endpoints.
+  - Admins and unauthenticated users (User role) are restricted from accessing these endpoints.
 
 - **Middleware**:
   - A middleware function validates JWT tokens, checks user roles, and ensures only authorized users can access specific endpoints.
@@ -109,7 +110,7 @@ RBAC in SwarmOps is seamlessly integrated into the backend:
 
 ---
 
-This document explains the RBAC implementation in SwarmOps, focusing on assigning roles, controlling permissions, and securing access to resources. It emphasizes how **Admins** can manage services and nodes, while **Superadmins** have additional capabilities for managing users.
+This document explains the RBAC implementation in SwarmOps, focusing on assigning roles, controlling permissions, and securing access to resources. It emphasizes how **Users** can only view nodes and services, while **Admins** can manage them fully, and **Superadmins** have additional capabilities for managing users.
 
 ---
 
