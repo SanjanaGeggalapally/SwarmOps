@@ -64,11 +64,6 @@ Other node-related actions, such as draining, updating roles, or rejoining nodes
 - **Endpoint**: `DELETE /nodes/<node_id>`
 - **Description**:
   - Deletes a specific node from the Swarm cluster.
-- **Request Body**:
-  ```json
-  {
-    "hostname": "<new_hostname>"
-  }
 - **Response**:
   - Confirmation message upon successful node deletion.
 
