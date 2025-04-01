@@ -110,8 +110,4 @@ RBAC in SwarmOps is seamlessly integrated into the backend:
 
 ---
 
-This document explains the RBAC implementation in SwarmOps, focusing on assigning roles, controlling permissions, and securing access to resources. It emphasizes how **Users** can only view nodes and services, while **Admins** can manage them fully, and **Superadmins** have additional capabilities for managing users.
-
----
-
 **[← Go Back to the Administrator Guide](../administrator-guide.md)**

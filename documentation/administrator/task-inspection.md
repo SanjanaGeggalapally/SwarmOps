@@ -45,8 +45,4 @@ Task Inspection in SwarmOps enables administrators to:
 
 ---
 
-This document provides insight into how Task Inspection is implemented in SwarmOps, enabling administrators to efficiently monitor and debug tasks within Docker Swarm.
-
----
-
 **[← Go Back to the Administrator Guide](../administrator-guide.md)**

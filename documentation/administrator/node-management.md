@@ -79,11 +79,7 @@ Node Management in SwarmOps seamlessly integrates with the frontend, ensuring a 
 
 3. **Node Deletion**:
    - Enables administrators to remove nodes from the cluster via the `DELETE /nodes/<node_id>` endpoint, ensuring a simple and efficient workflow.
-
----
-
-This document clarifies the node management features in SwarmOps, focusing on retrieving node details, editing hostnames, and deleting nodes while acknowledging that other operations require manual execution via command-line tools.
-
+   
 ---
 
 **[← Go Back to the Administrator Guide](../administrator-guide.md)**

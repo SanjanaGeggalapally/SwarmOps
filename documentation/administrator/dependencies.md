@@ -47,8 +47,4 @@ Azure Pipelines are employed for automating the frontend build, testing, and dep
 
 ---
 
-This detailed breakdown ensures that developers and administrators have a clear understanding of the dependencies required for both backend and frontend functionality.
-
----
-
 **[← Go Back to the Administrator Guide](../administrator-guide.md)**
