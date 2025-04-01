@@ -73,8 +73,4 @@ The frontend communicates with the backend using RESTful principles:
 
 ---
 
-This document explains the service management capabilities in SwarmOps, focusing on monitoring services, scaling replicas, and deleting outdated services, while ensuring smooth integration with the frontend for efficient operation.
-
----
-
 **[← Go Back to the Administrator Guide](../administrator-guide.md)**
