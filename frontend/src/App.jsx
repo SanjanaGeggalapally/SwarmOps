@@ -43,7 +43,7 @@ const MainContent = ({ isSidebarOpen }) => {
         <Route path="/nodes" element={<Nodes />} />
         <Route path="/services" element={<Services />} />
         <Route
-          path="/adduser"
+          path="/users/adduser"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn} userRole={userRole}>
               <AddUser />

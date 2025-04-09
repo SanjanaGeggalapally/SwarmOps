@@ -76,7 +76,7 @@ const Users = () => {
   };
 
   const handleAddUser = () => {
-    navigate('/adduser');
+    navigate('/users/adduser');
   };
 
   return (

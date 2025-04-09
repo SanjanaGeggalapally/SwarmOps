@@ -250,7 +250,7 @@ def get_users(current_user):
     
     return jsonify(users), 200 
 
-@app.route('/addUser', methods=['POST'])
+@app.route('/users/addUser', methods=['POST'])
 @token_required
 def addUser(current_user):
     client = mongo_client()

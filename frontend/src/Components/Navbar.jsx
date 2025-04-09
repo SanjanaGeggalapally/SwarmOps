@@ -14,6 +14,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const location = useLocation(); // Get the current location
   const isLoginPage = location.pathname === '/login'; // Check if the current path is the login page
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [activeButton, setActiveButton] = useState(null); // State to track the active button
   const toggleSidebar = () => {
     setIsSidebarOpen(prev => !prev);
   };
@@ -31,18 +32,25 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, [setIsSidebarOpen]);
 
+  useEffect(() => {
+    setActiveButton(null);
+  }, [location]);
+
   const handleLogout = () => {
     setShowLogoutModal(true);
+    setActiveButton('logout');
   };
 
   const confirmLogout = () => {
     setShowLogoutModal(false);
     logout();
     toast.success("Logout Successful")
+    setActiveButton(null);
   };
 
   const cancelLogout = () => {
     setShowLogoutModal(false);
+    setActiveButton(null);
   };
 
   return (
@@ -83,7 +91,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 <NavLink
                   to={link}
                   className={({ isActive }) => `flex items-center p-2 rounded-lg transition-colors duration-100 
-                    ${isActive ? 'bg-light-navy' : ''}
+                    ${isActive && activeButton !== 'logout' ? 'bg-light-navy' : ''}
                     ${isDarkTheme ? 'hover-light-navy hover:text-white' : 'hover-light-navy hover:text-black'}`}
                 >
                   <FontAwesomeIcon
@@ -102,6 +110,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 <button
                   onClick={handleLogout}
                   className={`flex items-center w-full p-2 rounded-lg transition-colors duration-100 
+                    ${activeButton === 'logout' ? 'bg-light-navy' : ''}
                     ${isDarkTheme ? 'hover-light-navy hover:text-white' : 'hover-light-navy hover:text-black'}`}
                 >
                   <FontAwesomeIcon
@@ -144,7 +153,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
       {showLogoutModal && (
         <>
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80">
             <div className="flex items-center mb-4">
               <FontAwesomeIcon icon={faSignOutAlt} className="text-red-500 w-10 h-10 mr-4 ml-9" />

@@ -1,47 +1,31 @@
-# Login-Logout
+# Login-Logout Functionality
 
-The **Login-Logout** functionality in SwarmOps ensures secure access and seamless session termination for users. This document outlines the key details and actions available within this feature.
+The **Login-Logout** functionality in SwarmOps ensures secure user authentication and session termination, maintaining privacy and preventing unauthorized access.
 
 ---
 
 ## Login
+1. **Username Field**: Input your unique ID or name.
+2. **Password Field**: Input your password (with an option to show or hide it).
+3. **Login Button**: Click to authenticate and access the main page.
 
-## Overview
-The **Login** component is a React functional component designed to handle user authentication. 
+### How to Log In
+1. Enter your **Username**.
+2. Enter your **Password**.
+3. Click the **Login Button** to proceed. If details are incorrect, an error message will be displayed.
 
-## What You Will See on the Login Page
-1. **Username Field**: A box where you type your username (e.g., your unique ID or name).
-2. **Password Field**: A box where you type your password. You can choose to hide or show the password as you type it.
-3. **Login Button**: A button to confirm your details and log in.
-
----
-
-## How to Log In
-1. Enter your **Username** in the first box.
-2. Enter your **Password** in the second box.
-3. Click the **Login Button**. 
-   - If your details are correct, you’ll be logged in and see the main page.
-   - If there’s an issue (e.g., wrong password), you’ll see an error message telling you what went wrong.
-
----
-## Visual Reference
-
-![login Visual Representation](images/login.png)
 ---
 
 ## Logout
+- **Logout Button**: Ends your session securely and redirects you to the login page.
+- All session data is cleared upon logout, preparing the application for new authentication.
 
-### Overview
-The logout system ensures secure termination of user sessions. This is essential for maintaining data privacy and preventing unauthorized access.
-
-### Actions
-- **Logout Button**: Safely ends the current user session and redirects to the login page.
-
-### Behavior
-- Upon logout, all session data is cleared.
-- The user is returned to the **Login Page**, ready for new authentication.
+---
 
 ## Visual Reference
+
+![Login Visual Representation](images/login.png)
+---
 
 ![Logout Visual Representation](images/logout.png)
 
