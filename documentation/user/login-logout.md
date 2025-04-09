@@ -24,10 +24,9 @@ The **Login-Logout** functionality in SwarmOps ensures secure user authenticatio
 
 ## Visual Reference
 
-![Login Visual Representation](images/login.png)
----
-
-![Logout Visual Representation](images/logout.png)
+| Login Visual Representation       | Logout Visual Representation       |
+|-----------------------------------|------------------------------------|
+| ![Login Visual Representation](images/login.png) | ![Logout Visual Representation](images/logout.png) |
 
 ---
 
