@@ -60,6 +60,11 @@ stages:
               echo "-- docker images --"
               docker images | grep swarmops
               # echo "Build and Push Job 1 ran"
+
+        - task: ArtifactoryToolsInstaller@1
+          inputs:
+            artifactoryService: 'artifactory'
+            cliInstallationRepo: 'jfrog-cli'
    
         - task: ArtifactoryDocker@1
           inputs:
